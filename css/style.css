@@ -22,6 +22,10 @@
     border-radius: 10px 10px 0 0;
 }
 
+.navbar .adminOnly {
+    background-color: #500;
+}
+
 .navbar li {
     float: left;
 }
@@ -34,8 +38,16 @@
     background-color: #049A5D;
 }
 
-.active {
+.navbar .adminOnly:hover:is(.active) {
+    background-color: #800;
+}
+
+.navbar .active:not(.adminOnly) {
     background-color: #04AA6D;
+}
+
+.navbar .active:is(.adminOnly) {
+    background-color: #A00;
 }
 
 /*msc*/
