@@ -1,0 +1,53 @@
+/*navbar*/
+
+.navbar {
+    font-family: "Noto Mono", monospace;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.navbar a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    border-radius: 10px 10px 0 0;
+}
+
+.navbar .adminOnly {
+    background-color: #500;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.navbar li a:hover:is(.active) {
+    background-color: #049A5D;
+}
+
+.navbar .adminOnly:hover:is(.active) {
+    background-color: #800;
+}
+
+.navbar .active:not(.adminOnly) {
+    background-color: #04AA6D;
+}
+
+.navbar .active:is(.adminOnly) {
+    background-color: #A00;
+}
+
+/*msc*/
