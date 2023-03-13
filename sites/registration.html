@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BingeVoyage | Bejelentkezés</title>
+    <title>BingeVoyage | Regisztráció</title>
     <link rel="stylesheet" href="../src/css/style.css">
 </head>
 <body>
@@ -16,13 +16,15 @@
 <main>
     <div id="loginContainer">
         <h1>BingeVoyage</h1>
-        <h2>Bejelentkezés</h2>
+        <h2>Regisztráció</h2>
         <form method="POST">
-            <input type="text" name="username" placeholder="Felhasználónév" required/><br>
+            <input name="username" placeholder="Felhasználónév" required type="text"/><br>
+            <input type="email" name="email" placeholder="E-mail" required/><br>
             <input type="password" name="passwd" placeholder="Jelszó" required/><br>
-            <input type="submit" value="Bejelentkezés"/>
+            <input type="password" name="passwd" placeholder="Jelszó mégegyszer" required/><br>
+            <input type="submit" value="Regisztráció"/>
         </form>
-        <p>Még nincs fiókod? <a href="registration.html">Regisztrálj!</a></p>
+        <p>Már van fiókod? <a href="login.html">Jelentkezz be!</a></p>
     </div>
 </main>
 </body>
