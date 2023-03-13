@@ -1,3 +1,7 @@
+* {
+    font-family: "Noto Mono";
+}
+
 /*navbar*/
 
 .navbar {
@@ -11,16 +15,30 @@
     left: 0;
     width: 100%;
 }
-.navbar li {
-    float: left;
-}
 
-.navbar li a {
+.navbar p, a {
     display: block;
     color: white;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    border-radius: 10px 10px 0 0;
+}
+
+.navbar a {
+    bottom: 0;
+    position: sticky;
+    height: 100%;
+}
+
+.navbar p {
+    font-weight: bolder;
+    font-family: "Noto Sans";
+    margin: 0;
+}
+
+.navbar li {
+    float: left;
 }
 
 .navbar li a:hover:not(.active) {
@@ -32,8 +50,3 @@
 }
 
 /*msc*/
-
-body {
-    background: #f9f600;
-}
-
