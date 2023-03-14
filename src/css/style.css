@@ -127,7 +127,7 @@ textarea {
 .square {
     height: 200px;
     border-radius: 10px;
-    background-color: red;
+    background-color: #CEEECE;
     position: absolute;
 }
 
@@ -150,7 +150,7 @@ textarea {
     height: 350px;
     top: 246px;
     left: 0;
-    background-color: #04AA6D;
+    background-color: #CEEECE;
     display: flex;
     justify-content: space-between;
 }
@@ -394,6 +394,58 @@ main {
     width: 90%;
     font-family: "Noto Sans", sans-serif;
     font-size: 18px;
+    background-color: #DFFFDF;
+}
+
+.mainRecTable {
+    border-style: solid;
+    border: 2px solid black;
+    height: 100%;
+    width: 100%;
+}
+
+.mainTable {
+    border-style: solid;
+    border: 2px solid black;
+    text-align: center;
+}
+
+.mainRecTitle {
+    border-style: solid;
+    border: 2px solid black;
+    text-align: center;
+    height: 40px;
+    font-size: 23px;
+}
+
+.mainRecProperties {
+    border-style: solid;
+    border: 2px solid black;
+    text-align: center;
+    height: 15px;
+}
+
+.mainRecImg {
+    border-style: solid;
+    border: 2px solid black;
+    text-align: center;
+    width: 50%;
+}
+
+.mainRecSynopsis {
+    border-style: solid;
+    border: 2px solid black;
+    text-align: center;
+    width: 50%;
+    overflow-y: scroll;
+    height: ;
+}
+
+.mainRecActions {
+    border-style: solid;
+    border: 2px solid black;
+    text-align: center;
+    height: 15px;
 }
 
 p {
