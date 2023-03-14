@@ -127,7 +127,7 @@ textarea {
 .square {
     height: 200px;
     border-radius: 10px;
-    background-color: #CEEECE;
+    background-color: #DFFFDF;
     position: absolute;
 }
 
@@ -150,7 +150,6 @@ textarea {
     height: 350px;
     top: 246px;
     left: 0;
-    background-color: #CEEECE;
     display: flex;
     justify-content: space-between;
 }
@@ -160,7 +159,7 @@ textarea {
     flex: 1 1 auto;
     width: 20%;
     border-radius: 10px;
-    background-color: saddlebrown;
+    background-color: #CEEECE;
     box-sizing: border-box;
 }
 
@@ -408,6 +407,9 @@ main {
     border-style: solid;
     border: 2px solid black;
     text-align: center;
+    border-collapse: collapse;
+    border-spacing: 0px;
+
 }
 
 .mainRecTitle {
@@ -436,9 +438,15 @@ main {
     border-style: solid;
     border: 2px solid black;
     text-align: center;
-    width: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    overflow: hidden;
+    resize: none;
+}
+
+.mainRecSynopsis:hover {
     overflow-y: scroll;
-    height: ;
 }
 
 .mainRecActions {
