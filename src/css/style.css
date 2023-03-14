@@ -116,6 +116,60 @@ textarea {
     color: #049A5D;
 }
 
+/*main page*/
+
+.container {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.square {
+    height: 200px;
+    border-radius: 10px;
+    background-color: red;
+    position: absolute;
+}
+
+.top-left {
+    top: 36px;
+    left: 0;
+    margin-right: 20px;
+    width:calc(60% - 5px);
+}
+
+.top-right {
+    top: 36px;
+    right: 0;
+    margin-left: 20px;
+    width: calc(40% - 5px);
+}
+
+.bottom {
+    width: 100%;
+    height: 350px;
+    top: 246px;
+    left: 0;
+    background-color: #04AA6D;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sub_square {
+    height: 330px;
+    flex: 1 1 auto;
+    width: 20%;
+    border-radius: 10px;
+    background-color: saddlebrown;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
 /* profile */
 
 .oneThreeContainer, .oneOneContainer {
