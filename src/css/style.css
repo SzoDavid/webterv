@@ -11,6 +11,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 1000;
 }
 
 .navbar a {
@@ -397,46 +398,36 @@ main {
 }
 
 .mainRecTable {
-    border-style: solid;
-    border: 2px solid black;
     height: 100%;
     width: 100%;
 }
 
 .mainTable {
-    border-style: solid;
-    border: 2px solid black;
     text-align: center;
     border-collapse: collapse;
     border-spacing: 0px;
+    margin: 0px;
 
 }
 
 .mainRecTitle {
-    border-style: solid;
-    border: 2px solid black;
     text-align: center;
-    height: 40px;
+    height: 30px;
     font-size: 23px;
 }
 
 .mainRecProperties {
-    border-style: solid;
-    border: 2px solid black;
     text-align: center;
     height: 15px;
+    width: 33%;
 }
 
 .mainRecImg {
-    border-style: solid;
-    border: 2px solid black;
     text-align: center;
     width: 50%;
 }
 
 .mainRecSynopsis {
-    border-style: solid;
-    border: 2px solid black;
     text-align: center;
     width: 100%;
     height: 100%;
@@ -450,10 +441,33 @@ main {
 }
 
 .mainRecActions {
-    border-style: solid;
-    border: 2px solid black;
     text-align: center;
     height: 15px;
+    width: 50%;
+}
+
+.mainRecButton {
+    padding: 20px 30px;
+    align-self: center;
+}
+
+.mainRecButton input {
+    box-sizing: border-box;
+    padding: 12px;
+    width: 100%;
+    border-radius: 15px;
+    outline: none;
+    border: #049A5D;
+
+}
+
+
+.mainRecButton input[type=submit] {
+    background-color: #04AA6D;
+}
+
+.mainRecButton input[type=submit]:hover {
+    background-color: #049A5D;
 }
 
 p {
