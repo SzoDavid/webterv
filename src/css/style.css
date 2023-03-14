@@ -200,6 +200,30 @@ img {
     padding: 5px 10px;
 }
 
+/* input box */
+
+.inputBox {
+    font-size: 18px;
+}
+
+.inputBox input {
+    font-size: inherit;
+    width: 75px;
+}
+
+.inputBox select {
+    font-size: inherit;
+    width: 100%;
+}
+
+.inputBox button {
+    font-size: inherit;
+}
+
+.inputBox .saveButton {
+    width: 100%;
+}
+
 /*msc*/
 
 main {
