@@ -74,7 +74,6 @@
 }
 
 #loginContainer input {
-    font-size: 18px;
     box-sizing: border-box;
     padding: 12px;
     width: 300px;
@@ -103,9 +102,81 @@
     color: #049A5D;
 }
 
+/* profile */
+
+.oneThreeContainer {
+    margin: 0 auto;
+    width: 90%;
+    overflow: hidden;
+}
+
+.oneThreeContainer .left {
+    float: left;
+    width: 25%;
+    padding-right: 25px;
+}
+
+.oneThreeContainer .right {
+    overflow: hidden;
+    padding-left: 25px;
+}
+
+img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.profileInfoTable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.profileInfoTable * {
+    border-style: none;
+    margin: 0;
+    padding: 5px;
+}
+
+.profileInfoTable th {
+    background-color: #CEEECE;
+    border-radius: 15px 15px 0 0;
+}
+
+.profileInfoTable tr:nth-child(even) {
+    background-color: #DFFFDF;
+}
+
+.seriesTable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.seriesTable .header * {
+    background-color: #CEEECE;
+}
+
+.seriesTable .header th:first-child {
+    border-top-left-radius: 15px;
+}
+
+.seriesTable .header th:last-child {
+    border-top-right-radius: 15px;
+}
+
+.seriesTable tr:not(.header):hover td {
+    background-color: #DFFFDF;
+}
+
+
+
+.seriesTable td:not(.title) {
+    text-align: center;
+}
+
 /*msc*/
 
 main {
     margin-top: 100px;
     font-family: "Noto Sans", sans-serif;
+    font-size: 18px;
 }
