@@ -109,20 +109,27 @@ input[type=submit]:hover {
 
 /* profile */
 
-.oneThreeContainer {
+.oneThreeContainer, .oneOneContainer {
     margin: 0 auto;
     overflow: hidden;
 }
 
-.oneThreeContainer .left {
+.left {
     float: left;
-    width: 25%;
     padding-right: 25px;
 }
 
-.oneThreeContainer .right {
+.right {
     overflow: hidden;
     padding-left: 25px;
+}
+
+.oneThreeContainer .left {
+    width: 25%;
+}
+
+.oneOneContainer .left {
+    width: 50%;
 }
 
 img {
