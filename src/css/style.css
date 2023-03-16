@@ -52,19 +52,34 @@
 
 /* inputs */
 
-input, select, button {
+input, select, button, textarea, input[type=file]::file-selector-button {
     box-sizing: border-box;
     border-radius: 15px;
     outline: none;
     border: none;
+    font-size: inherit;
+    padding: 5px 10px;
 }
 
-input[type=submit], button, select {
+input, select, button, textarea {
+    width: 100%;
+}
+
+input {
+    cursor: text;
+}
+
+input[type=submit], button, select, input[type=file]::file-selector-button {
     background-color: #CEEECE;
+    cursor: pointer;
 }
 
-input[type=submit]:hover, button:hover, select:hover {
+input[type=submit]:hover, button:hover, select:hover, input[type=file]::file-selector-button:hover {
     background-color: #BDDDBD;
+}
+
+textarea {
+    resize: none;
 }
 
 /* Login/Registration form */
@@ -131,31 +146,47 @@ img {
     object-fit: contain;
 }
 
-.infoTable {
+.infoTable, .adminTable {
     margin: 10px 0;
     border-collapse: collapse;
     width: 100%;
 }
 
-.infoTable * {
+.infoTable *, .adminTable * {
     border-style: none;
     margin: 0;
     padding: 5px;
 }
 
+.infoTable th, .adminTable th {
+    border-radius: 15px 15px 0 0;
+}
+
 .infoTable th {
     background-color: #CEEECE;
-    border-radius: 15px 15px 0 0;
+}
+
+.adminTable th {
+    background-color: #A00;
+    color: white;
 }
 
 .infoTable tr:nth-child(even) {
     background-color: #DFFFDF;
 }
 
-.infoTable select, input, button {
-    width: 100%;
-    font-size: inherit;
-    padding: 5px 10px;
+.adminTable tr:nth-child(even) {
+    background-color: #A99
+}
+
+.adminTable select, .adminTable button {
+    background-color: #A00;
+    color: white;
+}
+
+.adminTable select:hover, .adminTable button:hover {
+    background-color: #A55;
+    color: white;
 }
 
 .seriesTable {
@@ -177,6 +208,7 @@ img {
 
 .seriesTable tr:not(.header):hover td {
     background-color: #DFFFDF;
+    cursor: pointer;
 }
 
 .seriesTable td:not(.title) {
@@ -227,16 +259,14 @@ img {
 }
 
 .newComment textarea {
-    resize: none;
     height: inherit;
     width: -moz-available;
     width: available;
-    border-radius: 15px 0 0 15px;
+    border-style: solid;
+    border-width: 1px;
     border-color: #CEEECE;
-    outline: none;
-    padding: 5px 10px;
+    border-radius: 15px 0 0 15px;
     box-sizing: content-box;
-    font-size: inherit;
 }
 
 .newComment input[type=submit] {
@@ -275,8 +305,30 @@ img {
     border-radius: 5px;
 }
 
-.showCover {
-    border-radius: 15px;
+.adminFunctions button {
+    background-color: #A00;
+    color: white;
+    width: 150px;
+}
+
+.adminFunctions button:hover {
+    background-color: #A55;
+}
+
+/* Settings Form */
+
+.settingsForm {
+    background-color: #DFFFDF;
+    border-radius: 20px;
+    padding: 30px 80px;
+    width: fit-content;
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.settingsForm table {
+    border-spacing: 15px;
 }
 
 /*msc*/
@@ -292,4 +344,8 @@ main {
 
 p {
     text-align: justify;
+}
+
+.showCover, .profilePic {
+    border-radius: 15px;
 }
