@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BingeVoyage | A Király</title>
+    <link rel="stylesheet" href="../../src/css/style.css">
+</head>
+<body>
+<header>
+    <ul class="navbar">
+        <li><a href="../index.html">Főoldal</a></li>
+        <li><a href="../search.html">Keresés</a></li>
+        <li><a href="../chat.html">Barátok</a></li>
+        <li style="float:right"><a href="../profile.html">Próba Ödön</a></li>
+        <li style="float:right"><a class="adminOnly" href="../admin.html">Felületkezelés</a></li>
+    </ul>
+</header>
+<main>
+    <div class="oneThreeContainer">
+        <div class="left">
+            <img class="showCover" src="../../src/img/a_kiraly.jpg">
+            <button>Levétel listáról</button>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Információk</th>
+                </tr>
+                <tr>
+                    <td>Epizódok:</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>3,8/5</td>
+                </tr>
+                <tr>
+                    <td>Nézők:</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>Szintén nézi:</td>
+                    <td><a href="../temp/szobonya.html">Szobonya</a><br><a href="../temp/tandi.html">Tandi</a></td>
+                </tr>
+            </table>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Státusz</th>
+                </tr>
+                <tr>
+                    <td>Megnézett epizódok:</td>
+                    <td><input id="watchedEpisodes" type="number" value="10" min="0" max="10"></td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>
+                        <select id="rating">
+                            <option value="-">-</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5" selected>5</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="saveButton" title="Implementáció a 2. mérföldkőben">Mentés</button></td>
+                </tr>
+            </table>
+        </div>
+        <div class="right">
+            <h1>A kriály</h1>
+            <div>
+                <h2>Leírás</h2>
+                <p>Jimmy életéről készült tíz részes sorozat. Az életrajzi ihletésű széria az énekes legenda felemelkedését mutatja be, amely bővelkedett konfliktusokban. Míg a történet legkevésbé sem fest idealizált képet a sztárról, visszarepít az időben és szól arról is, hogy a rendszerváltás milyen hatással volt a magyar zenésztársadalomra. Zámbó Jimmy különböző életszakaszait két kiváló színész alakítja: Nagy Ervin a már befutott, népszerű, míg Olasz Renátó az énekes fiatalkori, útkereső énjét formálja meg. Ahogy feleségét Zámbó Editet is két nagyszerű színésznő Schell Judit és Staub Viktória formálja meg.</p>
+            </div>
+            <div>
+                <h2>Hozzászólások</h2>
+                <div>
+                    <div class="newComment">
+                        <form method="POST">
+                            <textarea name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
+                            <input type="submit" value="➤">
+                        </form>
+                    </div>
+                    <div class="comment">
+                        <div class="commentMeta" onclick="window.location.href='../temp/tandi.html'">
+                            <img src="../../src/img/pfp3.jpg" width="50" height="50" alt="">
+                            <span class="author">Tandi</span>
+                            <span class="timestamp">2023/03/12 17:45</span>
+                        </div>
+                        <p>Nagyon tetszett, sokkal több értéket szerzett így a Jimmys kazettám!</p>
+                    </div>
+                    <div class="comment">
+                        <div class="commentMeta" onclick="window.location.href='../profile.html'">
+                            <img src="../../src/img/pfp.jpg" width="50" height="50" alt="">
+                            <span class="author">Próba Ödön</span>
+                            <span class="timestamp">2023/03/11 16:20</span>
+                        </div>
+                        <p>Wow!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

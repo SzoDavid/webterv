@@ -52,24 +52,18 @@
 
 /* inputs */
 
-input {
+input, select, button {
     box-sizing: border-box;
     border-radius: 15px;
     outline: none;
     border: none;
 }
 
-input:focus {
-    border-style: solid;
-    border-width: 1px;
-    border-color: #049A5D;
-}
-
-input[type=submit] {
+input[type=submit], button, select {
     background-color: #CEEECE;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, button:hover, select:hover {
     background-color: #BDDDBD;
 }
 
@@ -109,20 +103,27 @@ input[type=submit]:hover {
 
 /* profile */
 
-.oneThreeContainer {
+.oneThreeContainer, .oneOneContainer {
     margin: 0 auto;
     overflow: hidden;
 }
 
-.oneThreeContainer .left {
+.left {
     float: left;
-    width: 25%;
     padding-right: 25px;
 }
 
-.oneThreeContainer .right {
+.right {
     overflow: hidden;
     padding-left: 25px;
+}
+
+.oneThreeContainer .left {
+    width: 25%;
+}
+
+.oneOneContainer .left {
+    width: 50%;
 }
 
 img {
@@ -130,24 +131,31 @@ img {
     object-fit: contain;
 }
 
-.profileInfoTable {
+.infoTable {
+    margin: 10px 0;
     border-collapse: collapse;
     width: 100%;
 }
 
-.profileInfoTable * {
+.infoTable * {
     border-style: none;
     margin: 0;
     padding: 5px;
 }
 
-.profileInfoTable th {
+.infoTable th {
     background-color: #CEEECE;
     border-radius: 15px 15px 0 0;
 }
 
-.profileInfoTable tr:nth-child(even) {
+.infoTable tr:nth-child(even) {
     background-color: #DFFFDF;
+}
+
+.infoTable select, input, button {
+    width: 100%;
+    font-size: inherit;
+    padding: 5px 10px;
 }
 
 .seriesTable {
@@ -193,6 +201,71 @@ img {
     padding: 5px 10px;
 }
 
+/* comments */
+
+.newComment form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 75px;
+    width: 100%;
+    box-sizing: content-box;
+    padding: 6px;
+}
+
+.newComment textarea {
+    resize: none;
+    height: inherit;
+    width: -moz-available;
+    width: available;
+    border-radius: 15px 0 0 15px;
+    border-color: #CEEECE;
+    outline: none;
+    padding: 5px 10px;
+    box-sizing: content-box;
+    font-size: inherit;
+}
+
+.newComment input[type=submit] {
+    width: 15px;
+    height: inherit;
+    box-sizing: content-box;
+    margin-right: 15px;
+    border-radius: 0 15px 15px 0;
+}
+
+.comment {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #CEEECE;
+    border-radius: 15px;
+}
+
+.commentMeta {
+    display: flex;
+    flex-direction: row;
+    font-style: italic;
+    color: #999;
+    cursor: pointer;
+}
+
+.commentMeta * {
+    float: left;
+    width: fit-content;
+    vertical-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+}
+
+.commentMeta img {
+    border-radius: 5px;
+}
+
+.showCover {
+    border-radius: 15px;
+}
+
 /*msc*/
 
 main {
@@ -202,4 +275,8 @@ main {
     width: 90%;
     font-family: "Noto Sans", sans-serif;
     font-size: 18px;
+}
+
+p {
+    text-align: justify;
 }

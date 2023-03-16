@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BingeVoyage | Mob Psycho 100</title>
+    <link rel="stylesheet" href="../../src/css/style.css">
+</head>
+<body>
+<header>
+    <ul class="navbar">
+        <li><a href="../index.html">Főoldal</a></li>
+        <li><a href="../search.html">Keresés</a></li>
+        <li><a href="../chat.html">Barátok</a></li>
+        <li style="float:right"><a href="../profile.html">Próba Ödön</a></li>
+        <li style="float:right"><a class="adminOnly" href="../admin.html">Felületkezelés</a></li>
+    </ul>
+</header>
+<main>
+    <div class="oneThreeContainer">
+        <div class="left">
+            <img class="showCover" src="../../src/img/mp100.jpg">
+            <button>Levétel listáról</button>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Információk</th>
+                </tr>
+                <tr>
+                    <td>Epizódok:</td>
+                    <td>30</td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>4,7/5</td>
+                </tr>
+                <tr>
+                    <td>Nézők:</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>Szintén nézi:</td>
+                    <td><a href="../temp/szobonya.html">Szobonya</a></td>
+                </tr>
+            </table>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Státusz</th>
+                </tr>
+                <tr>
+                    <td>Megnézett epizódok:</td>
+                    <td><input id="watchedEpisodes" type="number" value="12" min="0" max="30"></td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>
+                        <select id="rating">
+                            <option value="-">-</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="saveButton" title="Implementáció a 2. mérföldkőben">Mentés</button></td>
+                </tr>
+            </table>
+        </div>
+        <div class="right">
+            <h1>Mob Psycho 100</h1>
+            <div>
+                <h2>Leírás</h2>
+                <p>Kayema Shigeo nem éppen átlagos középiskolai diák, akit a tanára, Reigen csak Mobnak (tömegnek vagy háttérkarakternek) hív. Mob bizonyos pszichikai erőkkel rendelkezik, amelyek lehetővé teszik számára, hogy tárgyakat repíthessen, hajlíthasson vagy éppen porig zúzhasson. Ehhez hozzájárul, hogy képes látni a szellemeket is. Vagyis egyfajta médiumként funkcionál. Viszont ha az érzelmi kapacitása eléri a száz százalékot, akkor a dolgok általában katasztrofális méreteket öltenek. A történet a szellemek és az ilyen "médiumok" köré épül, ONE-hoz méltó humorosabb köntösben.</p>
+            </div>
+            <div>
+                <h2>Hozzászólások</h2>
+                <div>
+                    <div class="newComment">
+                        <form method="POST">
+                            <textarea name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
+                            <input type="submit" value="➤">
+                        </form>
+                    </div>
+                    <div class="comment">
+                        <div class="commentMeta" onclick="window.location.href='../temp/szobonya.html'">
+                            <img src="../../src/img/pfp2.jpg" width="50" height="50" alt="">
+                            <span class="author">Szobonya</span>
+                            <span class="timestamp">2023/03/15 21:11</span>
+                        </div>
+                        <p>Mestermű!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

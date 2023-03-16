@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BingeVoyage | Cyberpunk: Edgerunners</title>
+    <link rel="stylesheet" href="../../src/css/style.css">
+</head>
+<body>
+<header>
+    <ul class="navbar">
+        <li><a href="../index.html">Főoldal</a></li>
+        <li><a href="../search.html">Keresés</a></li>
+        <li><a href="../chat.html">Barátok</a></li>
+        <li style="float:right"><a href="../profile.html">Próba Ödön</a></li>
+        <li style="float:right"><a class="adminOnly" href="../admin.html">Felületkezelés</a></li>
+    </ul>
+</header>
+<main>
+    <div class="oneThreeContainer">
+        <div class="left">
+            <img class="showCover" src="../../src/img/cper.jpg">
+            <button>Levétel listáról</button>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Információk</th>
+                </tr>
+                <tr>
+                    <td>Epizódok:</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>4,3/5</td>
+                </tr>
+                <tr>
+                    <td>Nézők:</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>Szintén nézi:</td>
+                    <td><a href="../temp/tandi.html">Tandi</a></td>
+                </tr>
+            </table>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Státusz</th>
+                </tr>
+                <tr>
+                    <td>Megnézett epizódok:</td>
+                    <td><input id="watchedEpisodes" type="number" value="4" min="0" max="10"></td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>
+                        <select id="rating">
+                            <option value="-">-</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="saveButton" title="Implementáció a 2. mérföldkőben">Mentés</button></td>
+                </tr>
+            </table>
+        </div>
+        <div class="right">
+            <h1>Cyberpunk: Edgerunners</h1>
+            <div>
+                <h2>Leírás</h2>
+                <p>A korrupcióban és kibernetikus implantátumokban bővelkedő disztópiában egy tehetséges, de vakmerő utcakölyökről szól a sorozat, aki próbál túlélni a technológia-, és a testmódosítás-megszállott jövőbeli városban. Mivel nincs vesztenivalója, ezért edgerunnernek áll, fegyveres törvényenkívülinek, őket hívják cyberpunkoknak.</p>
+            </div>
+            <div>
+                <h2>Hozzászólások</h2>
+                <div>
+                    <div class="newComment">
+                        <form method="POST">
+                            <textarea name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
+                            <input type="submit" value="➤">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
