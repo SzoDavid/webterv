@@ -57,6 +57,9 @@ input, select, button {
     border-radius: 15px;
     outline: none;
     border: none;
+    width: 100%;
+    font-size: inherit;
+    padding: 5px 10px;
 }
 
 input {
@@ -169,18 +172,12 @@ img {
     background-color: #A99
 }
 
-.infoTable select, input, button, .adminTable select, input, button {
-    width: 100%;
-    font-size: inherit;
-    padding: 5px 10px;
-}
-
-.adminTable select, button {
+.adminTable select, .adminTable button {
     background-color: #A00;
     color: white;
 }
 
-.adminTable select:hover, button:hover {
+.adminTable select:hover, .adminTable button:hover {
     background-color: #A55;
     color: white;
 }
@@ -303,8 +300,14 @@ img {
     border-radius: 5px;
 }
 
-.showCover {
-    border-radius: 15px;
+.adminFunctions button {
+    background-color: #A00;
+    color: white;
+    width: 150px;
+}
+
+.adminFunctions button:hover {
+    background-color: #A55;
 }
 
 /*msc*/
@@ -320,4 +323,8 @@ main {
 
 p {
     text-align: justify;
+}
+
+.showCover {
+    border-radius: 15px;
 }
