@@ -200,28 +200,69 @@ img {
     padding: 5px 10px;
 }
 
-/* input box */
+/* comments */
 
-.inputBox {
-    font-size: 18px;
-}
-
-.inputBox input {
-    font-size: inherit;
-    width: 75px;
-}
-
-.inputBox select {
-    font-size: inherit;
+.newComment form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 75px;
     width: 100%;
+    box-sizing: content-box;
+    padding: 6px;
 }
 
-.inputBox button {
+.newComment textarea {
+    resize: none;
+    height: inherit;
+    width: -moz-available;
+    width: available;
+    border-radius: 15px 0 0 15px;
+    border-color: #CEEECE;
+    outline: none;
+    padding: 5px 10px;
+    box-sizing: content-box;
     font-size: inherit;
 }
 
-.inputBox .saveButton {
-    width: 100%;
+.newComment input[type=submit] {
+    width: 15px;
+    height: inherit;
+    box-sizing: content-box;
+    margin-right: 15px;
+    border-radius: 0 15px 15px 0;
+}
+
+.comment {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #CEEECE;
+    border-radius: 15px;
+}
+
+.commentMeta {
+    display: flex;
+    flex-direction: row;
+    font-style: italic;
+    color: #999;
+    cursor: pointer;
+}
+
+.commentMeta * {
+    float: left;
+    width: fit-content;
+    vertical-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+}
+
+.commentMeta img {
+    border-radius: 5px;
+}
+
+.showCover {
+    border-radius: 15px;
 }
 
 /*msc*/
@@ -233,4 +274,8 @@ main {
     width: 90%;
     font-family: "Noto Sans", sans-serif;
     font-size: 18px;
+}
+
+p {
+    text-align: justify;
 }

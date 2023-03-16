@@ -18,7 +18,7 @@
 <main>
     <div class="oneThreeContainer">
         <div class="left">
-            <img src="../../src/img/mp100.jpg">
+            <img class="showCover" src="../../src/img/mp100.jpg">
             <table class="infoTable">
                 <tr>
                     <th colspan="2">Információk</th>
@@ -40,19 +40,55 @@
                     <td><a href="../temp/szobonya.html">Szobonya</a></td>
                 </tr>
             </table>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Státusz</th>
+                </tr>
+                <tr>
+                    <td>Megnézett epizódok:</td>
+                    <td><input id="watchedEpisodes" type="number" value="12" min="0" max="30"></td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>
+                        <select id="rating">
+                            <option value="-">-</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="saveButton" title="Implementáció a 2. mérföldkőben">Mentés</button></td>
+                </tr>
+            </table>
         </div>
         <div class="right">
-            <h1>A kriály</h1>
-            <div class="oneOneContainer">
-                <div class="left">
-                    <h2>Epizódok</h2>
-                    <input id="watchedEpisodes" type="number" value="12" min="0" max="30" width="3">/30<br>
-                    <button>Mentés</button>
-                </div>
-                <div class="right">
-                    <h2>Értékelés</h2>
-                    <input id="rating" type="number" placeholder="-" min="1" max="5" width="3">/5<br>
-                    <button>Mentés</button>
+            <h1>Mob Psycho 100</h1>
+            <div>
+                <h2>Leírás</h2>
+                <p></p>
+            </div>
+            <div>
+                <h2>Hozzászólások</h2>
+                <div>
+                    <div class="newComment">
+                        <form method="POST">
+                            <textarea name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
+                            <input type="submit" value="➤">
+                        </form>
+                    </div>
+                    <div class="comment">
+                        <div class="commentMeta" onclick="window.location.href='../temp/szobonya.html.html'">
+                            <img src="../../src/img/pfp2.jpg" width="50" height="50" alt="">
+                            <span class="author">Szobonya</span>
+                            <span class="timestamp">2023/03/15 21:11</span>
+                        </div>
+                        <p>Mestermű!</p>
+                    </div>
                 </div>
             </div>
         </div>
