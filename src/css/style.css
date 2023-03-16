@@ -195,10 +195,23 @@ img {
     box-sizing: border-box;
 }
 
+.searchBox form {
+    display: flex;
+    flex-direction: row;
+}
+
 .searchBox input {
-    border-radius: 10px;
     font-size: 18px;
     padding: 5px 10px;
+}
+
+.searchBox input[type=text] {
+    border-radius: 15px 0 0 15px;
+}
+
+.searchBox input[type=submit] {
+    border-radius: 0 15px 15px 0;
+    width: 100px;
 }
 
 /* comments */
