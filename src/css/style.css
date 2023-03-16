@@ -52,24 +52,18 @@
 
 /* inputs */
 
-input {
+input, select, button {
     box-sizing: border-box;
     border-radius: 15px;
     outline: none;
     border: none;
 }
 
-input:focus {
-    border-style: solid;
-    border-width: 1px;
-    border-color: #049A5D;
-}
-
-input[type=submit] {
+input[type=submit], button, select {
     background-color: #CEEECE;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, button:hover, select:hover {
     background-color: #BDDDBD;
 }
 
@@ -137,24 +131,30 @@ img {
     object-fit: contain;
 }
 
-.profileInfoTable {
+.infoTable {
     border-collapse: collapse;
     width: 100%;
 }
 
-.profileInfoTable * {
+.infoTable * {
     border-style: none;
     margin: 0;
     padding: 5px;
 }
 
-.profileInfoTable th {
+.infoTable th {
     background-color: #CEEECE;
     border-radius: 15px 15px 0 0;
 }
 
-.profileInfoTable tr:nth-child(even) {
+.infoTable tr:nth-child(even) {
     background-color: #DFFFDF;
+}
+
+.infoTable select, input, button {
+    width: 100%;
+    font-size: inherit;
+    padding: 5px 10px;
 }
 
 .seriesTable {
