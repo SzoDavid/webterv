@@ -59,8 +59,13 @@ input, select, button {
     border: none;
 }
 
+input {
+    cursor: text;
+}
+
 input[type=submit], button, select {
     background-color: #CEEECE;
+    cursor: pointer;
 }
 
 input[type=submit]:hover, button:hover, select:hover {
@@ -131,31 +136,53 @@ img {
     object-fit: contain;
 }
 
-.infoTable {
+.infoTable, .adminTable {
     margin: 10px 0;
     border-collapse: collapse;
     width: 100%;
 }
 
-.infoTable * {
+.infoTable *, .adminTable * {
     border-style: none;
     margin: 0;
     padding: 5px;
 }
 
+.infoTable th, .adminTable th {
+    border-radius: 15px 15px 0 0;
+}
+
 .infoTable th {
     background-color: #CEEECE;
-    border-radius: 15px 15px 0 0;
+}
+
+.adminTable th {
+    background-color: #A00;
+    color: white;
 }
 
 .infoTable tr:nth-child(even) {
     background-color: #DFFFDF;
 }
 
-.infoTable select, input, button {
+.adminTable tr:nth-child(even) {
+    background-color: #A99
+}
+
+.infoTable select, input, button, .adminTable select, input, button {
     width: 100%;
     font-size: inherit;
     padding: 5px 10px;
+}
+
+.adminTable select, button {
+    background-color: #A00;
+    color: white;
+}
+
+.adminTable select:hover, button:hover {
+    background-color: #A55;
+    color: white;
 }
 
 .seriesTable {
@@ -177,6 +204,7 @@ img {
 
 .seriesTable tr:not(.header):hover td {
     background-color: #DFFFDF;
+    cursor: pointer;
 }
 
 .seriesTable td:not(.title) {
