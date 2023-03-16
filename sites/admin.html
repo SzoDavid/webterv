@@ -14,5 +14,33 @@
         <li style="float:right"><a class="active adminOnly" href="admin.html">Felületkezelés</a></li>
     </ul>
 </header>
+<main>
+    <div>
+        <div class="settingsForm">
+            <h1>Sorozat hozzáadása</h1>
+            <form method="POST">
+                <table>
+                    <tr>
+                        <td><label for="title">Cím</label></td>
+                        <td><input type="text" id="title" name="title"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="episodes">Epizódok</label></td>
+                        <td><input type="number" id="episodes" name="episodes" min="0"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="cover">Borító</label></td>
+                        <td><input type="file" id="cover" name="cover" accept="image/png, image/jpeg"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="description">Leírás</label></td>
+                        <td><textarea id="description" name="description" cols="100" rows="10"></textarea></td>
+                    </tr>
+                </table>
+                <input type="submit" value="Mentés">
+            </form>
+        </div>
+    </div>
+</main>
 </body>
 </html>

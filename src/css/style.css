@@ -52,7 +52,7 @@
 
 /* inputs */
 
-input, select, button {
+input, select, button, textarea, input[type=file]::file-selector-button {
     box-sizing: border-box;
     border-radius: 15px;
     outline: none;
@@ -66,13 +66,17 @@ input {
     cursor: text;
 }
 
-input[type=submit], button, select {
+input[type=submit], button, select, input[type=file]::file-selector-button {
     background-color: #CEEECE;
     cursor: pointer;
 }
 
-input[type=submit]:hover, button:hover, select:hover {
+input[type=submit]:hover, button:hover, select:hover, input[type=file]::file-selector-button:hover {
     background-color: #BDDDBD;
+}
+
+textarea {
+    resize: none;
 }
 
 /* Login/Registration form */
@@ -252,16 +256,12 @@ img {
 }
 
 .newComment textarea {
-    resize: none;
     height: inherit;
     width: -moz-available;
     width: available;
-    border-radius: 15px 0 0 15px;
     border-color: #CEEECE;
-    outline: none;
-    padding: 5px 10px;
+    border-radius: 15px 0 0 15px;
     box-sizing: content-box;
-    font-size: inherit;
 }
 
 .newComment input[type=submit] {
@@ -308,6 +308,22 @@ img {
 
 .adminFunctions button:hover {
     background-color: #A55;
+}
+
+/* Settings Form */
+
+.settingsForm {
+    background-color: #DFFFDF;
+    border-radius: 20px;
+    padding: 30px 80px;
+    width: fit-content;
+    align-self: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.settingsForm table {
+    border-spacing: 15px;
 }
 
 /*msc*/
