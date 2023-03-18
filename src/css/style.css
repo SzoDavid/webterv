@@ -461,13 +461,17 @@ main {
 
 }
 
-
 .mainRecButton input[type=submit] {
     background-color: #04AA6D;
 }
 
 .mainRecButton input[type=submit]:hover {
     background-color: #049A5D;
+}
+
+#mainFriend {
+    text-align: left;
+    padding: 10px;
 }
 
 p {
