@@ -349,3 +349,9 @@ p {
 .showCover, .profilePic {
     border-radius: 15px;
 }
+
+video, audio {
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+}
