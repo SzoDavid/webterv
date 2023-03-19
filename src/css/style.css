@@ -384,6 +384,24 @@ img:is(.scalable):hover {
     animation-fill-mode: forwards;
 }
 
+button + button {
+    margin-top: 10px;
+}
+
+legend {
+    font-weight: bold;
+}
+
+fieldset {
+    border-radius: 15px;
+    border: 2px solid #CEEECE;
+}
+
+.hint {
+    font-style: italic;
+    color: gray;
+}
+
 /* Animations */
 
 @keyframes img_scale {
