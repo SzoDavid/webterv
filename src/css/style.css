@@ -94,6 +94,7 @@ textarea {
     align-self: center;
     margin-left: auto;
     margin-right: auto;
+    animation: fadeIn 750ms ease-in-out;
 }
 
 #loginContainer input {
@@ -329,6 +330,7 @@ img {
     align-self: center;
     margin-left: auto;
     margin-right: auto;
+    animation: fadeIn 750ms ease-in-out;
 }
 
 .settingsForm table {
@@ -415,6 +417,6 @@ h1, h2, th, legend {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translate(0);}
+    from { opacity: 0; transform: translateY(10px) scale(0.99, 0.99); }
+    to { opacity: 1; transform: translate(0) scale(1, 1);}
 }
