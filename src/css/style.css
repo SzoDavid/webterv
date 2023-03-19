@@ -403,6 +403,10 @@ fieldset {
     color: gray;
 }
 
+h1, h2, th, legend {
+    font-family: "Noto Mono", monospace;
+}
+
 /* Animations */
 
 @keyframes img_scale {
