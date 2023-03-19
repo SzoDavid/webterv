@@ -285,6 +285,7 @@ img {
     padding: 10px;
     border: 1px solid #CEEECE;
     border-radius: 15px;
+    animation: fadeIn 750ms ease-in-out;
 }
 
 .commentMeta {
@@ -384,6 +385,24 @@ img:is(.scalable):hover {
     animation-fill-mode: forwards;
 }
 
+button + button {
+    margin-top: 10px;
+}
+
+legend {
+    font-weight: bold;
+}
+
+fieldset {
+    border-radius: 15px;
+    border: 2px solid #CEEECE;
+}
+
+.hint {
+    font-style: italic;
+    color: gray;
+}
+
 /* Animations */
 
 @keyframes img_scale {
@@ -392,6 +411,6 @@ img:is(.scalable):hover {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translate(0);}
 }
