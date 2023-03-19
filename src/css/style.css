@@ -429,15 +429,16 @@ main {
 }
 
 .mainRecSynopsis {
+    background-color: #DFFFDF;
+    border-radius: 20px;
     text-align: center;
     width: 100%;
     height: 100%;
-    background-color: transparent;
     overflow: hidden;
     resize: none;
 }
 
-.mainRecSynopsis:hover {
+.mainRecSynopsis textarea:hover {
     overflow-y: scroll;
 }
 
