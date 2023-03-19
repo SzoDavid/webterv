@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>BingeVoyage | Főoldal</title>
-    <link rel="stylesheet" href="../src/css/style.css">
-    <link rel="icon" type="image/svg" href="../src/img/logo-nobg.svg">
+    <link href="../src/css/style.css" rel="stylesheet">
+    <link href="../src/img/logo-nobg.svg" rel="icon" type="image/svg">
 </head>
 <body>
 <nav>
@@ -16,121 +16,108 @@
         <li style="float:right"><a class="adminOnly" href="admin.html">Felületkezelés</a></li>
     </ul>
 </nav>
+<header>
+    <img height="250" src="../src/img/logo.svg" alt="logo">
+    <h1>BingeVoyage</h1>
 </header>
 <main>
-    <div class="container">
-        <div class="square top-left">
-            <div class="mainNewShows">
-                <h2>Nem jelent meg új rész!</h2>
+    <div class="oneOneContainer">
+        <div class="left">
+            <h2>Pár epizód még vár rád!</h2>
+            <table class="listTable">
+                <colgroup>
+                    <col span="1" style="width: 100px">
+                    <col span="2">
+                </colgroup>
+                <tr class="header">
+                    <th colspan="2">Cím</th>
+                    <th>Megnézendő részek</th>
+                </tr>
+                <tr onclick="window.location.href = 'shows/mob_psycho_100.html'">
+                    <td><img alt="cover" height="100" src="../src/img/mp100.jpg" width="100"></td>
+                    <td class="title">Mop Psycho 100</td>
+                    <td>18</td>
+                </tr>
+                <tr onclick="window.location.href = 'shows/cyberpunk_edgerunners.html'">
+                    <td><img alt="cover" height="100" src="../src/img/cper.jpg" width="100"></td>
+                    <td class="title">Cyberpunk: Edgerunners</td>
+                    <td>6</td>
+                </tr>
+            </table>
+        </div>
+        <div class="right">
+            <h2>Barátaid épp ezt nézik</h2>
+            <table class="listTable">
+                <colgroup>
+                    <col span="1" style="width: 100px">
+                    <col span="2">
+                </colgroup>
+                <tr class="header">
+                    <th colspan="2">Cím</th>
+                    <th>Értékelés</th>
+                </tr>
+                <tr onclick="window.location.href = 'shows/hellsing-ultimate.html'">
+                    <td><img alt="cover" height="100" src="../src/img/hsu.png" width="100"></td>
+                    <td class="title">Hellsing Ultimate</td>
+                    <td>4/5</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div>
+        <h2>Ajánló</h2>
+        <div class="equalContainer">
+            <div class="recommendationsElement">
+                <h3>A király</h3>
+                <img src="../src/img/a_kiraly.jpg" alt="cover">
+                <table class="recommendationPropertiesTable">
+                    <tr>
+                        <th>Epizódok:</th>
+                        <th>Értékelés:</th>
+                        <th>Nézők:</th>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>3,8/5</td>
+                        <td>3</td>
+                    </tr>
+                </table>
+                <button onclick="window.location.href='shows/a_kiraly.html'">Megnézem</button>
             </div>
-        </div>
-        <div class="square top-right">
-            <table class="mainFriendTable">
-                <tr>
-                    <td class="mainFriendTitle">
-                        <a>A barátaid ezt is nézik:</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="mainFriendImg"><img src="../src/img/hsu.png"></td>
-                </tr>
-            </table>
-        </div>
-        <div class="square bottom">
-            <table>
-                <tr>
-                    <td class="sub_square">
-                        <table class="mainRecTable">
-                            <tr class="mainTable">
-                                <td colspan="2" class="mainRecTitle">A Király</td>
-                            </tr>
-                            <tr class="mainTable">
-                                <td colspan="2" class="mainRecProperties">
-                                    <table class="mainTable">
-                                        <td class="mainRecProperties">Epizódok: 10</td>
-                                        <td class="mainRecProperties">Átlag: 3,8/5</td>
-                                        <td class="mainRecProperties">Mikó</td>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr class="mainTable">
-                                <td class="mainRecImg"><img src="../src/img/a_kiraly.jpg"></td>
-                                <td class="mainRecSynopsis"><textarea class="mainRecSynopsis">Jimmy életéről készült tíz részes sorozat. Az életrajzi ihletésű széria az énekes legenda felemelkedését mutatja be, amely bővelkedett konfliktusokban. Míg a történet legkevésbé sem fest idealizált képet a sztárról, visszarepít az időben és szól arról is, hogy a rendszerváltás milyen hatással volt a magyar zenésztársadalomra. Zámbó Jimmy különböző életszakaszait két kiváló színész alakítja: Nagy Ervin a már befutott, népszerű, míg Olasz Renátó az énekes fiatalkori, útkereső énjét formálja meg. Ahogy feleségét Zámbó Editet is két nagyszerű színésznő Schell Judit és Staub Viktória formálja meg.</textarea></td>
-                            </tr>
-                            <tr class="mainTable">
-                                <td colspan="2" class="mainRecActions">
-                                    <table class="mainTable">
-                                        <td class="mainRecActions">Néző: 3</td>
-                                        <td class="mainRecButton">
-                                            <input onclick="window.location.href = 'shows/a_kiraly.html'" type="submit" value="Megnézem"/>
-                                        </td>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td class="sub_square">
-                        <table class="mainRecTable">
-                            <tr class="mainTable">
-                                <td colspan="2" class="mainRecTitle">Mob Psycho 100</td>
-                            </tr>
-                            <tr class="mainTable">
-                                <td colspan="2" class="mainRecProperties">
-                                    <table class="mainTable">
-                                        <td class="mainRecProperties">Epizódok: 30</td>
-                                        <td class="mainRecProperties">Átlag:  	4,7/5</td>
-                                        <td class="mainRecProperties">Mikó</td>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr class="mainTable">
-                                <td class="mainRecImg"><img src="../src/img/mp100.jpg"></td>
-                                <td class="mainRecSynopsis"><textarea class="mainRecSynopsis">Kayema Shigeo nem éppen átlagos középiskolai diák, akit a tanára, Reigen csak Mobnak (tömegnek vagy háttérkarakternek) hív. Mob bizonyos pszichikai erőkkel rendelkezik, amelyek lehetővé teszik számára, hogy tárgyakat repíthessen, hajlíthasson vagy éppen porig zúzhasson. Ehhez hozzájárul, hogy képes látni a szellemeket is. Vagyis egyfajta médiumként funkcionál. Viszont ha az érzelmi kapacitása eléri a száz százalékot, akkor a dolgok általában katasztrofális méreteket öltenek. A történet a szellemek és az ilyen "médiumok" köré épül, ONE-hoz méltó humorosabb köntösben.</textarea></td>
-                            </tr>
-                            <tr class="mainTable">
-                                <td colspan="2" class="mainRecActions">
-                                    <table class="mainTable">
-                                        <td class="mainRecActions">Néző: 2</td>
-                                        <td class="mainRecButton">
-                                            <input onclick="window.location.href = 'shows/mob_psycho_100.html'" type="submit" value="Megnézem"/>
-                                        </td>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td class="sub_square">
-                        <table class="mainRecTable">
-                            <tr class="mainTable">
-                                <td colspan="2" class="mainRecTitle">Cyberpunk: Edgerunners</td>
-                            </tr>
-                            <tr class="mainTable">
-                                <td colspan="2" class="mainRecProperties">
-                                    <table class="mainTable">
-                                        <td class="mainRecProperties">Epizódok: 10</td>
-                                        <td class="mainRecProperties">Átlag:  	4,3/5</td>
-                                        <td class="mainRecProperties">Mikó</td>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr class="mainTable">
-                                <td class="mainRecImg"><img src="../src/img/cper.jpg"></td>
-                                <td class="mainRecSynopsis"><textarea class="mainRecSynopsis">A korrupcióban és kibernetikus implantátumokban bővelkedő disztópiában egy tehetséges, de vakmerő utcakölyökről szól a sorozat, aki próbál túlélni a technológia-, és a testmódosítás-megszállott jövőbeli városban. Mivel nincs vesztenivalója, ezért edgerunnernek áll, fegyveres törvényenkívülinek, őket hívják cyberpunkoknak.</textarea></td>
-                            </tr>
-                            <tr class="mainTable">
-                                <td colspan="2" class="mainRecActions">
-                                    <table class="mainTable">
-                                        <td class="mainRecActions">Néző: 2</td>
-                                        <td class="mainRecButton">
-                                            <input onclick="window.location.href = 'shows/cyberpunk_edgerunners.html'" type="submit" value="Megnézem"/>
-                                        </td>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+            <div class="recommendationsElement">
+                <h3>Mob Psycho 100</h3>
+                <img src="../src/img/mp100.jpg" alt="cover">
+                <table class="recommendationPropertiesTable">
+                    <tr>
+                        <th>Epizódok:</th>
+                        <th>Értékelés:</th>
+                        <th>Nézők:</th>
+                    </tr>
+                    <tr>
+                        <td>30</td>
+                        <td>4,7/5</td>
+                        <td>2</td>
+                    </tr>
+                </table>
+                <button onclick="window.location.href='shows/mob_psycho_100.html'">Megnézem</button>
+            </div>
+            <div class="recommendationsElement">
+                <h3>Hellsing Ultimate</h3>
+                <img src="../src/img/hsu.png" alt="cover">
+                <table class="recommendationPropertiesTable">
+                    <tr>
+                        <th>Epizódok:</th>
+                        <th>Értékelés:</th>
+                        <th>Nézők:</th>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>4/5</td>
+                        <td>1</td>
+                    </tr>
+                </table>
+                <button onclick="window.location.href='shows/hellsing-ultimate.html'">Megnézem</button>
+            </div>
         </div>
     </div>
 </main>
