@@ -265,8 +265,6 @@ img {
 
 .newComment textarea {
     height: inherit;
-    width: -moz-available;
-    width: available;
     border-style: solid;
     border-width: 1px;
     border-color: #CEEECE;
