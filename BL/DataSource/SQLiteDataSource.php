@@ -2,6 +2,7 @@
 
 namespace DataSource;
 
+use _Interfaces\IShow;
 use _Interfaces\IUser;
 
 require __DIR__ . '/_Interfaces/IDataSource.php';
@@ -9,6 +10,7 @@ require __DIR__ . '/../_Interfaces/IUser.php';
 require __DIR__ . '/../_Interfaces/IShow.php';
 require __DIR__ . '/../User.php';
 require __DIR__ . '/../Comment.php';
+require __DIR__ . '/../ShowStatus.php';
 
 class SQLiteDataSource implements \IDataSource
 {
@@ -120,14 +122,35 @@ class SQLiteDataSource implements \IDataSource
         $result = array();
 
         while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
-            $result[] = new \Comment($this, $row['Id'], $this->getUserById($row['UserId']), $row['Content'], $row['DateTime']);
+            $result[] = new \Comment($row['Id'], $this->getUserById($row['UserId']), $row['Content'], $row['DateTime']);
         }
 
         return $result;
     }
+
+    public function addComment(\_Interfaces\IUser $user, \_Interfaces\IShow $show, string $content)
+    {
+        $userId = $user->getId();
+        $showId = $show->getId();
+
+        $sql = "INSERT INTO Comment (UserId, ShowId, Content) VALUES ($userId, $showId, $content)";
+        if (!$this->db-exec($sql)) {
+            throw new \Exception("Couldn't update database");
+        }
+    }
+
+    public function removeComment(\_Interfaces\IComment $comment)
+    {
+        $commentId = $comment->getId();
+
+        $sql = "DELETE FROM Comment WHERE Id = $commentId)";
+        if (!$this->db-exec($sql)) {
+            throw new \Exception("Couldn't update database");
+        }
+    }
     //endregion
 
-    //region Comments
+    //region Watching
     public function getWatching(\_Interfaces\IShow $show): array {
         $showId = $show->getId();
         $sql = "SELECT * FROM Watching WHERE ShowId = $showId";
@@ -144,6 +167,38 @@ class SQLiteDataSource implements \IDataSource
         }
 
         return $result;
+    }
+
+    public function addWatching(\_Interfaces\IUser $user, IShow $show) {
+        $userId = $user->getId();
+        $showId = $show->getId();
+
+        $sql = "INSERT INTO Watching (UserId, ShowId) VALUES ($userId, $showId)";
+        if (!$this->db-exec($sql)) {
+            throw new \Exception("Couldn't update database");
+        }
+    }
+
+    public function updateWatching(\_Interfaces\IUser $user, \_Interfaces\IShow $show, ?int $episodesWatched, ?int $rating)
+    {
+        $userId = $user->getId();
+        $showId = $show->getId();
+
+        $sql = "UPDATE Watching SET Episodes = $episodesWatched, Rating = $rating  WHERE UserId = $userId AND ShowId = $showId";
+        if (!$this->db-exec($sql)) {
+            throw new \Exception("Couldn't update database");
+        }
+    }
+
+    public function removeWatching(\_Interfaces\IUser $user, \_Interfaces\IShow $show)
+    {
+        $userId = $user->getId();
+        $showId = $show->getId();
+
+        $sql = "DELETE FROM Watching WHERE UserId = $userId AND ShowId = $showId)";
+        if (!$this->db-exec($sql)) {
+            throw new \Exception("Couldn't update database");
+        }
     }
     //endregion
 

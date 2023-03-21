@@ -20,9 +20,16 @@ interface IDataSource
 
     //region Comment
     public function getComments(\_Interfaces\IShow $show): array;
+
+    public function addComment(\_Interfaces\IUser $user, \_Interfaces\IShow $show, string $content);
+    public function removeComment(\_Interfaces\IComment $comment);
     //endregion
 
     //region Watching
     public function getWatching(\_Interfaces\IShow $show): array;
+
+    public function addWatching(\_Interfaces\IUser $user, \_Interfaces\IShow $show);
+    public function updateWatching(\_Interfaces\IUser $user, \_Interfaces\IShow $show, ?int $episodesWatched, ?int $rating);
+    public function removeWatching(\_Interfaces\IUser $user, \_Interfaces\IShow $show);
     //endregion
 }

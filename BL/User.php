@@ -97,6 +97,62 @@ class User implements IUser
     }
     //endregion
 
+    //region Comment
+    public function writeComment(\_Interfaces\IShow $show, string $content) {
+        if (!$this->canComment) {
+            throw new Exception("User [$this->username] is not allowed to comment");
+        }
+
+        try {
+            $this->dataSource->addComment($this, $show, $content);
+        } catch (Exception $exception) {
+            throw new Exception('Could not write comment', $exception);
+        }
+    }
+
+    public function removeComment(\_Interfaces\IComment $comment)
+    {
+        if (!$this->admin || $comment->getAuthor()->getId() != $this->getId()) {
+            throw new Exception('User can\'t remove this comment');
+        }
+
+        try {
+            $this->dataSource->removeComment($comment);
+        } catch (Exception $exception) {
+            throw new Exception('Could not remove comment', $exception);
+        }
+    }
+    //endregion
+
+    //region Show
+    public function addShowToList(\_Interfaces\IShow $show)
+    {
+        try {
+            $this->dataSource->addWatching($this, $show);
+        } catch (Exception $exception) {
+            throw new Exception('Could not add show to list', $exception);
+        }
+    }
+
+    public function updateRating(\_Interfaces\IShow $show, ?int $episodesWatched, ?int $rating)
+    {
+        try {
+            $this->dataSource->updateWatching($this, $show, $episodesWatched, $rating);
+        } catch (Exception $exception) {
+            throw new Exception('Could not update rating', $exception);
+        }
+    }
+
+    public function removeShowFromList(\_Interfaces\IShow $show)
+    {
+        try {
+            $this->dataSource->removeWatching($this, $show);
+        } catch (Exception $exception) {
+            throw new Exception('Could not remove show', $exception);
+        }
+    }
+    //endregion
+
     //region Public Methods
     public function update(?string $username, ?string $email, ?string $profilePicturePath, ?string $passwordHash)
     {

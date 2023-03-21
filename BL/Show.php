@@ -74,13 +74,6 @@ class Show implements \_Interfaces\IShow
     }
     //endregion
 
-    //region Comment
-    public function addComment(\_Interfaces\IUser $user, string $content)
-    {
-        // TODO: Implement comment() method.
-    }
-    //endregion
-
     //region Public Members
     public function update(?string $title, ?int $numEpisode, ?string $coverPath, ?string $trailerPath, ?string $ostPath, ?string $description)
     {

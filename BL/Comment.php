@@ -3,7 +3,6 @@
 class Comment implements \_Interfaces\IComment
 {
     //region Properties
-    private IDataSource $dataSource;
     private int $id;
     private \_Interfaces\IUser $author;
     private string $content;
@@ -11,14 +10,19 @@ class Comment implements \_Interfaces\IComment
     //endregion
 
     //region Ctor
-    function __construct(IDataSource $dataSource, int $id, \_Interfaces\IUser $author, string $content, string $time) {
-        $this->dataSource = $dataSource;
+    function __construct(int $id, \_Interfaces\IUser $author, string $content, string $time) {
         $this->id = $id;
         $this->author = $author;
         $this->content = $content;
         $this->time = $time;
     }
     //endregion
+
+    //region Getters
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     public function getAuthor(): \_Interfaces\IUser
     {
@@ -34,4 +38,5 @@ class Comment implements \_Interfaces\IComment
     {
         return $this->time;
     }
+    //endregion
 }
