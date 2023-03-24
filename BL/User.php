@@ -1,31 +1,51 @@
 <?php
 
-use _Interfaces\IUser;
+namespace BL;
+
+use BL\_Interfaces\IUser;
+use BL\DataSource\_Interfaces\IDataSource;
+use Exception;
+use InvalidArgumentException;
 
 class User implements IUser
 {
     //region Properties
     private IDataSource $dataSource;
-    private int $id;
+    private ?int $id;
     private string $username;
-    private string $password;
+    private string $passwordHash;
     private string $email;
-    private ?string $pfpPath;
+    private ?string $profilePicturePath;
     private bool $admin;
-    private bool $canComment;
+    private bool $muted;
+    private array $friends;
+    private array $shows;
     //endregion
 
-    //region Ctor
-    function __construct(IDataSource $dataSource, int $id, string $username, string $password, string $email,
-                         ?string $pfpPath, bool $admin, bool $canComment) {
+    //region Constructors
+    public function __construct(IDataSource $dataSource, ?int $id, string $username, string $passwordHash,
+                                string $email, ?string $profilePicturePath, bool $admin, bool $muted, array $friends,
+                                array $shows)
+    {
         $this->dataSource = $dataSource;
         $this->id = $id;
         $this->username = $username;
-        $this->password = $password;
+        $this->passwordHash = $passwordHash;
         $this->email = $email;
-        $this->pfpPath = $pfpPath;
+        $this->profilePicturePath = $profilePicturePath;
         $this->admin = $admin;
-        $this->canComment = $canComment;
+        $this->muted = $muted;
+        $this->friends = $friends;
+        $this->shows = $shows;
+
+        // TODO: validate values
+    }
+
+    public static function createNewUser(IDataSource $dataSource, string $username, string $passwordHash,
+                                         string $email): IUser
+    {
+        return new self($dataSource, null, $username, $passwordHash, $email, null,
+            false, false, [], []);
     }
     //endregion
 
@@ -42,7 +62,7 @@ class User implements IUser
 
     public function getPasswordHash(): string
     {
-        return $this->password;
+        return $this->passwordHash;
     }
 
     public function getEmail(): string
@@ -52,18 +72,7 @@ class User implements IUser
 
     public function getProfilePicturePath(): ?string
     {
-        return $this->pfpPath;
-    }
-
-    public function getFriends(): array
-    {
-        try {
-            $this->dataSource->updateUser($this);
-        } catch (Exception $exception) {
-            throw new InvalidArgumentException("Could not update user", $exception);
-        }
-
-        return $this->dataSource->getFriends($this);
+        return $this->profilePicturePath;
     }
 
     public function isAdmin(): bool
@@ -71,103 +80,99 @@ class User implements IUser
         return $this->admin;
     }
 
-    public function canComment(): bool
+    public function isMuted(): bool
     {
-        return $this->canComment;
+        return $this->muted;
+    }
+
+    public function getFriends(): array
+    {
+        return $this->friends;
+    }
+
+    public function getShows(): array
+    {
+        return $this->shows;
     }
     //endregion
 
-    //region Friends
-    public function addFriend(IUser $user)
+    //region Setters
+    public function setUsername(string $username): IUser
     {
-        try {
-            $this->dataSource->addFriend($this, $user);
-        } catch (Exception $exception) {
-            throw new Exception("Could not add friend", $exception);
-        }
+        // TODO: validation
+        $this->username = $username;
+        return $this;
     }
 
-    public function removeFriend(IUser $user)
+    public function setPasswordHash(string $passwordHash): IUser
     {
-        try {
-            $this->dataSource->removeFriend($this, $user);
-        } catch (Exception $exception) {
-            throw new Exception("Could not add friend", $exception);
-        }
+        // TODO: validation
+        $this->passwordHash = $passwordHash;
+        return $this;
+    }
+
+    public function setEmail(string $email): IUser
+    {
+        // TODO: validation
+        $this->email = $email;
+        return $this;
+    }
+
+    public function setProfilePicturePath(?string $profilePicturePath): IUser
+    {
+        // TODO: if string is empty set value to null
+        $this->profilePicturePath = $profilePicturePath;
+        return $this;
+    }
+
+    public function setAdmin(bool $isAdmin): IUser
+    {
+        $this->admin = $isAdmin;
+        return $this;
+    }
+
+    public function setMuted(bool $isMuted): IUser
+    {
+        $this->muted = $isMuted;
+        return $this;
     }
     //endregion
 
-    //region Comment
-    public function writeComment(\_Interfaces\IShow $show, string $content) {
-        if (!$this->canComment) {
-            throw new Exception("User [$this->username] is not allowed to comment");
-        }
-
-        try {
-            $this->dataSource->addComment($this, $show, $content);
-        } catch (Exception $exception) {
-            throw new Exception('Could not write comment', $exception);
-        }
-    }
-
-    public function removeComment(\_Interfaces\IComment $comment)
+    //region Public Members
+    public function addFriend(IUser $user): void
     {
-        if (!$this->admin || $comment->getAuthor()->getId() != $this->getId()) {
-            throw new Exception('User can\'t remove this comment');
-        }
-
-        try {
-            $this->dataSource->removeComment($comment);
-        } catch (Exception $exception) {
-            throw new Exception('Could not remove comment', $exception);
-        }
+        // TODO: validate if not friend already, and if user's id is not null
+        // TODO: write changes to datasource
+        $this->friends[] = $user;
     }
-    //endregion
 
-    //region Show
-    public function addShowToList(\_Interfaces\IShow $show)
+    public function removeFriend(IUser $user): void
+    {
+        // TODO: validate if given users id is not null
+        // TODO: write changes to datasource
+        $key = array_search($user->getId(), array_column($this->friends, 'id'));
+
+        if ($key === false) {
+            throw new InvalidArgumentException('Given user was not a friend', 2);
+        }
+        unset($this->friends[$key]);
+    }
+
+    public function save(): void
     {
         try {
-            $this->dataSource->addWatching($this, $show);
+            $this->dataSource->saveUser($this);
         } catch (Exception $exception) {
-            throw new Exception('Could not add show to list', $exception);
+            throw new Exception('Could not save changes', 2, $exception);
         }
     }
 
-    public function updateRating(\_Interfaces\IShow $show, ?int $episodesWatched, ?int $rating)
+    public function remove(): void
     {
-        try {
-            $this->dataSource->updateWatching($this, $show, $episodesWatched, $rating);
-        } catch (Exception $exception) {
-            throw new Exception('Could not update rating', $exception);
-        }
-    }
-
-    public function removeShowFromList(\_Interfaces\IShow $show)
-    {
-        try {
-            $this->dataSource->removeWatching($this, $show);
-        } catch (Exception $exception) {
-            throw new Exception('Could not remove show', $exception);
-        }
-    }
-    //endregion
-
-    //region Public Methods
-    public function update(?string $username, ?string $email, ?string $profilePicturePath, ?string $passwordHash)
-    {
-        try {
-            $this->dataSource->updateUser($this);
-        } catch (Exception $exception) {
-            throw new Exception("Could not query friends", $exception);
-        }
-    }
-
-    public function remove() {
         try {
             $this->dataSource->removeUser($this);
         } catch (Exception $exception) {
-            throw new InvalidArgumentException("Could not remove user", $exception);
+            throw new Exception('Could not remove user', 2, $exception);
         }
     }
     //endregion
