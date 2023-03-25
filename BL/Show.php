@@ -2,16 +2,11 @@
 
 namespace BL;
 
-use BL\_Interfaces\IComment;
-use BL\_Interfaces\IRating;
 use BL\_Interfaces\IShow;
-use BL\DataSource\_Interfaces\IDataSource;
-use Exception;
 
 class Show implements IShow
 {
     //region Properties
-    private IDataSource $dataSource;
     private ?int $id;
     private string $title;
     private int $numEpisodes;
@@ -19,16 +14,12 @@ class Show implements IShow
     private ?string $coverPath;
     private ?string $trailerPath;
     private ?string $ostPath;
-    private array $comments;
-    private array $ratings;
     //endregion
 
     //region Constructors
-    public function __construct(IDataSource $dataSource, ?int $id, string $title, int $numEpisodes,
-                                ?string $description, ?string $coverPath, ?string $trailerPath, ?string $ostPath,
-                                array $comments, array $ratings)
+    public function __construct(?int $id, string $title, int $numEpisodes,
+                                ?string $description, ?string $coverPath, ?string $trailerPath, ?string $ostPath)
     {
-        $this->dataSource = $dataSource;
         $this->id = $id;
         $this->title = $title;
         $this->numEpisodes = $numEpisodes;
@@ -36,17 +27,15 @@ class Show implements IShow
         $this->coverPath = $coverPath;
         $this->trailerPath = $trailerPath;
         $this->ostPath = $ostPath;
-        $this->comments = $comments;
-        $this->ratings = $ratings;
 
         // TODO: validate values
     }
 
-    public static function createNewShow(IDataSource $dataSource, string $title, int $numEpisodes, ?string $description,
+    public static function createNewShow(string $title, int $numEpisodes, ?string $description,
                                          ?string $coverPath, ?string $trailerPath, ?string $ostPath): IShow
     {
-        return new self($dataSource, null, $title, $numEpisodes, $description, $coverPath, $trailerPath,
-            $ostPath, [], []);
+        return new self(null, $title, $numEpisodes, $description, $coverPath, $trailerPath,
+            $ostPath);
     }
     //endregion
 
@@ -84,16 +73,6 @@ class Show implements IShow
     public function getDescription(): ?string
     {
         return $this->description;
-    }
-
-    public function getAllComments(): array
-    {
-        return $this->comments;
-    }
-
-    public function getAllRatings(): array
-    {
-        return $this->ratings;
     }
     //endregion
 
@@ -138,71 +117,6 @@ class Show implements IShow
         // TODO: validate, if empty string, set to null
         $this->description = $description;
         return $this;
-    }
-    //endregion
-
-    //region Public Members
-    public function addComment(IComment $comment): void
-    {
-        // TODO: validate if not added already, and if id is not null
-        $this->comments[] = $comment;
-    }
-
-    public function addRating(IRating $rating): void
-    {
-        // TODO: validate if not friend already, and if user's id is not null
-        // TODO: write changes to datasource
-        $this->ratings[] = $rating;
-    }
-
-    public function removeComment(IComment $comment): void
-    {
-        // TODO: validate if id is not null
-        $key = array_search($comment->getId(), array_column($this->comments, 'id'));
-
-        if ($key !== false) {
-            try {
-                $comment->remove();
-            } catch (Exception $exception) {
-                throw new Exception('Could not remove comment from datasource', 3, $exception);
-            }
-
-            unset($this->comments[$key]);
-        }
-    }
-
-    public function removeRating(IRating $rating): void
-    {
-        // NOTE: in rare events, this may fail, because this will compare the whole user, not just its id
-        $key = array_search($rating->getUser(), array_column($this->ratings, 'User'), true);
-
-        if ($key !== false) {
-            try {
-                $rating->remove();
-            } catch (Exception $exception) {
-                throw new Exception('Could not remove rating from datasource', 3, $exception);
-            }
-
-            unset($this->ratings[$key]);
-        }
-    }
-
-    public function save(): void
-    {
-        try {
-            $this->dataSource->saveShow($this);
-        } catch (Exception $exception) {
-            throw new Exception('Could not save changes', 3, $exception);
-        }
-    }
-
-    public function remove(): void
-    {
-        try {
-            $this->dataSource->removeShow($this);
-        } catch (Exception $exception) {
-            throw new Exception('Could not remove show', 3, $exception);
-        }
     }
     //endregion
 }

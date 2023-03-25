@@ -5,13 +5,10 @@ namespace BL;
 use BL\_Interfaces\IRating;
 use BL\_Interfaces\IShow;
 use BL\_Interfaces\IUser;
-use BL\DataSource\_Interfaces\IDataSource;
-use Exception;
 
 class Rating implements IRating
 {
     //region Properties
-    private IDataSource $dataSource;
     private ?IShow $show;
     private ?IUser $user;
     private ?int $episodes;
@@ -19,9 +16,8 @@ class Rating implements IRating
     //endregion
 
     //region Constructors
-    public function __construct(IDataSource $dataSource, ?IShow $show, ?IUser $user, ?int $episodes, ?int $rating)
+    public function __construct(?IShow $show, ?IUser $user, ?int $episodes, ?int $rating)
     {
-        $this->dataSource = $dataSource;
         $this->show = $show;
         $this->user = $user;
         $this->episodes = $episodes;
@@ -30,9 +26,9 @@ class Rating implements IRating
         // TODO: validate
     }
 
-    public static function createNewRating(IDataSource $dataSource, IShow $show, IUser $user): IRating
+    public static function createNewRating(IShow $show, IUser $user): IRating
     {
-        return new self($dataSource, $show, $user, null, null);
+        return new self($show, $user, null, null);
     }
 
     //endregion
@@ -72,28 +68,6 @@ class Rating implements IRating
         // TODO: validate
         $this->rating = $rating;
         return $this;
-    }
-    //endregion
-
-    //region Public Members
-    public function save(): void
-    {
-        // TODO: check if user and show is not null
-        try {
-            $this->dataSource->saveRating($this);
-        } catch (Exception $exception) {
-            throw new Exception('Could not save changes', 5, $exception);
-        }
-    }
-
-    public function remove(): void
-    {
-        // TODO: check if user and show is not null
-        try {
-            $this->dataSource->removeRating($this);
-        } catch (Exception $exception) {
-            throw new Exception('Could not remove rating', 5, $exception);
-        }
     }
     //endregion
 }

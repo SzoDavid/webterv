@@ -1,8 +1,7 @@
 <?php
 
 use BL\DataSource\SQLiteDataSource;
-use BL\Queries\ShowQuery;
-use BL\Show;
+use BL\Rating;
 
 spl_autoload_register(function ($class_name) {
     $filename = __DIR__ . '/' . str_replace('\\', '/', $class_name) . '.php';
@@ -10,25 +9,11 @@ spl_autoload_register(function ($class_name) {
 });
 
 try {
-    $db = new SQLiteDataSource(realpath('Data/database.db'));
-} catch (Exception $e) {
-    echo $e->getMessage();
-    return;
-}
+    $dataSource = new SQLiteDataSource(realpath('Data/database.db'));
+    $user = $dataSource->createUserDAO()->getById(3);
+    $show = $dataSource->createShowDAO()->getById(11);
 
-$show = Show::createNewShow($db, 'A király', 10, 'fasza', null, null, null);
-
-try {
-    $show->save();
-} catch (Exception $e) {
-    echo $e->getMessage();
-    return;
-}
-
-$showQuery = new ShowQuery($db);
-
-try {
-    print_r($showQuery->getAllShows());
+    $rating = Rating::createNewRating($show, $user);
 } catch (Exception $e) {
     echo $e->getMessage();
     return;
