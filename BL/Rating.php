@@ -11,12 +11,12 @@ class Rating implements IRating
     //region Properties
     private ?IShow $show;
     private ?IUser $user;
-    private ?int $episodes;
+    private int $episodes;
     private ?int $rating;
     //endregion
 
     //region Constructors
-    public function __construct(?IShow $show, ?IUser $user, ?int $episodes, ?int $rating)
+    public function __construct(?IShow $show, ?IUser $user, int $episodes, ?int $rating)
     {
         $this->show = $show;
         $this->user = $user;
@@ -28,7 +28,7 @@ class Rating implements IRating
 
     public static function createNewRating(IShow $show, IUser $user): IRating
     {
-        return new self($show, $user, null, null);
+        return new self($show, $user, 0, null);
     }
 
     //endregion

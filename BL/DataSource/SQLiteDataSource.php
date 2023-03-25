@@ -20,7 +20,7 @@ class SQLiteDataSource implements IDataSource
     private SQLite3 $db;
     //endregion
 
-    //region Constructor
+    //region Constructor, Destructor
     /**
      * Creates an SQLite Data Source to manage website data
      * @throws Exception - when couldn't connect to database
@@ -32,6 +32,10 @@ class SQLiteDataSource implements IDataSource
         } catch (Exception $exception) {
             throw new Exception('Could not open database', 1, $exception);
         }
+    }
+
+    function __destruct() {
+        $this->db->close();
     }
     //endregion
 

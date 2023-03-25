@@ -1,7 +1,6 @@
 <?php
 
 use BL\DataSource\SQLiteDataSource;
-use BL\Rating;
 
 spl_autoload_register(function ($class_name) {
     $filename = __DIR__ . '/' . str_replace('\\', '/', $class_name) . '.php';
@@ -10,10 +9,14 @@ spl_autoload_register(function ($class_name) {
 
 try {
     $dataSource = new SQLiteDataSource(realpath('Data/database.db'));
-    $user = $dataSource->createUserDAO()->getById(3);
-    $show = $dataSource->createShowDAO()->getById(11);
+    $userDAO = $dataSource->createUserDAO();
+    $showDAO = $dataSource->createShowDAO();
+    $ratingDAO = $dataSource->createRatingDAO();
 
-    $rating = Rating::createNewRating($show, $user);
+    $user = $userDAO->getById(1);
+    $show = $showDAO->getById(11);
+
+    print_r($ratingDAO->getByShow($show));
 } catch (Exception $e) {
     echo $e->getMessage();
     return;

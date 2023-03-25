@@ -69,7 +69,7 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
         }
 
         if ($row = $query->fetchArray(SQLITE3_ASSOC)) {
-            return new Show($row['Id'], $row['Title'], $row['numEpisodes'], $row['Description'],
+            return new Show($row['Id'], $row['Title'], $row['NumEpisodes'], $row['Description'],
                 $row['CoverPath'], $row['TrailerPath'], $row['OstPath']);
         }
 

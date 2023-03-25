@@ -4,6 +4,7 @@ namespace BL\DAO;
 
 use BL\_Interfaces\IRating;
 use BL\_Interfaces\IShow;
+use BL\_Interfaces\IUser;
 use BL\DAO\_Interfaces\IUserDAO;
 use BL\DataSource\SQLiteDataSource;
 use BL\Rating;
@@ -49,7 +50,7 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
             }
 
             if ($user) {
-                $result[] = new Rating(null, $user, $row['Episodes'], $row['Rating']);
+                $result[] = new Rating($show, $user, $row['Episodes'], ($row['Rating'] == '') ? null : intval($row['Rating']));
             }
         }
 
@@ -59,7 +60,30 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
     /**
      * @inheritDoc
      */
-    public function saveRating(IRating $rating): void
+    public function getByShowAndUser(IShow $show, IUser $user): ?IRating
+    {
+        // TODO: validate if has id
+        $showId = $show->getId();
+        $userId = $user->getId();
+
+        $sql = "SELECT * FROM Watching WHERE ShowId = '$showId' AND UserId = '$userId'";
+        $query = $this->dataSource->getDB()->query($sql);
+
+        if (!$query) {
+            throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
+        }
+
+        if ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+            return new Rating($show, $user, $row['Episodes'], ($row['Rating'] == '') ? null : intval($row['Rating']));
+        }
+
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function save(IRating $rating): void
     {
         $userId = $rating->getUser()->getId();
         $showId = $rating->getShow()->getId();
@@ -75,7 +99,7 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
     /**
      * @inheritDoc
      */
-    public function removeRating(IRating $rating): void
+    public function remove(IRating $rating): void
     {
         $userId = $rating->getUser()->getId();
         $showId = $rating->getShow()->getId();
