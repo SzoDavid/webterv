@@ -16,6 +16,8 @@ try {
     $user = $userDAO->getById(1);
     $show = $showDAO->getById(11);
 
+
+
     print_r($ratingDAO->getByShow($show));
 } catch (Exception $e) {
     echo $e->getMessage();
