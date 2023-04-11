@@ -30,14 +30,14 @@ class SQLiteDataSource implements IDataSource
         try {
             // TODO: create db if not exists
             $this->db = new SQLite3($dbpath);
-            createTables();
+            $this->createTables();
         } catch (Exception $exception) {
             throw new Exception('Could not open database', 1, $exception);
         }
     }
 
     public function createTables() {
-        $commands = ['CREATE TABLE IF NOT EXISTS main.Comment
+        $commands = ['CREATE TABLE IF NOT EXISTS Comment
                         (
                         Id       INTEGER                        not null
                             primary key autoincrement
@@ -47,13 +47,13 @@ class SQLiteDataSource implements IDataSource
                         Content  TEXT                           not null,
                         DateTime TEXT default CURRENT_TIMESTAMP not null
                         )',
-                    'CREATE TABLE IF NOT EXISTS main.Following
+                     'CREATE TABLE IF NOT EXISTS Following
                         (
                         FollowerId INTEGER not null,
                         FollowedId INTEGER not null,
                         unique (FollowedId, FollowerId)
                         )',
-                    'CREATE TABLE IF NOT EXISTS main.Show
+                     'CREATE TABLE IF NOT EXISTS Show
                         (
                             Id          INTEGER           not null
                                 primary key autoincrement
@@ -65,7 +65,7 @@ class SQLiteDataSource implements IDataSource
                             TrailerPath TEXT default NULL,
                             OstPath     TEXT default NULL not null
                         )',
-                        'CREATE TABLE IF NOT EXISTS main.User
+                     'CREATE TABLE IF NOT EXISTS User
                         (
                             Id                 INTEGER           not null
                                 primary key autoincrement
@@ -79,7 +79,7 @@ class SQLiteDataSource implements IDataSource
                             IsAdmin            INTEGER default 0 not null,
                             CanComment         INTEGER default 1 not null
                         )',
-                        'CREATE TABLE IF NOT EXISTS main.Watching
+                     'CREATE TABLE IF NOT EXISTS Watching
                         (
                             UserId   INTEGER not null,
                             ShowId   INTEGER not null,
