@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BingeVoyage | A Király</title>
+    <link rel="stylesheet" href="../../../Resources/src/css/style.css">
+    <link rel="icon" type="image/svg" href="../../../Resources/src/img/logo-nobg.svg">
+</head>
+<body>
+<nav>
+    <ul class="navbar">
+        <li><a href="../../Web/index.html">Főoldal</a></li>
+        <li><a href="../../Web/shows.html">Sorozatok</a></li>
+        <li><a href="../../Web/people.html">Emberek</a></li>
+        <li style="float:right"><a href="../profiles/profile.html">Próba Ödön</a></li>
+        <li style="float:right"><a class="adminOnly" href="../../Web/admin.html">Felületkezelés</a></li>
+    </ul>
+</nav>
+<main>
+    <div class="oneThreeContainer">
+        <div class="left">
+            <img class="showCover" src="../../../Resources/src/img/a_kiraly.jpg" alt="cover">
+            <button title="Implementáció a 2. mérföldkőben">Levétel listáról</button>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Információk</th>
+                </tr>
+                <tr>
+                    <td>Epizódok:</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>3,8/5</td>
+                </tr>
+                <tr>
+                    <td>Nézők:</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>Szintén nézi:</td>
+                    <td><a href="../profiles/szobonya.html">Szobonya</a><br><a href="../profiles/tandi.html">Tandi</a></td>
+                </tr>
+            </table>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Státusz</th>
+                </tr>
+                <tr>
+                    <td>Megnézett epizódok:</td>
+                    <td><input id="watchedEpisodes" type="number" value="10" min="0" max="10"></td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>
+                        <select id="rating">
+                            <option value="-">-</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5" selected>5</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="saveButton" title="Implementáció a 2. mérföldkőben">Mentés</button></td>
+                </tr>
+            </table>
+            <table class="adminTable">
+                <tr>
+                    <th>Moderáció</th>
+                </tr>
+                <tr>
+                    <td><button class="saveButton" title="Implementáció a 2. mérföldkőben">Szerkesztés</button></td>
+                </tr>
+            </table>
+        </div>
+        <div class="right">
+            <h1>A Király</h1>
+            <div>
+                <h2>Leírás</h2>
+                <p>Jimmy életéről készült tíz részes sorozat. Az életrajzi ihletésű széria az énekes legenda felemelkedését mutatja be, amely bővelkedett konfliktusokban. Míg a történet legkevésbé sem fest idealizált képet a sztárról, visszarepít az időben és szól arról is, hogy a rendszerváltás milyen hatással volt a magyar zenésztársadalomra. Zámbó Jimmy különböző életszakaszait két kiváló színész alakítja: Nagy Ervin a már befutott, népszerű, míg Olasz Renátó az énekes fiatalkori, útkereső énjét formálja meg. Ahogy feleségét Zámbó Editet is két nagyszerű színésznő Schell Judit és Staub Viktória formálja meg.</p>
+            </div>
+            <div>
+                <h2>Előzetes</h2>
+                <video controls>
+                    <source src="../../src/trailers/a_kiraly.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div>
+                <h2>Hozzászólások</h2>
+                <div>
+                    <div class="newComment">
+                        <form method="POST">
+                            <textarea name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
+                            <input type="submit" title="Implementáció a 2. mérföldkőben" value="➤">
+                        </form>
+                    </div>
+                    <div class="comment">
+                        <div class="commentMeta" onclick="window.location.href='../profiles/tandi.html'">
+                            <img src="../../../Resources/src/img/pfp3.jpg" width="50" height="50" alt="">
+                            <span class="author">Tandi</span>
+                            <span class="timestamp">2023/03/12 17:45</span>
+                        </div>
+                        <p>Nagyon tetszett, sokkal több értéket szerzett így a Jimmys kazettám!</p>
+                        <div class="adminFunctions">
+                            <button title="Implementáció a 2. mérföldkőben">Törlés</button>
+                        </div>
+                    </div>
+                    <div class="comment">
+                        <div class="commentMeta" onclick="window.location.href='../profiles/profile.html'">
+                            <img src="../../../Resources/Data/Images/ProfilePictures/pfp.jpg" width="50" height="50" alt="">
+                            <span class="author">Próba Ödön</span>
+                            <span class="timestamp">2023/03/11 16:20</span>
+                        </div>
+                        <p>Wow!</p>
+                        <div class="adminFunctions">
+                            <button title="Implementáció a 2. mérföldkőben">Törlés</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

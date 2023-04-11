@@ -1,0 +1,6 @@
+{
+  "data_source" : {
+    "type": "sqlite",
+    "path": "Resources/database.sqlite"
+  }
+}
