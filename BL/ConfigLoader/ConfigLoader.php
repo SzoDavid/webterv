@@ -15,7 +15,7 @@ class ConfigLoader implements _Interfaces\IConfigLoader
     /**
      * @throws Exception
      */
-    public function __construct(string $configPath='/Resources/config.json')
+    public function __construct(string $configPath)
     {
         try {
             $raw_config = json_decode(file_get_contents($configPath), true);

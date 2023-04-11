@@ -1,7 +1,31 @@
 <?php
 
+use BL\ConfigLoader\ConfigLoader;
+use BL\Factories\DataSourceFactory;
+
 if (!isset($CURRENT_PAGE)) {
     $CURRENT_PAGE = 'else';
+}
+
+require_once 'Common/autoloader.php';
+
+try {
+    $config = new ConfigLoader(__DIR__ . '/../Resources/config.json');
+    $dataSource = (new DataSourceFactory($config))->createDataSource();
+} catch (Exception $ex) {
+    // return with error feedback
+    die($ex->getMessage());
+}
+
+session_start();
+
+if (isset($_SESSION['UserId'])) {
+    $userDao = $dataSource->createUserDAO();
+    try {
+        $USER = $userDao->getById($_SESSION['UserId']);
+    } catch (Exception $ex) {
+        die('Oops ' . $ex->getMessage());
+    }
 }
 
 ?>

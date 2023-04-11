@@ -149,7 +149,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
     /**
      * @inheritDoc
      */
-    public function save(IUser $user): void
+    public function save(IUser $user): int
     {
         $userId = $user->getId();
         $username = $user->getUsername();
@@ -167,6 +167,8 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         if (!$this->dataSource->getDB()->exec($sql)) {
             throw new Exception('Could not update database ' . $this->dataSource->getDB()->lastErrorMsg());
         }
+
+        return $userId ?? $this->dataSource->getDB()->lastInsertRowID();
     }
 
     /**

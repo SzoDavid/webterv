@@ -9,7 +9,7 @@ spl_autoload_register(function ($class_name) {
 });
 
 try {
-    $config = new ConfigLoader();
+    $config = new ConfigLoader(__DIR__ . '/Resources/config.json');
     $dataSource =  (new DataSourceFactory($config))->createDataSource();
     $userDAO = $dataSource->createUserDAO();
     $showDAO = $dataSource->createShowDAO();

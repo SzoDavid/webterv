@@ -61,12 +61,12 @@ interface IUserDAO
     public function removeFriend(IUser $followerUser, IUser $followedUser): void;
 
     /**
-     * If id is null creates a new record with the given uname, email and password, otherwise updates all values.
+     * If id is null creates a new record with the given uname, email and password, otherwise updates all values. Returns with the id of the record.
      * @param IUser $user
-     * @return void
+     * @return int
      * @throws Exception
      */
-    public function save(IUser $user): void;
+    public function save(IUser $user): int;
     /**
      * Removes user and all connected references (Following, Comment, Watching)
      * @param IUser $user

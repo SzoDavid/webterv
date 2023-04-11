@@ -1,8 +1,8 @@
 <?php
 
-    $CURRENT_PAGE = 'index';
+$CURRENT_PAGE = 'index';
 
-    include 'Common/header.php';
+include 'Common/header.php';
 
 ?>
     <header>
