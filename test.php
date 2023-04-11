@@ -8,7 +8,7 @@ spl_autoload_register(function ($class_name) {
 });
 
 try {
-    $dataSource = new SQLiteDataSource(realpath('Data/database.db'));
+    $dataSource = new SQLiteDataSource('Data/database.db');
     $userDAO = $dataSource->createUserDAO();
     $showDAO = $dataSource->createShowDAO();
     $ratingDAO = $dataSource->createRatingDAO();

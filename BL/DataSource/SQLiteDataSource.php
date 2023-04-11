@@ -29,14 +29,14 @@ class SQLiteDataSource implements IDataSource
 
         try {
             // TODO: create db if not exists
-            $db = $this->open($dbpath);
+            $this->db = new SQLite3($dbpath);
             $this->createTables();
         } catch (Exception $exception) {
             throw new Exception('Could not open database', 1, $exception);
         }
     }
 
-    public function createTables() {
+    private function createTables() {
         $commands = ['CREATE TABLE IF NOT EXISTS Comment
                         (
                         Id       INTEGER                        not null
@@ -88,7 +88,9 @@ class SQLiteDataSource implements IDataSource
                             unique (UserId, ShowId)
                         )'];
         foreach ($commands as $command) {
-            $this->db->exec($command);
+            if (!$this->db->exec($command)) {
+                throw new Exception($this->db->lastErrorMsg());
+            }
         }
     }
 
