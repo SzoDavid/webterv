@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BingeVoyage | Hellsing Ultimate</title>
+    <link rel="stylesheet" href="../../../Resources/src/css/style.css">
+    <link rel="icon" type="image/svg" href="../../../Resources/src/img/logo-nobg.svg">
+</head>
+<body>
+<nav>
+    <ul class="navbar">
+        <li><a href="../../Web/index.html">Főoldal</a></li>
+        <li><a href="../../Web/shows.html">Sorozatok</a></li>
+        <li><a href="../../Web/people.html">Emberek</a></li>
+        <li style="float:right"><a href="../profiles/profile.html">Próba Ödön</a></li>
+        <li style="float:right"><a class="adminOnly" href="../../Web/admin.html">Felületkezelés</a></li>
+    </ul>
+</nav>
+<main>
+    <div class="oneThreeContainer">
+        <div class="left">
+            <img class="showCover" src="../../../Resources/src/img/hsu.png" alt="cover">
+            <button title="Implementáció a 2. mérföldkőben">Listára</button>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Információk</th>
+                </tr>
+                <tr>
+                    <td>Epizódok:</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>4/5</td>
+                </tr>
+                <tr>
+                    <td>Nézők:</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>Szintén nézi:</td>
+                    <td><a href="../profiles/tandi.html">Tandi</a></td>
+                </tr>
+            </table>
+            <table class="infoTable">
+                <tr>
+                    <th colspan="2">Státusz</th>
+                </tr>
+                <tr>
+                    <td>Megnézett epizódok:</td>
+                    <td><input id="watchedEpisodes" type="number" value="0" min="0" max="10"></td>
+                </tr>
+                <tr>
+                    <td>Értékelés:</td>
+                    <td>
+                        <select id="rating">
+                            <option value="-">-</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="saveButton" title="Implementáció a 2. mérföldkőben">Mentés</button></td>
+                </tr>
+            </table>
+            <table class="adminTable">
+                <tr>
+                    <th>Moderáció</th>
+                </tr>
+                <tr>
+                    <td><button class="saveButton" title="Implementáció a 2. mérföldkőben">Szerkesztés</button></td>
+                </tr>
+            </table>
+        </div>
+        <div class="right">
+            <h1>Hellsing Ultimate</h1>
+            <div>
+                <h2>Leírás</h2>
+                <p>Léteznek a sötétség és a gonosz teremtményei, amelyek sújtják az éjszakát, és felfalnak minden olyan szerencsétlen embert, aki a kezükbe kerül. A másik oldalon található a Hellsing, egy szervezet, amelynek célja, hogy elpusztítsa ezeket a természetfeletti erőket, amelyek az emberiség létét veszélyeztetik. Élén Integra Fairbrook Wingates Hellsing áll, aki egy hatalmas hadsereget irányít, és életét az élőhalottak elleni harcban tölti. Integra hatalmas serege azonban elhalványul végső fegyvere előtt: a vámpír Alucard, aki saját fajtája ellen dolgozik a Hellsing irtójaként. Új vámpírszolgájával, Seras Victoriával az oldalán Alucardnak nemcsak szörnyekkel kell megküzdenie, hanem mindazokkal, akik szembeszállnak a Hellsinggel, legyenek azok jó vagy rossz álarcában. Az emberiség túléléséért vívott csatában a Hellsing Ultimate bebizonyítja, hogy a látszat nem minden, aminek látszik, és néha a legnagyobb fegyver az ember legrosszabb rémálma lehet.</p>
+            </div>
+            <div>
+                <h2>Előzetes</h2>
+                <video controls>
+                    <source src="../../src/trailers/hsu.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div>
+                <h2>Főcímdal</h2>
+                <audio controls>
+                    <source src="../../src/ost/hsu.mp3" type="audio/mp3">
+                </audio>
+            </div>
+            <div>
+                <h2>Hozzászólások</h2>
+                <div>
+                    <div class="newComment">
+                        <form method="POST">
+                            <textarea name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
+                            <input type="submit" title="Implementáció a 2. mérföldkőben" value="➤">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
