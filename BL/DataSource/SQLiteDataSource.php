@@ -29,7 +29,7 @@ class SQLiteDataSource implements IDataSource
 
         try {
             // TODO: create db if not exists
-            $this->open($dbpath);
+            $db = $this->open($dbpath);
             $this->createTables();
         } catch (Exception $exception) {
             throw new Exception('Could not open database', 1, $exception);
