@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>BingeVoyage | Emberek</title>
-    <link rel="stylesheet" href="../src/css/style.css">
-    <link rel="icon" type="image/svg" href="../src/img/logo-nobg.svg">
+    <link rel="stylesheet" href="Resources/src/css/style.css">
+    <link rel="icon" type="image/svg" href="Resources/src/img/logo-nobg.svg">
 </head>
 <body>
 <nav>
@@ -12,7 +12,7 @@
         <li><a href="index.html">Főoldal</a></li>
         <li><a href="shows.html">Sorozatok</a></li>
         <li><a class="active" href="people.html">Emberek</a></li>
-        <li style="float:right"><a href="profiles/profile.html">Próba Ödön</a></li>
+        <li style="float:right"><a href="tmp/sites/profiles/profile.html">Próba Ödön</a></li>
         <li style="float:right"><a class="adminOnly" href="admin.html">Felületkezelés</a></li>
     </ul>
 </nav>
@@ -33,20 +33,20 @@
             <th>Sorozatok</th>
             <th>Regisztrált</th>
         </tr>
-        <tr onclick="window.location.href = 'profiles/profile.html'">
-            <td><img src="../Data/Images/ProfilePictures/pfp.jpg" alt="pfp" width="100" height="100"></td>
+        <tr onclick="window.location.href = 'tmp/sites/profiles/profile.html'">
+            <td><img src="Resources/Data/Images/ProfilePictures/pfp.jpg" alt="pfp" width="100" height="100"></td>
             <td class="title">Próba Ödön</td>
             <td>3</td>
             <td>1 hete</td>
         </tr>
-        <tr onclick="window.location.href = 'profiles/szobonya.html'">
-            <td><img src="../src/img/pfp2.jpg" alt="pfp" width="100" height="100"></td>
+        <tr onclick="window.location.href = 'tmp/sites/profiles/szobonya.html'">
+            <td><img src="Resources/src/img/pfp2.jpg" alt="pfp" width="100" height="100"></td>
             <td class="title">Szobonya</td>
             <td>2</td>
             <td>2 hete</td>
         </tr>
-        <tr onclick="window.location.href = 'profiles/tandi.html'">
-            <td><img src="../src/img/pfp3.jpg" alt="pfp" width="100" height="100"></td>
+        <tr onclick="window.location.href = 'tmp/sites/profiles/tandi.html'">
+            <td><img src="Resources/src/img/pfp3.jpg" alt="pfp" width="100" height="100"></td>
             <td class="title">Tandi</td>
             <td>3</td>
             <td>5 napja</td>

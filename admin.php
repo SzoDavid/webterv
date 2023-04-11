@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>BingeVoyage | Felületkezelés</title>
-    <link rel="stylesheet" href="../src/css/style.css">
-    <link rel="icon" type="image/svg" href="../src/img/logo-nobg.svg">
+    <link rel="stylesheet" href="Resources/src/css/style.css">
+    <link rel="icon" type="image/svg" href="Resources/src/img/logo-nobg.svg">
 </head>
 <body>
 <nav>
@@ -12,7 +12,7 @@
         <li><a href="index.html">Főoldal</a></li>
         <li><a href="shows.html">Sorozatok</a></li>
         <li><a href="people.html">Emberek</a></li>
-        <li style="float:right"><a href="profiles/profile.html">Próba Ödön</a></li>
+        <li style="float:right"><a href="tmp/sites/profiles/profile.html">Próba Ödön</a></li>
         <li style="float:right"><a class="active adminOnly" href="admin.html">Felületkezelés</a></li>
     </ul>
 </nav>

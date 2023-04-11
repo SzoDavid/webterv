@@ -1,6 +1,7 @@
 <?php
 
-use BL\DataSource\SQLiteDataSource;
+use BL\ConfigLoader\ConfigLoader;
+use BL\Factories\DataSourceFactory;
 
 spl_autoload_register(function ($class_name) {
     $filename = __DIR__ . '/' . str_replace('\\', '/', $class_name) . '.php';
@@ -8,7 +9,8 @@ spl_autoload_register(function ($class_name) {
 });
 
 try {
-    $dataSource = new SQLiteDataSource(realpath('Data/database.db'));
+    $config = new ConfigLoader();
+    $dataSource =  (new DataSourceFactory($config))->createDataSource();
     $userDAO = $dataSource->createUserDAO();
     $showDAO = $dataSource->createShowDAO();
     $ratingDAO = $dataSource->createRatingDAO();
