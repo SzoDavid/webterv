@@ -17,7 +17,6 @@ try {
     $show = $showDAO->getById(11);
 
 
-
     print_r($ratingDAO->getByShow($show));
 } catch (Exception $e) {
     echo $e->getMessage();
