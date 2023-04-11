@@ -12,7 +12,7 @@
         <li><a href="index.html">Főoldal</a></li>
         <li><a href="shows.html">Sorozatok</a></li>
         <li><a class="active" href="people.html">Emberek</a></li>
-        <li style="float:right"><a href="tmp/sites/profiles/profile.html">Próba Ödön</a></li>
+        <li style="float:right"><a href="profile.html">Próba Ödön</a></li>
         <li style="float:right"><a class="adminOnly" href="admin.html">Felületkezelés</a></li>
     </ul>
 </nav>
@@ -33,7 +33,7 @@
             <th>Sorozatok</th>
             <th>Regisztrált</th>
         </tr>
-        <tr onclick="window.location.href = 'tmp/sites/profiles/profile.html'">
+        <tr onclick="window.location.href = 'profile.html'">
             <td><img src="Resources/Data/Images/ProfilePictures/pfp.jpg" alt="pfp" width="100" height="100"></td>
             <td class="title">Próba Ödön</td>
             <td>3</td>

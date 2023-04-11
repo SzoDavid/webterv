@@ -14,6 +14,7 @@ interface IUser
     public function getPasswordHash(): string;
     public function getEmail(): string;
     public function getProfilePicturePath(): ?string;
+    public function getTimestampOfRegistration(): string;
     public function isAdmin(): bool;
     public function isMuted(): bool;
 

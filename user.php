@@ -1,38 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>BingeVoyage | Próba Ödön</title>
-    <link rel="stylesheet" href="../../../Resources/src/css/style.css">
-    <link rel="icon" type="image/svg" href="../../../Resources/src/img/logo-nobg.svg">
-</head>
-<body>
-<nav>
-    <ul class="navbar">
-        <li><a href="../../Web/index.html">Főoldal</a></li>
-        <li><a href="../../Web/shows.html">Sorozatok</a></li>
-        <li><a href="../../Web/people.html">Emberek</a></li>
-        <li style="float:right"><a class="active" href="profile.html">Próba Ödön</a></li>
-        <li style="float:right"><a class="adminOnly" href="../../Web/admin.html">Felületkezelés</a></li>
-    </ul>
-</nav>
+<?php
+
+$CURRENT_PAGE = 'user';
+
+require 'Common/header.php';
+
+if (!isset($_GET['id'])) {
+    //TODO: error page
+    die('Oops1');
+}
+
+if (!isset($userDao) || !isset($dataSource)) {
+    //TODO: error page
+    die('Oops2');
+}
+
+$showDao = $dataSource->createShowDAO();
+
+try {
+    $user = $userDao->getById($_GET['id']) ?? throw new Exception('404');
+    $shows = $showDao->getByUser($user);
+} catch (Exception $e) {
+    die('Oops');
+}
+
+$daysSinceReg = round((time() - strtotime($user->getTimestampOfRegistration())) / (60 * 60 * 24));
+
+?>
+
 <main>
     <div class="oneThreeContainer">
         <div class="left">
-            <img class="profilePic" src="../../../Resources/Data/Images/ProfilePictures/pfp.jpg" alt="pfp">
-            <button onclick="window.location.href='../../Web/settings.html'">Beállítások</button>
-            <button onclick="window.location.href='../../Web/login.html'">Kijelentkezés</button>
+            <?php if ($user->getProfilePicturePath()) { ?>
+                <img class="profilePic" src="<?php $user->getProfilePicturePath() ?>" alt="pfp">
+            <?php } ?>
+            <button onclick="window.location.href='settings.php'">Beállítások</button>
+            <button onclick="window.location.href='logout.php'">Kijelentkezés</button>
             <table class="infoTable">
                 <tr>
                     <th colspan="2">Információk</th>
                 </tr>
                 <tr>
                     <td>Regisztrált:</td>
-                    <td>1 hete</td>
+                    <td><?php echo $daysSinceReg == 0 ? "Ma" : "$daysSinceReg napja" ?></td>
                 </tr>
                 <tr>
                     <td>Sorozatok:</td>
-                    <td>3</td>
+                    <td><?php echo count($shows) ?></td>
                 </tr>
                 <tr>
                     <td>Megnézett epizódok:</td>
@@ -44,7 +57,7 @@
                 </tr>
                 <tr>
                     <td>Barátok:</td>
-                    <td><a href="szobonya.html">Szobonya</a><br><a href="tandi.html">Tandi</a></td>
+                    <td><a href="tmp/sites/profiles/szobonya.html">Szobonya</a><br><a href="tmp/sites/profiles/tandi.html">Tandi</a></td>
                 </tr>
             </table>
         </div>
@@ -62,22 +75,22 @@
                     <th>Értékelés</th>
                     <th>Átlag</th>
                 </tr>
-                <tr onclick="window.location.href = '../shows/a_kiraly.html'">
-                    <td><img src="../../../Resources/src/img/a_kiraly.jpg" alt="cover" width="100" height="100"></td>
+                <tr onclick="window.location.href = 'tmp/sites/shows/a_kiraly.html'">
+                    <td><img src="Resources/src/img/a_kiraly.jpg" alt="cover" width="100" height="100"></td>
                     <td class="title">A Király</td>
                     <td>10/10</td>
                     <td>5/5</td>
                     <td>3,8/5</td>
                 </tr>
-                <tr onclick="window.location.href = '../shows/mob_psycho_100.html'">
-                    <td><img src="../../../Resources/src/img/mp100.jpg" alt="cover" width="100" height="100"></td>
+                <tr onclick="window.location.href = 'tmp/sites/shows/mob_psycho_100.html'">
+                    <td><img src="Resources/src/img/mp100.jpg" alt="cover" width="100" height="100"></td>
                     <td class="title">Mob Psycho 100</td>
                     <td>12/30</td>
                     <td>-/5</td>
                     <td>4,7/5</td>
                 </tr>
-                <tr onclick="window.location.href = '../shows/cyberpunk_edgerunners.html'">
-                    <td><img src="../../../Resources/src/img/cper.jpg" alt="cover" width="100" height="100"></td>
+                <tr onclick="window.location.href = 'tmp/sites/shows/cyberpunk_edgerunners.html'">
+                    <td><img src="Resources/src/img/cper.jpg" alt="cover" width="100" height="100"></td>
                     <td class="title">Cyberpunk: Edgerunners</td>
                     <td>4/10</td>
                     <td>-/5</td>
@@ -87,5 +100,7 @@
         </div>
     </div>
 </main>
-</body>
-</html>
+
+<?php
+
+?>

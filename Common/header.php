@@ -7,11 +7,12 @@ if (!isset($CURRENT_PAGE)) {
     $CURRENT_PAGE = 'else';
 }
 
-require_once 'Common/autoloader.php';
+require_once 'autoloader.php';
 
 try {
     $config = new ConfigLoader(__DIR__ . '/../Resources/config.json');
     $dataSource = (new DataSourceFactory($config))->createDataSource();
+    $userDao = $dataSource->createUserDAO();
 } catch (Exception $ex) {
     // return with error feedback
     die($ex->getMessage());
@@ -20,7 +21,6 @@ try {
 session_start();
 
 if (isset($_SESSION['UserId'])) {
-    $userDao = $dataSource->createUserDAO();
     try {
         $USER = $userDao->getById($_SESSION['UserId']);
     } catch (Exception $ex) {
@@ -45,7 +45,7 @@ if (isset($_SESSION['UserId'])) {
         <li><a <?php if ($CURRENT_PAGE == 'shows') { ?>class="active"<?php } ?> href="shows.php">Sorozatok</a></li>
         <li><a <?php if ($CURRENT_PAGE == 'people') { ?>class="active"<?php } ?> href="people.php">Emberek</a></li>
         <?php if (isset($USER)) { ?>
-            <li style="float:right"><a <?php if ($CURRENT_PAGE == 'self') { ?>class="active"<?php } ?> href="tmp/sites/profiles/profile.php"><?php echo $USER->getUsername(); ?></a></li>
+            <li style="float:right"><a <?php if ($CURRENT_PAGE == 'user' && $_GET['id'] == $_SESSION['UserId']) { ?>class="active"<?php } ?> href="user.php?id=<?php echo $_SESSION['UserId'] ?>"><?php echo $USER->getUsername(); ?></a></li>
             <?php if ($USER->isAdmin()) { ?>
                 <li style="float:right"><a <?php if ($CURRENT_PAGE == 'admin') { ?>class="active"<?php } ?> class="adminOnly" href="admin.php">Felületkezelés</a></li>
             <?php } ?>

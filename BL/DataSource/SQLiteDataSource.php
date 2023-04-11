@@ -2,6 +2,7 @@
 
 namespace BL\DataSource;
 
+use BL\ConfigLoader\_Interfaces\IConfigLoader;
 use BL\DAO\_Interfaces\ICommentDAO;
 use BL\DAO\_Interfaces\IRatingDAO;
 use BL\DAO\_Interfaces\IShowDAO;
@@ -25,10 +26,10 @@ class SQLiteDataSource implements IDataSource
      * Creates an SQLite Data Source to manage website data
      * @throws Exception - when couldn't connect to database
      */
-    function __construct(string $dbpath) {
+    function __construct(IConfigLoader $configs) {
         try {
             // TODO: create db if not exists
-            $this->db = new SQLite3($dbpath, SQLITE3_OPEN_READWRITE);
+            $this->db = new SQLite3($configs->getDataSourceConfigs()->getPath(), SQLITE3_OPEN_READWRITE);
         } catch (Exception $exception) {
             throw new Exception('Could not open database', 1, $exception);
         }

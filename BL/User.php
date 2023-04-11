@@ -12,19 +12,21 @@ class User implements IUser
     private string $passwordHash;
     private string $email;
     private ?string $profilePicturePath;
+    private string $timestampOfRegistration;
     private bool $admin;
     private bool $muted;
     //endregion
 
     //region Constructors
-    public function __construct(?int $id, string $username, string $passwordHash,
-                                string $email, ?string $profilePicturePath, bool $admin, bool $muted)
+    public function __construct(?int $id, string $username, string $passwordHash, string $email,
+                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $muted)
     {
         $this->id = $id;
         $this->username = $username;
         $this->passwordHash = $passwordHash;
         $this->email = $email;
         $this->profilePicturePath = $profilePicturePath;
+        $this->timestampOfRegistration = $timestampOfRegistration;
         $this->admin = $admin;
         $this->muted = $muted;
 
@@ -34,7 +36,7 @@ class User implements IUser
     public static function createNewUser(string $username, string $passwordHash,
                                          string $email): IUser
     {
-        return new self(null, $username, $passwordHash, $email, null,
+        return new self(null, $username, $passwordHash, $email, null, null,
             false, false);
     }
     //endregion
@@ -63,6 +65,11 @@ class User implements IUser
     public function getProfilePicturePath(): ?string
     {
         return $this->profilePicturePath;
+    }
+
+    public function getTimestampOfRegistration(): string
+    {
+        return $this->timestampOfRegistration;
     }
 
     public function isAdmin(): bool

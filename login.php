@@ -14,9 +14,9 @@ include 'Common/header.php';
         <div id="loginContainer">
             <h1>BingeVoyage</h1>
             <h2>Bejelentkezés</h2>
-            <form method="POST">
-                <input type="text" name="username" placeholder="Felhasználónév" required><br>
-                <input type="password" name="passwd" placeholder="Jelszó" required><br>
+            <form method="POST" action="Handlers/loginHandler.php">
+                <input type="email" name="email" placeholder="E-mail" required><br>
+                <input type="password" name="password" placeholder="Jelszó" required><br>
                 <input type="submit" title="Implementáció a 2. mérföldkőben" value="Bejelentkezés">
             </form>
             <p>Még nincs fiókod? <a href="registration.php">Regisztrálj!</a></p>

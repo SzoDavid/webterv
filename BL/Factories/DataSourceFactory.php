@@ -11,13 +11,13 @@ use Exception;
 class DataSourceFactory implements _Interfaces\IDataSourceFactory
 {
     //region Properties
-    private IDataSourceConfigs $configs;
+    private IConfigLoader $configs;
     //endregion
 
     //region Constructor
     public function __construct(IConfigLoader $configLoader)
     {
-        $this->configs = $configLoader->getDataSourceConfigs();
+        $this->configs = $configLoader;
     }
     //endregion
 
@@ -28,9 +28,9 @@ class DataSourceFactory implements _Interfaces\IDataSourceFactory
     public function createDataSource(): IDataSource
     {
         try {
-            return match ($this->configs->getType()) {
-                'sqlite' => new SQLiteDataSource($this->configs->getPath()),
-                default => throw new Exception('Invalid data source type: ' . $this->configs->getType())
+            return match ($this->configs->getDataSourceConfigs()->getType()) {
+                'sqlite' => new SQLiteDataSource($this->configs),
+                default => throw new Exception('Invalid data source type: ' . $this->configs->getDataSourceConfigs()->getType())
             };
         } catch (Exception $ex) {
             throw new Exception('Could not create data source', 0, $ex);
