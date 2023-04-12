@@ -64,3 +64,6 @@ try {
         <?php } ?>
     </table>
 </main>
+<?php
+    include 'Helpers/footer.php';
+?>
