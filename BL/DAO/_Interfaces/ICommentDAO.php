@@ -2,8 +2,8 @@
 
 namespace BL\DAO\_Interfaces;
 
-use BL\_Interfaces\IComment;
-use BL\_Interfaces\IShow;
+use BL\DTO\_Interfaces\IComment;
+use BL\DTO\_Interfaces\IShow;
 use Exception;
 
 interface ICommentDAO

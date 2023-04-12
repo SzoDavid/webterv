@@ -2,7 +2,7 @@
 
 namespace BL\DAO\_Interfaces;
 
-use BL\_Interfaces\IUser;
+use BL\DTO\_Interfaces\IUser;
 use Exception;
 
 interface IUserDAO

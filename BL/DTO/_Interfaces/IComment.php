@@ -1,9 +1,6 @@
 <?php
 
-namespace BL\_Interfaces;
-
-use BL\DataSource\_Interfaces\IDataSource;
-use Exception;
+namespace BL\DTO\_Interfaces;
 
 interface IComment
 {

@@ -1,13 +1,13 @@
 <?php
 
 use BL\ConfigLoader\ConfigLoader;
+use BL\DTO\User;
 use BL\Factories\DataSourceFactory;
-use BL\User;
 
-require_once '../Common/autoloader.php';
+require_once '../autoloader.php';
 
 try {
-    $config = new ConfigLoader(__DIR__ . '/../Resources/config.json');
+    $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
     $dataSource = (new DataSourceFactory($config))->createDataSource();
 } catch (Exception $ex) {
     //TODO: return with error feedback
@@ -31,4 +31,4 @@ try {
 session_start();
 $_SESSION['UserId'] = $id;
 
-header('Location: ../index.php');
+header('Location: ../../index.php');

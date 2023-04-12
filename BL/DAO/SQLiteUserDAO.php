@@ -2,9 +2,9 @@
 
 namespace BL\DAO;
 
-use BL\_Interfaces\IUser;
 use BL\DataSource\SQLiteDataSource;
-use BL\User;
+use BL\DTO\_Interfaces\IUser;
+use BL\DTO\User;
 use Exception;
 
 class SQLiteUserDAO implements _Interfaces\IUserDAO

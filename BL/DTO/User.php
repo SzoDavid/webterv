@@ -1,8 +1,8 @@
 <?php
 
-namespace BL;
+namespace BL\DTO;
 
-use BL\_Interfaces\IUser;
+use BL\DTO\_Interfaces\IUser;
 
 class User implements IUser
 {

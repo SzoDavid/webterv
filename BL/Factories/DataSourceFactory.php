@@ -2,8 +2,8 @@
 
 namespace BL\Factories;
 
+use BL\_enums\EDataSourceTypes;
 use BL\ConfigLoader\_Interfaces\IConfigLoader;
-use BL\ConfigLoader\_Interfaces\IDataSourceConfigs;
 use BL\DataSource\_Interfaces\IDataSource;
 use BL\DataSource\SQLiteDataSource;
 use Exception;
@@ -29,8 +29,7 @@ class DataSourceFactory implements _Interfaces\IDataSourceFactory
     {
         try {
             return match ($this->configs->getDataSourceConfigs()->getType()) {
-                'sqlite' => new SQLiteDataSource($this->configs),
-                default => throw new Exception('Invalid data source type: ' . $this->configs->getDataSourceConfigs()->getType())
+                EDataSourceTypes::SQLite => new SQLiteDataSource($this->configs),
             };
         } catch (Exception $ex) {
             throw new Exception('Could not create data source', 0, $ex);

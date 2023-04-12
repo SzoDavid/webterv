@@ -2,10 +2,10 @@
 
 namespace BL\DAO;
 
-use BL\_Interfaces\IShow;
-use BL\_Interfaces\IUser;
 use BL\DataSource\SQLiteDataSource;
-use BL\Show;
+use BL\DTO\_Interfaces\IShow;
+use BL\DTO\_Interfaces\IUser;
+use BL\DTO\Show;
 use Exception;
 
 class SQLiteShowDAO implements _Interfaces\IShowDAO
@@ -103,7 +103,7 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
     /**
      * @inheritDoc
      */
-    public function save(IShow $show): void
+    public function save(IShow $show): int
     {
         $showId = $show->getId();
         $title = $show->getTitle();
@@ -121,6 +121,8 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
         if (!$this->dataSource->getDB()->exec($sql)) {
             throw new Exception('Could not update database: ' . $this->dataSource->getDB()->lastErrorMsg());
         }
+
+        return $showId ?? $this->dataSource->getDB()->lastInsertRowID();
     }
 
     /**

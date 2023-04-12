@@ -48,7 +48,7 @@ class SQLiteDataSource implements IDataSource
 
     public function createRatingDAO(): IRatingDAO
     {
-        return new SQLiteRatingDAO($this, $this->createUserDAO());
+        return new SQLiteRatingDAO($this, $this->createUserDAO(), $this->createShowDAO());
     }
 
     public function createShowDAO(): IShowDAO

@@ -2,6 +2,7 @@
 
 namespace BL\ConfigLoader;
 
+use BL\_enums\EDataSourceTypes;
 use Exception;
 
 class SQLiteConfigs implements _Interfaces\IDataSourceConfigs
@@ -30,9 +31,9 @@ class SQLiteConfigs implements _Interfaces\IDataSourceConfigs
     //endregion
 
     //region Getters
-    public function getType(): string
+    public function getType(): EDataSourceTypes
     {
-        return 'sqlite';
+        return EDataSourceTypes::SQLite;
     }
 
     public function getPath(): string

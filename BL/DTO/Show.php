@@ -1,8 +1,8 @@
 <?php
 
-namespace BL;
+namespace BL\DTO;
 
-use BL\_Interfaces\IShow;
+use BL\DTO\_Interfaces\IShow;
 
 class Show implements IShow
 {

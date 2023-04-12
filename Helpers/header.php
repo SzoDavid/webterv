@@ -18,8 +18,6 @@ try {
     die($ex->getMessage());
 }
 
-session_start();
-
 if (isset($_SESSION['UserId'])) {
     try {
         $USER = $userDao->getById($_SESSION['UserId']);

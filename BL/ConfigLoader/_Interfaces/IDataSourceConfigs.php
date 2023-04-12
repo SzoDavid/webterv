@@ -2,7 +2,9 @@
 
 namespace BL\ConfigLoader\_Interfaces;
 
+use BL\_enums\EDataSourceTypes;
+
 interface IDataSourceConfigs
 {
-    public function getType(): string;
+    public function getType(): EDataSourceTypes;
 }

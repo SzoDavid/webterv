@@ -1,26 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>BingeVoyage | Felületkezelés</title>
-    <link rel="stylesheet" href="Resources/src/css/style.css">
-    <link rel="icon" type="image/svg" href="Resources/src/img/logo-nobg.svg">
-</head>
-<body>
-<nav>
-    <ul class="navbar">
-        <li><a href="index.html">Főoldal</a></li>
-        <li><a href="shows.html">Sorozatok</a></li>
-        <li><a href="people.html">Emberek</a></li>
-        <li style="float:right"><a href="profile.html">Próba Ödön</a></li>
-        <li style="float:right"><a class="active adminOnly" href="admin.html">Felületkezelés</a></li>
-    </ul>
-</nav>
+<?php
+
+session_start();
+
+if (!isset($_SESSION['UserId'])) {
+    header('Location: login.php');
+    exit();
+}
+
+$CURRENT_PAGE = 'admin';
+
+include 'Helpers/header.php';
+
+if (!isset($USER)) {
+    //TODO: error page
+    die('Oops');
+}
+
+if (!$USER->isAdmin())
+
+
+?>
 <main>
     <div>
         <div class="settingsForm">
             <h1>Sorozat hozzáadása</h1>
-            <form method="POST">
+            <form method="POST" action="Helpers/Events/newShowEvent.php">
                 <div class="formGrid">
                     <label for="title">Cím</label>
                     <input type="text" id="title" name="title">

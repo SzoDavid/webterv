@@ -34,7 +34,7 @@
             <th>Regisztrált</th>
         </tr>
         <tr onclick="window.location.href = 'profile.html'">
-            <td><img src="Resources/Data/Images/ProfilePictures/pfp.jpg" alt="pfp" width="100" height="100"></td>
+            <td><img src="Resources/Data/ProfilePictures/pfp.jpg" alt="pfp" width="100" height="100"></td>
             <td class="title">Próba Ödön</td>
             <td>3</td>
             <td>1 hete</td>
