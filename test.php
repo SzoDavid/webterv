@@ -16,6 +16,7 @@ try {
     $ratingDAO = $dataSource->createRatingDAO();
 
 
+
     print_r($userDAO->getAll());
 } catch (Exception $e) {
     echo $e->getMessage();
