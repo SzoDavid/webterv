@@ -132,7 +132,7 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
             }
         }
 
-        return (float) $sum / $count;
+        return ($count != 0) ? (float) $sum / $count : 0;
     }
 
     /**

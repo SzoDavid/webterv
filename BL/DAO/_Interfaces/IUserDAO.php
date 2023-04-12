@@ -2,6 +2,7 @@
 
 namespace BL\DAO\_Interfaces;
 
+use BL\DTO\_Interfaces\IShow;
 use BL\DTO\_Interfaces\IUser;
 use Exception;
 
@@ -42,6 +43,14 @@ interface IUserDAO
      * @throws Exception
      */
     public function getFriendsByUser(IUser $user): array;
+    /**
+     * Returns with all the users that are the given user's friends and watch the given show
+     * @param IUser $user
+     * @param IShow $show
+     * @return array
+     * @throws Exception
+     */
+    public function getFriendsByUserAndShow(IUser $user, IShow $show): array;
 
     /**
      * Creates a followed-follower reference between the given users

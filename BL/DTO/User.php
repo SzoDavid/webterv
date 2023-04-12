@@ -14,12 +14,12 @@ class User implements IUser
     private ?string $profilePicturePath;
     private ?string $timestampOfRegistration;
     private bool $admin;
-    private bool $muted;
+    private bool $canComment;
     //endregion
 
     //region Constructors
-    public function __construct(?int $id, string $username, string $passwordHash, string $email,
-                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $muted)
+    public function __construct(?int    $id, string $username, string $passwordHash, string $email,
+                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $canComment)
     {
         $this->id = $id;
         $this->username = $username;
@@ -28,7 +28,7 @@ class User implements IUser
         $this->profilePicturePath = $profilePicturePath;
         $this->timestampOfRegistration = $timestampOfRegistration;
         $this->admin = $admin;
-        $this->muted = $muted;
+        $this->canComment = $canComment;
 
         // TODO: validate values
     }
@@ -77,9 +77,9 @@ class User implements IUser
         return $this->admin;
     }
 
-    public function isMuted(): bool
+    public function canComment(): bool
     {
-        return $this->muted;
+        return $this->canComment;
     }
     //endregion
 
@@ -118,9 +118,9 @@ class User implements IUser
         return $this;
     }
 
-    public function setMuted(bool $isMuted): IUser
+    public function setCanComment(bool $isMuted): IUser
     {
-        $this->muted = $isMuted;
+        $this->canComment = $isMuted;
         return $this;
     }
     //endregion

@@ -5,26 +5,26 @@ use BL\DTO\_Interfaces\IUser;
 
 session_start();
 
-$CURRENT_PAGE = 'user';
-
-require 'Helpers/header.php';
-
 if (!isset($_GET['id'])) {
     //TODO: error page
     die('Oops1');
 }
 
-if (!isset($userDao) || !isset($dataSource) || !isset($USER)) {
+
+$CURRENT_PAGE = 'user';
+require 'Helpers/header.php';
+
+if (!isset($userDao) || !isset($dataSource)) {
     //TODO: error page
     die('Oops2');
 }
 
 $showDao = $dataSource->createShowDAO();
-$ratingDAO = $dataSource->createRatingDAO();
+$ratingDao = $dataSource->createRatingDAO();
 
 try {
     $user = $userDao->getById($_GET['id']) ?? throw new Exception('404');
-    $ratings = $ratingDAO->getByUser($user);
+    $ratings = $ratingDao->getByUser($user);
     $friends = $userDao->getFriendsByUser($user);
 } catch (Exception $e) {
     die('Oops');
@@ -84,7 +84,7 @@ foreach ($ratings as $rating) {
                     </td>
                 </tr>
             </table>
-            <?php if ($_GET['id'] != $_SESSION['UserId'] &&  $USER->isAdmin()) { ?>
+            <?php if ($_GET['id'] != $_SESSION['UserId'] && isset($USER) && $USER->isAdmin()) { ?>
                 <table class="adminTable">
                     <tr>
                         <th>Moderáció</th>
@@ -113,12 +113,12 @@ foreach ($ratings as $rating) {
                     /* @var $rating IRating */
                     foreach ($ratings as $rating) {
                 ?>
-                    <tr onclick="window.location.href = 'shows.php?id=<?php echo $rating->getShow()->getId(); ?>'">
+                    <tr onclick="window.location.href = 'show.php?id=<?php echo $rating->getShow()->getId(); ?>'">
                         <td><img src="<?php echo $rating->getShow()->getCoverPath(); ?>" alt="cover" width="100" height="100"></td>
                         <td class="title"><?php echo $rating->getShow()->getTitle(); ?></td>
                         <td><?php echo $rating->getEpisodesWatched() . '/' . $rating->getShow()->getNumEpisodes(); ?></td>
                         <td><?php echo $rating->getRating() ?? '-' ?>/5</td>
-                        <td><?php try { echo $ratingDAO->getAverageRatingByShow($rating->getShow()); } catch (Exception $_) { echo '-'; } ?>/5</td>
+                        <td><?php try { echo $ratingDao->getAverageRatingByShow($rating->getShow()); } catch (Exception $_) { echo '-'; } ?>/5</td>
                     </tr>
                 <?php } ?>
             </table>
@@ -127,5 +127,7 @@ foreach ($ratings as $rating) {
 </main>
 
 <?php
+
+include 'Helpers/footer.php';
 
 ?>

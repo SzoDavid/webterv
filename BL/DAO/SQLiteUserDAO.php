@@ -3,6 +3,7 @@
 namespace BL\DAO;
 
 use BL\DataSource\SQLiteDataSource;
+use BL\DTO\_Interfaces\IShow;
 use BL\DTO\_Interfaces\IUser;
 use BL\DTO\User;
 use Exception;
@@ -121,6 +122,31 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
     /**
      * @inheritDoc
      */
+    public function getFriendsByUserAndShow(IUser $user, IShow $show): array
+    {
+        // TODO: validate if ids are not null
+        $userId = $user->getId();
+        $showId = $show->getId();
+
+        $query = $this->dataSource->getDB()->query("SELECT * FROM User WHERE User.Id IN (SELECT Following.FollowedId FROM Following, Watching WHERE Following.FollowerId=Watching.UserId AND Watching.ShowId='$showId' AND Following.FollowerId = '$userId')");
+
+        if (!$query) {
+            throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
+        }
+
+        $result = array();
+
+        while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+            $result[] = new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function addFriend(IUser $followerUser, IUser $followedUser): void
     {
         $followerId = $followerUser->getId();
@@ -157,7 +183,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         $password = $user->getPasswordHash();
         $pfpPath = $user->getProfilePicturePath();
         $admin = $user->isAdmin() ? 1 : 0;
-        $canComment = $user->isMuted() ? 1 : 0;
+        $canComment = $user->canComment() ? 1 : 0;
 
         if ($userId == null) {
             $sql = "INSERT INTO User (Username, Email, Password) VALUES ('$username', '$email', '$password')";
