@@ -1,6 +1,5 @@
 <?php
 
-use BL\DTO\_Interfaces\IRating;
 use BL\DTO\_Interfaces\IShow;
 
 session_start();
@@ -34,7 +33,7 @@ try {
     <div class="searchBox">
         <form method="GET">
             <input type="text" name="searchText" value=<?php echo $_GET['searchText'] ?? "" ?>>
-            <input type="submit" title="Implementáció a 2. mérföldkőben" value="Keresés">
+            <input type="submit" value="Keresés">
         </form>
     </div>
     <table class="listTable">
@@ -63,3 +62,6 @@ try {
         <?php } ?>
     </table>
 </main>
+<?php
+    include 'Helpers/footer.php';
+?>
