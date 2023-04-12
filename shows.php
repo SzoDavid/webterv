@@ -53,7 +53,7 @@ try {
         /* @var $shows IShow */
         foreach ($shows as $show) {
             ?>
-            <tr onclick="window.location.href = 'shows.php?id=<?php echo $show->getId(); ?>'">
+            <tr onclick="window.location.href = 'show.php?id=<?php echo $show->getId(); ?>'">
                 <td><img src="<?php echo $show->getCoverPath(); ?>" alt="cover" width="100" height="100"></td>
                 <td class="title"><?php echo $show->getTitle(); ?></td>
                 <td><?php echo $show->getNumEpisodes(); ?></td>
