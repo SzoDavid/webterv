@@ -12,7 +12,7 @@ class User implements IUser
     private string $passwordHash;
     private string $email;
     private ?string $profilePicturePath;
-    private string $timestampOfRegistration;
+    private ?string $timestampOfRegistration;
     private bool $admin;
     private bool $muted;
     //endregion

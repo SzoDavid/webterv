@@ -76,7 +76,8 @@ class SQLiteDataSource implements IDataSource
                             Password           TEXT              not null,
                             ProfilePicturePath TEXT    default NULL,
                             IsAdmin            INTEGER default 0 not null,
-                            CanComment         INTEGER default 1 not null
+                            CanComment         INTEGER default 1 not null,
+                            Registration       TEXT default CURRENT_TIMESTAMP not null
                         )',
                      'CREATE TABLE IF NOT EXISTS Watching
                         (
