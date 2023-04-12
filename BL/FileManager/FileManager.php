@@ -35,7 +35,7 @@ class FileManager implements _Interfaces\IFileManager
             EFileCategories::Ost => $this->configs->getOstDir(),
             EFileCategories::Pfp => $this->configs->getPfpDir(),
         };
-        $fileType = strtolower(pathinfo($file["tmp_name"],PATHINFO_EXTENSION));
+        $fileType = strtolower(pathinfo($target_dir . basename($file["name"]),PATHINFO_EXTENSION));
 
         do {
             $target_file = $target_dir . sprintf("%06d", mt_rand(1, 999999)) . '.' . $fileType;
@@ -46,15 +46,9 @@ class FileManager implements _Interfaces\IFileManager
             throw new Exception('Invalid image file: ' . basename($file["name"]));
         }
 
-        if ($file["size"] > 500000) {
-            throw new Exception('File size is too big: ' . $file["size"]);
-        }
-
         //TODO: validate file type
 
-        if (!move_uploaded_file($file["tmp_name"], $target_file)) {
-            throw new Exception('Could not upload file');
-        }
+        move_uploaded_file($file["tmp_name"], $target_file);
 
         return $target_file;
     }

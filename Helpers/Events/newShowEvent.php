@@ -14,18 +14,14 @@ if (!isset($_SESSION['UserId'])) {
     header('Location: ../../login.php');
     exit();
 }
-if(!isset($_POST["submit"])) {
-    header('Location: ../../admin.php');
-    exit();
-}
 
 try {
     $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
     $dataSource = (new DataSourceFactory($config))->createDataSource();
     $fileManager = new FileManager($config);
 
-    $user = $dataSource->createUserDAO()->getById($_POST['UserId']);
-    if (!$user->isAdmin()) {
+    $user = $dataSource->createUserDAO()->getById($_SESSION['UserId']);
+    if (!$user || !$user->isAdmin()) {
         header('Location: ../../index.php');
         exit();
     }
@@ -44,6 +40,7 @@ try {
     header("Location: ../../show.php?id=$id");
     exit();
 } catch (Exception $ex) {
+    echo 'OOF3';
     //TODO: return with error feedback
-    die($ex->getMessage());
+    throw $ex;
 }

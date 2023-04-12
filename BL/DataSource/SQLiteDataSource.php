@@ -26,7 +26,7 @@ class SQLiteDataSource implements IDataSource
      * Creates an SQLite Data Source to manage website data
      * @throws Exception - when couldn't connect to database
      */
-    function __construct(string $dbpath) {
+    function __construct(IConfigLoader $configs) {
         try {
             $this->db = new SQLite3($configs->getDataSourceConfigs()->getPath());
             $this->createTables();

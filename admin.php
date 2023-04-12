@@ -24,7 +24,7 @@ if (!$USER->isAdmin())
     <div>
         <div class="settingsForm">
             <h1>Sorozat hozzáadása</h1>
-            <form method="POST" action="Helpers/Events/newShowEvent.php">
+            <form method="POST" action="Helpers/Events/newShowEvent.php" enctype="multipart/form-data">
                 <div class="formGrid">
                     <label for="title">Cím</label>
                     <input type="text" id="title" name="title">
