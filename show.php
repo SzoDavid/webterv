@@ -71,7 +71,7 @@ try {
                     </td>
                 </tr>
             </table>
-            <?php if (isset($USER)) { ?>
+            <?php if (isset($USER) && $status) { ?>
                 <table class="infoTable">
                     <tr>
                         <th colspan="2">Státusz</th>
@@ -97,7 +97,7 @@ try {
                         <td colspan="2"><button class="saveButton">Mentés</button></td>
                     </tr>
                 </table>
-                <?php if ($USER->isAdmin()) { ?>
+                <?php } if (isset($USER) && $USER->isAdmin()) { ?>
                 <table class="adminTable">
                     <tr>
                         <th>Moderáció</th>
@@ -106,7 +106,7 @@ try {
                         <td><button onclick="window.location.href='Helpers/Events/editShowEvent.php?id=<?php echo $show->getId(); ?>'" class="saveButton">Szerkesztés</button></td>
                     </tr>
                 </table>
-            <?php }} ?>
+            <?php } ?>
         </div>
         <div class="right">
             <h1><?php echo $show->getTitle(); ?></h1>
