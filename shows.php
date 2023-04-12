@@ -12,7 +12,7 @@
         <li><a href="index.html">Főoldal</a></li>
         <li><a class="active" href="shows.html">Sorozatok</a></li>
         <li><a href="people.html">Emberek</a></li>
-        <li style="float:right"><a href="tmp/sites/profiles/profile.html">Próba Ödön</a></li>
+        <li style="float:right"><a href="profile.html">Próba Ödön</a></li>
         <li style="float:right"><a class="adminOnly" href="admin.html">Felületkezelés</a></li>
     </ul>
 </nav>

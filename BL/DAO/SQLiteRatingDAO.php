@@ -2,12 +2,13 @@
 
 namespace BL\DAO;
 
-use BL\_Interfaces\IRating;
-use BL\_Interfaces\IShow;
-use BL\_Interfaces\IUser;
+use BL\DAO\_Interfaces\IShowDAO;
 use BL\DAO\_Interfaces\IUserDAO;
 use BL\DataSource\SQLiteDataSource;
-use BL\Rating;
+use BL\DTO\_Interfaces\IRating;
+use BL\DTO\_Interfaces\IShow;
+use BL\DTO\_Interfaces\IUser;
+use BL\DTO\Rating;
 use Exception;
 
 class SQLiteRatingDAO implements _Interfaces\IRatingDAO
@@ -15,13 +16,15 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
     //region Properties
     private SQLiteDataSource $dataSource;
     private IUserDAO $userDAO;
+    private IShowDAO $showDAO;
     //endregion
 
     //region Constructor
-    public function __construct(SQLiteDataSource $dataSource, IUserDAO $userDAO)
+    public function __construct(SQLiteDataSource $dataSource, IUserDAO $userDAO, IShowDAO $showDAO)
     {
         $this->dataSource = $dataSource;
         $this->userDAO = $userDAO;
+        $this->showDAO = $showDAO;
     }
     //endregion
 
@@ -60,6 +63,38 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
     /**
      * @inheritDoc
      */
+    public function getByUser(IUser $user): array
+    {
+        // TODO: validate if has id
+        $id = $user->getId();
+
+        $sql = "SELECT * FROM Watching WHERE UserId = '$id'";
+        $query = $this->dataSource->getDB()->query($sql);
+
+        if (!$query) {
+            throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
+        }
+
+        $result = array();
+
+        while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+            try {
+                $show = $this->showDAO->getById($row['ShowId']);
+            } catch (Exception $exception) {
+                throw new Exception('Failed to get show', 0, $exception);
+            }
+
+            if ($show) {
+                $result[] = new Rating($show, $user, $row['Episodes'], ($row['Rating'] == '') ? null : intval($row['Rating']));
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getByShowAndUser(IShow $show, IUser $user): ?IRating
     {
         // TODO: validate if has id
@@ -78,6 +113,26 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
         }
 
         return null;
+    }
+    /**
+     * @inheritDoc
+     */
+    public function getAverageRatingByShow(IShow $show): float
+    {
+        $ratings = $this->getByShow($show);
+
+        $sum = 0;
+        $count = 0;
+
+        /* @var $rating IRating */
+        foreach ($ratings as $rating) {
+            if ($rating->getRating()) {
+                $sum += $rating->getRating();
+                $count++;
+            }
+        }
+
+        return (float) $sum / $count;
     }
 
     /**

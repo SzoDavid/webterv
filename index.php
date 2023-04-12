@@ -1,8 +1,10 @@
 <?php
 
+session_start();
+
 $CURRENT_PAGE = 'index';
 
-include 'Common/header.php';
+include 'Helpers/header.php';
 
 ?>
     <header>
@@ -112,6 +114,6 @@ include 'Common/header.php';
     </main>
 <?php
 
-include 'Common/footer.php';
+include 'Helpers/footer.php';
 
 ?>

@@ -2,5 +2,9 @@
   "data_source" : {
     "type": "sqlite",
     "path": "Resources/database.sqlite"
-  }
+  },
+  "cover_dir" : "Resources/Data/Covers/",
+  "trailer_dir" : "Resources/Data/Trailers/",
+  "ost_dir" : "Resources/Data/Osts/",
+  "pfp_dir" : "Resources/Data/Pfps/"
 }

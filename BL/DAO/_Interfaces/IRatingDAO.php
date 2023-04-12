@@ -2,9 +2,9 @@
 
 namespace BL\DAO\_Interfaces;
 
-use BL\_Interfaces\IRating;
-use BL\_Interfaces\IShow;
-use BL\_Interfaces\IUser;
+use BL\DTO\_Interfaces\IRating;
+use BL\DTO\_Interfaces\IShow;
+use BL\DTO\_Interfaces\IUser;
 use Exception;
 
 interface IRatingDAO
@@ -17,6 +17,13 @@ interface IRatingDAO
      */
     public function getByShow(IShow $show): array;
     /**
+     * Returns with all of the ratings that belong to the given user
+     * @param IUser $user
+     * @return array
+     * @throws Exception
+     */
+    public function getByUser(IUser $user): array;
+    /**
      * Returns with the rating that belong to the given show and user
      * @param IShow $show
      * @param IUser $user
@@ -24,6 +31,13 @@ interface IRatingDAO
      * @throws Exception
      */
     public function getByShowAndUser(IShow $show, IUser $user): ?IRating;
+    /**
+     * Returns with the average rating of the given show
+     * @param IShow $show
+     * @return float
+     * @throws Exception
+     */
+    public function getAverageRatingByShow(IShow $show): float;
 
     /**
      * Creates or updates a rating in the data source

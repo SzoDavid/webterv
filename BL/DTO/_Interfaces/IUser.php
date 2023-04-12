@@ -1,9 +1,6 @@
 <?php
 
-namespace BL\_Interfaces;
-
-use BL\DataSource\_Interfaces\IDataSource;
-use Exception;
+namespace BL\DTO\_Interfaces;
 
 interface IUser
 {
@@ -14,6 +11,7 @@ interface IUser
     public function getPasswordHash(): string;
     public function getEmail(): string;
     public function getProfilePicturePath(): ?string;
+    public function getTimestampOfRegistration(): string;
     public function isAdmin(): bool;
     public function isMuted(): bool;
 

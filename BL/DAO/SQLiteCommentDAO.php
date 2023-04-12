@@ -2,11 +2,11 @@
 
 namespace BL\DAO;
 
-use BL\_Interfaces\IComment;
-use BL\_Interfaces\IShow;
-use BL\Comment;
 use BL\DAO\_Interfaces\IUserDAO;
 use BL\DataSource\SQLiteDataSource;
+use BL\DTO\_Interfaces\IComment;
+use BL\DTO\_Interfaces\IShow;
+use BL\DTO\Comment;
 use Exception;
 
 class SQLiteCommentDAO implements _Interfaces\ICommentDAO

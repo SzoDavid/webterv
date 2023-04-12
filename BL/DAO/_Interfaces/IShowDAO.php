@@ -2,8 +2,8 @@
 
 namespace BL\DAO\_Interfaces;
 
-use BL\_Interfaces\IShow;
-use BL\_Interfaces\IUser;
+use BL\DTO\_Interfaces\IShow;
+use BL\DTO\_Interfaces\IUser;
 use Exception;
 
 interface IShowDAO
@@ -37,12 +37,12 @@ interface IShowDAO
     public function getByUser(IUser $user): array;
 
     /**
-     * If id is null creates a new record, otherwise updates values
+     * If id is null creates a new record, otherwise updates values. Returns with id.
      * @param IShow $show
-     * @return void
+     * @return int
      * @throws Exception
      */
-    public function save(IShow $show): void;
+    public function save(IShow $show): int;
     /**
      * Removes show and all connected references (Comment, Watching)
      * @param IShow $show

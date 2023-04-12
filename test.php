@@ -15,11 +15,9 @@ try {
     $showDAO = $dataSource->createShowDAO();
     $ratingDAO = $dataSource->createRatingDAO();
 
-    $user = $userDAO->getById(1);
-    $show = $showDAO->getById(11);
 
 
-    print_r($ratingDAO->getByShow($show));
+    print_r($userDAO->getAll());
 } catch (Exception $e) {
     echo $e->getMessage();
     return;

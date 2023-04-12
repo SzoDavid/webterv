@@ -1,10 +1,10 @@
 <?php
 
-namespace BL;
+namespace BL\DTO;
 
-use BL\_Interfaces\IRating;
-use BL\_Interfaces\IShow;
-use BL\_Interfaces\IUser;
+use BL\DTO\_Interfaces\IRating;
+use BL\DTO\_Interfaces\IShow;
+use BL\DTO\_Interfaces\IUser;
 
 class Rating implements IRating
 {

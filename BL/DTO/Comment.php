@@ -1,10 +1,10 @@
 <?php
 
-namespace BL;
+namespace BL\DTO;
 
-use BL\_Interfaces\IComment;
-use BL\_Interfaces\IShow;
-use BL\_Interfaces\IUser;
+use BL\DTO\_Interfaces\IComment;
+use BL\DTO\_Interfaces\IShow;
+use BL\DTO\_Interfaces\IUser;
 
 class Comment implements IComment
 {
