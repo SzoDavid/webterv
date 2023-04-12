@@ -33,7 +33,7 @@ try {
 <main>
     <div class="searchBox">
         <form method="GET">
-            <input type="text" name="searchText">
+            <input type="text" name="searchText" value=<?php echo $_GET['searchText'] ?? "" ?>>
             <input type="submit" title="Implementáció a 2. mérföldkőben" value="Keresés">
         </form>
     </div>
