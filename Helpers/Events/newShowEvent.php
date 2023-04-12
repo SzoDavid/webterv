@@ -31,8 +31,8 @@ try {
         trim($_POST['episodes']),
         trim($_POST['description']) ?? null,
         $fileManager->upload($_FILES['cover'], EFileCategories::Cover),
-        (isset($_FILES['trailer'])) ? $fileManager->upload($_FILES['trailer'], EFileCategories::Trailer) : null,
-        (isset($_FILES['ost'])) ? $fileManager->upload($_FILES['ost'], EFileCategories::Ost) : null
+        (isset($_POST['trailer'])) ? $fileManager->upload($_FILES['trailer'], EFileCategories::Trailer) : null,
+        (isset($_POST['ost'])) ? $fileManager->upload($_FILES['ost'], EFileCategories::Ost) : null
     );
 
     $id = $dataSource->createShowDAO()->save($show);

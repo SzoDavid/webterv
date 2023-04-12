@@ -47,9 +47,6 @@ class SQLiteConfigs implements _Interfaces\IDataSourceConfigs
      * @throws Exception
      */
     private function isAbsolutePath(string $path): bool {
-        if (!ctype_print($path)) {
-            throw new Exception('Path can NOT have non-printable characters or be empty');
-        }
         // Optional wrapper(s).
         $regExp = '%^(?<wrappers>(?:[[:print:]]{2,}://)*)';
         // Optional root prefix.

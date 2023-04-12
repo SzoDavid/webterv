@@ -48,7 +48,7 @@ class FileManager implements _Interfaces\IFileManager
 
         //TODO: validate file type
 
-        move_uploaded_file($file["tmp_name"], $target_file);
+        move_uploaded_file($file["tmp_name"], __DIR__ . '/../../' . $target_file);
 
         return $target_file;
     }
