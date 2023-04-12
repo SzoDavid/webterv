@@ -1,6 +1,5 @@
 <?php
 
-use BL\DTO\_Interfaces\IRating;
 use BL\DTO\_Interfaces\IShow;
 
 session_start();
