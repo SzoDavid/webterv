@@ -39,7 +39,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
     public function getBySearchText(string $searchText): array
     {
         // TODO: validate search text
-        $query = $this->dataSource->getDB()->query("SELECT * FROM User WHERE Username LIKE '$searchText'");
+        $query = $this->dataSource->getDB()->query("SELECT * FROM User WHERE Username LIKE '%$searchText%'");
 
         // TODO: remove code duplication
         if (!$query) {

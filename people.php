@@ -1,25 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>BingeVoyage | Emberek</title>
-    <link rel="stylesheet" href="Resources/src/css/style.css">
-    <link rel="icon" type="image/svg" href="Resources/src/img/logo-nobg.svg">
-</head>
-<body>
-<nav>
-    <ul class="navbar">
-        <li><a href="index.html">Főoldal</a></li>
-        <li><a href="shows.html">Sorozatok</a></li>
-        <li><a class="active" href="people.html">Emberek</a></li>
-        <li style="float:right"><a href="profile.html">Próba Ödön</a></li>
-        <li style="float:right"><a class="adminOnly" href="admin.html">Felületkezelés</a></li>
-    </ul>
-</nav>
+<?php
+
+use BL\DTO\_Interfaces\IUser as IUser;
+
+function calculateTime(IUser $user) : float {
+    return round((time() - strtotime($user->getTimestampOfRegistration())) / (60 * 60 * 24));
+}
+
+session_start();
+
+$CURRENT_PAGE = 'people';
+
+require 'Helpers/header.php';
+
+if (!isset($dataSource)) {
+    //TODO: error page
+    die('Oops2');
+}
+
+$userDao = $dataSource->createUserDAO();
+$showDao = $dataSource->createShowDAO();
+
+try {
+    if (isset($_GET['searchText'])) {
+        $users = $userDao->getBySearchText($_GET['searchText']);
+    } else {
+        $users = $userDao->getAll();
+    }
+
+} catch (Exception $e) {
+    die('Oops');
+}
+
+
+
+?>
 <main>
     <div class="searchBox">
         <form method="GET">
-            <input type="text" name="searchText">
+            <input type="text" name="searchText" value=<?php echo $_GET['searchText'] ?? "" ?>>
             <input type="submit" title="Implementáció a 2. mérföldkőben" value="Keresés">
         </form>
     </div>
@@ -33,25 +51,16 @@
             <th>Sorozatok</th>
             <th>Regisztrált</th>
         </tr>
-        <tr onclick="window.location.href = 'profile.html'">
-            <td><img src="Resources/Data/ProfilePictures/pfp.jpg" alt="pfp" width="100" height="100"></td>
-            <td class="title">Próba Ödön</td>
-            <td>3</td>
-            <td>1 hete</td>
-        </tr>
-        <tr onclick="window.location.href = 'tmp/sites/profiles/szobonya.html'">
-            <td><img src="Resources/src/img/pfp2.jpg" alt="pfp" width="100" height="100"></td>
-            <td class="title">Szobonya</td>
-            <td>2</td>
-            <td>2 hete</td>
-        </tr>
-        <tr onclick="window.location.href = 'tmp/sites/profiles/tandi.html'">
-            <td><img src="Resources/src/img/pfp3.jpg" alt="pfp" width="100" height="100"></td>
-            <td class="title">Tandi</td>
-            <td>3</td>
-            <td>5 napja</td>
-        </tr>
+        <?php
+        /* @var $users IUser */
+        foreach ($users as $user) {
+            ?>
+            <tr onclick="window.location.href = 'profile.php?id=<?php echo $user->getId(); ?>'">
+                <td><img src="<?php echo $user->getProfilePicturePath(); ?>" alt="pfp" width="100" height="100"></td>
+                <td class="title"><?php echo $user->getUsername(); ?></td>
+                <td><?php echo count($shows = $showDao->getByUser($user)); ?></td>
+                <td><?php echo  calculateTime($user) == 0 ? "Ma" : calculateTime($user) . " napja" ?></td>
+            </tr>
+        <?php } ?>
     </table>
 </main>
-</body>
-</html>
