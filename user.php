@@ -43,9 +43,7 @@ foreach ($ratings as $rating) {
 <main>
     <div class="oneThreeContainer">
         <div class="left">
-            <?php if ($user->getProfilePicturePath()) { ?>
-                <img class="profilePic" src="<?php $user->getProfilePicturePath() ?>" alt="pfp">
-            <?php } ?>
+            <td><img src="<?php echo $user->getProfilePicturePath() != null ? $user->getProfilePicturePath() : 'Resources/src/img/logo.svg'; ?>" alt="pfp"></td>
             <?php if ($_GET['id'] == $_SESSION['UserId']) { ?>
                 <button onclick="window.location.href='settings.php'">Beállítások</button>
                 <button onclick="window.location.href='logout.php'">Kijelentkezés</button>
