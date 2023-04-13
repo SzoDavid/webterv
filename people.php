@@ -55,7 +55,7 @@ try {
         /* @var $users IUser */
         foreach ($users as $user) {
             ?>
-            <tr onclick="window.location.href = 'profile.php?id=<?php echo $user->getId(); ?>'">
+            <tr onclick="window.location.href = 'user.php?id=<?php echo $user->getId(); ?>'">
                 <td><img src="<?php echo $user->getProfilePicturePath(); ?>" alt="pfp" width="100" height="100"></td>
                 <td class="title"><?php echo $user->getUsername(); ?></td>
                 <td><?php echo count($shows = $showDao->getByUser($user)); ?></td>

@@ -5,9 +5,25 @@ if (isset($_SESSION['UserId'])) {
     exit();
 }
 
-$CURRENT_PAGE = 'login';
+$CURRENT_PAGE = 'registration';
 
 include 'Helpers/header.php';
+
+if (!isset($dataSource)) {
+    //TODO: error page
+    die('Oops2');
+}
+
+$showDao = $dataSource->createShowDAO();
+$ratingDao = $dataSource->createRatingDAO();
+$userDao = $dataSource->createRatingDAO();
+
+try {
+    if (isset($USER)) {
+    }
+} catch (Exception $e) {
+    die('Oops');
+}
 
 ?>
     <main>

@@ -73,6 +73,7 @@ try {
                     <td><?php echo $numWatching; ?></td>
                 </tr>
                 <tr>
+                    <?php if (isset($USER) && $status) { ?>
                     <td>Szintén nézi:</td>
                     <td>
                         <?php
@@ -82,6 +83,7 @@ try {
                             <a href="user.php?id=<?php echo $friend->getId(); ?>"><?php echo $friend->getUsername(); ?></a><br>
                         <?php } ?>
                     </td>
+                    <?php } ?>
                 </tr>
             </table>
             <?php if (isset($USER) && $status) { ?>

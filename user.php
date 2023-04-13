@@ -48,7 +48,7 @@ foreach ($ratings as $rating) {
             <?php } ?>
             <?php if ($_GET['id'] == $_SESSION['UserId']) { ?>
                 <button onclick="window.location.href='settings.php'">Beállítások</button>
-                <button onclick="window.location.href='logout.php'">Kijelentkezés</button>
+                <button onclick="window.location.href='Helpers/Events/logoutEvent.php'">Kijelentkezés</button>
             <?php } ?>
             <table class="infoTable">
                 <tr>

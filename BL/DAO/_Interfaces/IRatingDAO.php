@@ -38,6 +38,13 @@ interface IRatingDAO
      * @throws Exception
      */
     public function getAverageRatingByShow(IShow $show): float;
+    /**
+     * Returns with all of the ratings that belong to the given user and is not up to date
+     * @param IUser $user
+     * @return array
+     * @throws Exception
+     */
+    public function getUnwatchedByUser(IUser $user): array;
 
     /**
      * Creates or updates a rating in the data source

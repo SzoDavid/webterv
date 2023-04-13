@@ -56,8 +56,8 @@ try {
                 <td><img src="<?php echo $show->getCoverPath(); ?>" alt="cover" width="100" height="100"></td>
                 <td class="title"><?php echo $show->getTitle(); ?></td>
                 <td><?php echo $show->getNumEpisodes(); ?></td>
-                <td><?php echo $ratings = $ratingDao->getAverageRatingByShow($show); ?></td>
-                <td><?php echo count($ratings = $ratingDao->getByShow($show)); ?></td>
+                <td><?php echo $ratingDao->getAverageRatingByShow($show); ?>/5</td>
+                <td><?php echo count($ratingDao->getByShow($show)); ?></td>
             </tr>
         <?php } ?>
     </table>
