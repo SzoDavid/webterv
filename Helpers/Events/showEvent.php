@@ -62,7 +62,7 @@ try {
                 ->setTitle($_POST['title'])
                 ->setNumEpisodes($_POST['episodes']);
 
-            if (trim($_POST['description'] != '')) $show->setDescription($_POST['description']);
+            if (!empty(trim($_POST['description']))) $show->setDescription($_POST['description']);
             if (isUploaded('cover')) $show->setCoverPath($fileManager->upload($_FILES['cover'], EFileCategories::Cover));
             if (isUploaded('trailer')) $show->setTrailerPath($fileManager->upload($_FILES['trailer'], EFileCategories::Trailer));
             if (isUploaded('ost')) $show->setOstPath($fileManager->upload($_FILES['ost'], EFileCategories::Ost));

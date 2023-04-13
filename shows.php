@@ -53,11 +53,11 @@ try {
         foreach ($shows as $show) {
             ?>
             <tr onclick="window.location.href = 'show.php?id=<?php echo $show->getId(); ?>'">
-                <td><img src="<?php echo $show->getCoverPath(); ?>" alt="cover" width="100" height="100"></td>
-                <td class="title"><?php echo $show->getTitle(); ?></td>
-                <td><?php echo $show->getNumEpisodes(); ?></td>
-                <td><?php try { echo $ratingDao->getAverageRatingByShow($show); } catch (Exception $e) { echo '-'; } ?>/5</td>
-                <td><?php try { echo count($ratingDao->getByShow($show)); } catch (Exception $e) { echo '-'; } ?></td>
+                <td headers="title"><img class="scalable" src="<?php echo $show->getCoverPath(); ?>" alt="cover" width="100" height="100"></td>
+                <td headers="title" class="title"><?php echo $show->getTitle(); ?></td>
+                <td headers="episodes"><?php echo $show->getNumEpisodes(); ?></td>
+                <td headers="rating"><?php try { echo $ratingDao->getAverageRatingByShow($show); } catch (Exception $e) { echo '-'; } ?>/5</td>
+                <td headers="watching"><?php try { echo count($ratingDao->getByShow($show)); } catch (Exception $e) { echo '-'; } ?></td>
             </tr>
         <?php } ?>
     </table>

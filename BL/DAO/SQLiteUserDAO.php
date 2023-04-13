@@ -42,7 +42,6 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         // TODO: validate search text
         $query = $this->dataSource->getDB()->query("SELECT * FROM User WHERE Username LIKE '%$searchText%'");
 
-        // TODO: remove code duplication
         if (!$query) {
             throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
         }
@@ -100,7 +99,6 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
      */
     public function getFriendsByUser(IUser $user): array
     {
-        // TODO: validate if id is not null
         $id = $user->getId();
 
         $query = $this->dataSource->getDB()->query("SELECT * FROM User WHERE User.Id IN (SELECT FollowedId FROM Following WHERE FollowerId = '$id')");
@@ -124,7 +122,6 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
      */
     public function getFriendsByUserAndShow(IUser $user, IShow $show): array
     {
-        // TODO: validate if ids are not null
         $userId = $user->getId();
         $showId = $show->getId();
 

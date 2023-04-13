@@ -57,7 +57,7 @@ try {
         foreach ($users as $user) {
             ?>
             <tr onclick="window.location.href = 'user.php?id=<?php echo $user->getId(); ?>'">
-                <td><img src="<?php echo $user->getProfilePicturePath(); ?>" alt="pfp" width="100" height="100"></td>
+                <td><img class="scalable" src="<?php echo $user->getProfilePicturePath(); ?>" alt="pfp" width="100" height="100"></td>
                 <td class="title"><?php echo $user->getUsername(); ?></td>
                 <td><?php try { echo count($showDao->getByUser($user)); } catch (Exception $e) { echo '-'; } ?></td>
                 <td><?php echo calculateTime($user) == 0 ? "Ma" : calculateTime($user) . " napja" ?></td>

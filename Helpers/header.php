@@ -35,7 +35,7 @@ if ($CURRENT_PAGE != 'error') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BingeVoyage | Főoldal</title>
+    <title>BingeVoyage</title>
     <link href="Resources/src/css/style.css" rel="stylesheet">
     <link href="Resources/src/img/logo-nobg.svg" rel="icon" type="image/svg">
 </head>

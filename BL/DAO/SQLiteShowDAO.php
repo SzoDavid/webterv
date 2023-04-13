@@ -42,7 +42,6 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
         // TODO: validate search text
         $query = $this->dataSource->getDB()->query("SELECT * FROM Show WHERE Title LIKE '%$searchText%'");
 
-        // TODO: remove code duplication
         if (!$query) {
             throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
         }
@@ -81,7 +80,6 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
      */
     public function getByUser(IUser $user): array
     {
-        // TODO: validate if has id
         $id = $user->getId();
 
         $query = $this->dataSource->getDB()->query("SELECT * FROM Show WHERE Show.Id IN (SELECT ShowId FROM Watching WHERE UserId = '$id')");
