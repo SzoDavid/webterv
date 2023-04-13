@@ -1,3 +1,9 @@
 .idea
 Resources/database.sqlite
+
 Resources/Data
+
+!Resources/Data/Covers/.placeholder
+!Resources/Data/Osts/.placeholder
+!Resources/Data/Pfps/.placeholder
+!Resources/Data/Trailers/.placeholder
