@@ -43,7 +43,7 @@ $showDao = $dataSource->createShowDAO();
 try {
     switch ($_GET['method']) {
         case 'new':
-            $id = $showDao->save( Show::createNewShow(
+            $id = $showDao->save(Show::createNewShow(
                 trim($_POST['title']),
                 trim($_POST['episodes']),
                 trim($_POST['description']) ?? null,
@@ -58,7 +58,16 @@ try {
             }
             $id = $_GET['id'];
 
-            throw new Exception('Not yet implemented');
+            $show = $showDao->getById($id)
+                ->setTitle($_POST['title'])
+                ->setNumEpisodes($_POST['episodes']);
+
+            if (trim($_POST['description'] != '')) $show->setDescription($_POST['description']);
+            if (isUploaded('cover')) $show->setCoverPath($fileManager->upload($_FILES['cover'], EFileCategories::Cover));
+            if (isUploaded('trailer')) $show->setTrailerPath($fileManager->upload($_FILES['trailer'], EFileCategories::Trailer));
+            if (isUploaded('ost')) $show->setOstPath($fileManager->upload($_FILES['ost'], EFileCategories::Ost));
+
+            $showDao->save($show);
             break;
         case 'remove':
             if (!isset($_GET['id'])) {
