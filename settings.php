@@ -1,21 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>BingeVoyage | Beállítások</title>
-    <link rel="stylesheet" href="Resources/src/css/style.css">
-    <link rel="icon" type="image/svg" href="Resources/src/img/logo-nobg.svg">
-</head>
-<body>
-<nav>
-    <ul class="navbar">
-        <li><a href="index.html">Főoldal</a></li>
-        <li><a href="shows.html">Sorozatok</a></li>
-        <li><a href="people.html">Emberek</a></li>
-        <li style="float:right"><a href="profile.html">Próba Ödön</a></li>
-        <li style="float:right"><a class="adminOnly" href="admin.html">Felületkezelés</a></li>
-    </ul>
-</nav>
+<?php
+
+use BL\DTO\_Interfaces\IUser as IUser;
+
+session_start();
+
+$CURRENT_PAGE = 'settings';
+
+require 'Helpers/header.php';
+
+if (!isset($dataSource)) {
+    //TODO: error page
+    die('Oops2');
+}
+
+$userDao = $dataSource->createUserDAO();
+$showDao = $dataSource->createShowDAO();
+
+?>
 <main>
     <div>
         <div class="settingsForm">
@@ -26,6 +27,8 @@
                     <input type="text" id="username" name="username">
                     <label for="email">E-mail cím</label>
                     <input type="email" id="email" name="email">
+                    <label for="pfp">Publikus lista</label>
+                    <input type="checkbox" id="public" name="public">
                     <label for="pfp">Profilkép</label>
                     <input type="file" id="pfp" name="pfp" accept="image/png, image/jpeg">
                 </div>
@@ -53,5 +56,3 @@
         </div>
     </div>
 </main>
-</body>
-</html>

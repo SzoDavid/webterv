@@ -15,11 +15,12 @@ class User implements IUser
     private ?string $timestampOfRegistration;
     private bool $admin;
     private bool $canComment;
+    private bool $public;
     //endregion
 
     //region Constructors
     public function __construct(?int    $id, string $username, string $passwordHash, string $email,
-                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $canComment)
+                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $canComment, bool $public)
     {
         $this->id = $id;
         $this->username = $username;
@@ -29,6 +30,7 @@ class User implements IUser
         $this->timestampOfRegistration = $timestampOfRegistration;
         $this->admin = $admin;
         $this->canComment = $canComment;
+        $this->public = $public;
 
         // TODO: validate values
     }
@@ -37,7 +39,7 @@ class User implements IUser
                                          string $email): IUser
     {
         return new self(null, $username, $passwordHash, $email, null, null,
-            false, false);
+            false, false, true);
     }
     //endregion
 
@@ -81,6 +83,10 @@ class User implements IUser
     {
         return $this->canComment;
     }
+    public function isPublic(): bool
+    {
+        return $this->public;
+    }
     //endregion
 
     //region Setters
@@ -121,6 +127,12 @@ class User implements IUser
     public function setCanComment(bool $isMuted): IUser
     {
         $this->canComment = $isMuted;
+        return $this;
+    }
+
+    public function setPublic(bool $public): IUser
+    {
+        $this->public = $public;
         return $this;
     }
     //endregion
