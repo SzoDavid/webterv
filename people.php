@@ -2,7 +2,8 @@
 
 use BL\DTO\_Interfaces\IUser as IUser;
 
-function calculateTime(IUser $user) : float {
+function calculateTime(IUser $user): float
+{
     return round((time() - strtotime($user->getTimestampOfRegistration())) / (60 * 60 * 24));
 }
 
@@ -32,7 +33,6 @@ try {
 }
 
 
-
 ?>
 <main>
     <div class="searchBox">
@@ -56,14 +56,14 @@ try {
         foreach ($users as $user) {
             ?>
             <tr onclick="window.location.href = 'profile.php?id=<?php echo $user->getId(); ?>'">
-                <td><img src="<?php echo $user->getProfilePicturePath(); ?>" alt="pfp" width="100" height="100"></td>
+                <td><img src="<?php echo $user->getProfilePicturePath() != null ? $user->getProfilePicturePath() : 'Resources/src/img/logo.svg'; ?>" alt="pfp" width="100" height="100"></td>
                 <td class="title"><?php echo $user->getUsername(); ?></td>
                 <td><?php echo count($shows = $showDao->getByUser($user)); ?></td>
-                <td><?php echo  calculateTime($user) == 0 ? "Ma" : calculateTime($user) . " napja" ?></td>
+                <td><?php echo calculateTime($user) == 0 ? "Ma" : calculateTime($user) . " napja" ?></td>
             </tr>
         <?php } ?>
     </table>
 </main>
 <?php
-    include 'Helpers/footer.php';
+include 'Helpers/footer.php';
 ?>
