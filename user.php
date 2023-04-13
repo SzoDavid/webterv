@@ -2,6 +2,7 @@
 
 use BL\DTO\_Interfaces\IRating;
 use BL\DTO\_Interfaces\IUser;
+use BL\_enums\EListVisibility;
 
 session_start();
 
@@ -10,6 +11,9 @@ if (!isset($_GET['id'])) {
     exit();
 }
 
+if (!isset($_SESSION['UserId'])) {
+    header("Location: login.php");
+}
 
 $CURRENT_PAGE = 'user';
 require 'Helpers/header.php';
@@ -39,13 +43,15 @@ foreach ($ratings as $rating) {
     $episodesWatched += $rating->getEpisodesWatched();
 }
 
+$isFriend = false;
+
 ?>
 
 <main>
     <div class="oneThreeContainer">
         <div class="left">
             <?php if ($user->getProfilePicturePath()) { ?>
-                <img class="profilePic" src="<?php $user->getProfilePicturePath() ?>" alt="pfp">
+                <img class="profilePic" src="<?php echo $user->getProfilePicturePath() ?>" alt="pfp">
             <?php } ?>
             <?php if ($_GET['id'] == $_SESSION['UserId']) { ?>
                 <button onclick="window.location.href='settings.php'">Beállítások</button>
@@ -68,23 +74,48 @@ foreach ($ratings as $rating) {
                     <td><?php echo $episodesWatched ?></td>
                 </tr>
                 <?php if ($_GET['id'] == $_SESSION['UserId']) { ?>
-                <tr>
-                    <td>E-mail (privát):</td>
-                    <td><?php echo $user->getEmail() ?></td>
-                </tr>
+                    <tr>
+                        <td>E-mail (privát):</td>
+                        <td><?php echo $user->getEmail() ?></td>
+                    </tr>
                 <?php } ?>
                 <tr>
                     <td>Barátok:</td>
                     <td>
                         <?php
-                            /* @var $friend IUser */
-                            foreach ($friends as $friend) {
-                        ?>
-                            <a href="user.php?id=<?php echo $friend->getId(); ?>"><?php echo $friend->getUsername(); ?></a><br>
+                        /* @var $friend IUser */
+                        foreach ($friends as $friend) {
+                            if ($friend->getId() == $_SESSION['UserId']) {
+                                $isFriend = true;
+                            }
+                            ?>
+                            <a href="user.php?id=<?php echo $friend->getId(); ?>"><?php echo $friend->getUsername(); ?></a>
+                            <br>
                         <?php } ?>
                     </td>
                 </tr>
             </table>
+            <?php if ($_GET['id'] != $_SESSION['UserId'] && isset($USER) && $isFriend) { ?>
+                <table class="infoTable">
+                    <tr>
+                        <form method="POST" action="Helpers/Events/FriendEvent.php?method=remove&id=<?php echo $_GET['id'] ?>" enctype="multipart/form-data">
+                            <td>
+                                <button onclick="window.location.href='settings.php'" class="saveButton">Barát eltávolítása</button>
+                            </td>
+                        </form>
+                    </tr>
+                </table>
+            <?php } else { ?>
+                <table class="infoTable">
+                    <tr>
+                        <form method="POST" action="Helpers/Events/FriendEvent.php?method=add&id=<?php echo $_GET['id'] ?>" enctype="multipart/form-data">
+                            <td>
+                                <button onclick="window.location.href='settings.php'" class="saveButton">Barát hozzáadása</button>
+                            </td>
+                        </form>
+                    </tr>
+                </table>
+            <?php } ?>
             <?php if (isset($_SESSION['UserId']) && $_GET['id'] != $_SESSION['UserId'] && isset($USER) && $USER->isAdmin()) { ?>
                 <table class="adminTable">
                     <tr>
@@ -107,6 +138,8 @@ foreach ($ratings as $rating) {
         </div>
         <div class="right">
             <h1><?php echo $user->getUsername(); ?></h1>
+            <?php if (($_GET['id'] == $_SESSION['UserId']) || (($user->getListVisibility() === EListVisibility::FriendsOnly) && $isFriend)
+            || $user->getListVisibility() === EListVisibility::Public) { ?>
             <h2>Sorozatok</h2>
             <table class="listTable">
                 <colgroup>
@@ -120,16 +153,25 @@ foreach ($ratings as $rating) {
                     <th>Átlag</th>
                 </tr>
                 <?php
-                    /* @var $rating IRating */
-                    foreach ($ratings as $rating) {
-                ?>
+                /* @var $rating IRating */
+                foreach ($ratings as $rating) {
+                    ?>
                     <tr onclick="window.location.href = 'show.php?id=<?php echo $rating->getShow()->getId(); ?>'">
-                        <td><img src="<?php echo $rating->getShow()->getCoverPath(); ?>" alt="cover" width="100" height="100"></td>
+                        <td><img src="<?php echo $rating->getShow()->getCoverPath(); ?>" alt="cover" width="100"
+                                 height="100"></td>
                         <td class="title"><?php echo $rating->getShow()->getTitle(); ?></td>
                         <td><?php echo $rating->getEpisodesWatched() . '/' . $rating->getShow()->getNumEpisodes(); ?></td>
                         <td><?php echo $rating->getRating() ?? '-' ?>/5</td>
-                        <td><?php try { echo $ratingDao->getAverageRatingByShow($rating->getShow()); } catch (Exception $_) { echo '-'; } ?>/5</td>
+                        <td><?php try {
+                                echo $ratingDao->getAverageRatingByShow($rating->getShow());
+                            } catch (Exception $_) {
+                                echo '-';
+                            } ?>/5
+                        </td>
                     </tr>
+                <?php }
+                } else { ?>
+                    <h2>A profil privát!</h2>
                 <?php } ?>
             </table>
         </div>
@@ -137,5 +179,5 @@ foreach ($ratings as $rating) {
 </main>
 
 <?php
-    include 'Helpers/footer.php';
+include 'Helpers/footer.php';
 ?>

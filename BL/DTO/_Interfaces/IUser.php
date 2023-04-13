@@ -2,6 +2,8 @@
 
 namespace BL\DTO\_Interfaces;
 
+use BL\_enums\EListVisibility;
+
 interface IUser
 {
     public static function createNewUser(string $username, string $passwordHash, string $email): IUser;
@@ -14,6 +16,7 @@ interface IUser
     public function getTimestampOfRegistration(): string;
     public function isAdmin(): bool;
     public function canComment(): bool;
+    public function getListVisibility(): EListVisibility;
 
     public function setUsername(string $username): IUser;
     public function setPasswordHash(string $passwordHash): IUser;
@@ -21,4 +24,5 @@ interface IUser
     public function setProfilePicturePath(?string $profilePicturePath): IUser;
     public function setAdmin(bool $isAdmin): IUser;
     public function setCanComment(bool $canComment): IUser;
+    public function setListVisibility(EListVisibility $listVisibility): IUser;
 }
