@@ -72,31 +72,33 @@ try {
                 </tr>
             </table>
             <?php if (isset($USER) && $status) { ?>
-                <table class="infoTable">
-                    <tr>
-                        <th colspan="2">Státusz</th>
-                    </tr>
-                    <tr>
-                        <td>Megnézett epizódok:</td>
-                        <td><input id="watchedEpisodes" type="number" value="<?php echo $status ? $status->getEpisodesWatched() : 0 ?>" min="0" max="10"></td>
-                    </tr>
-                    <tr>
-                        <td>Értékelés:</td>
-                        <td>
-                            <select id="rating">
-                                <option <?php if ($status->getRating() == null || $status->getRating() == 0) echo 'selected' ?>value="-">-</option>
-                                <option <?php if ($status->getRating() == 1) echo 'selected' ?> value="1">1</option>
-                                <option <?php if ($status->getRating() == 2) echo 'selected' ?> value="2">2</option>
-                                <option <?php if ($status->getRating() == 3) echo 'selected' ?> value="3">3</option>
-                                <option <?php if ($status->getRating() == 4) echo 'selected' ?> value="4">4</option>
-                                <option <?php if ($status->getRating() == 5) echo 'selected' ?> value="5">5</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><button class="saveButton">Mentés</button></td>
-                    </tr>
-                </table>
+                <form method="POST" action="Helpers/Events/ratingEvent.php?method=update&id=<?php echo $show->getId(); ?>">
+                    <table class="infoTable">
+                        <tr>
+                            <th colspan="2">Státusz</th>
+                        </tr>
+                        <tr>
+                            <td>Megnézett epizódok:</td>
+                            <td><input name="watchedEpisodes" id="watchedEpisodes" type="number" value="<?php echo $status ? $status->getEpisodesWatched() : 0 ?>" min="0" max="10" required></td>
+                        </tr>
+                        <tr>
+                            <td>Értékelés:</td>
+                            <td>
+                                <select name="rating" id="rating">
+                                    <option <?php if ($status->getRating() == null || $status->getRating() == 0) echo 'selected' ?>value="-">-</option>
+                                    <option <?php if ($status->getRating() == 1) echo 'selected' ?> value="1">1</option>
+                                    <option <?php if ($status->getRating() == 2) echo 'selected' ?> value="2">2</option>
+                                    <option <?php if ($status->getRating() == 3) echo 'selected' ?> value="3">3</option>
+                                    <option <?php if ($status->getRating() == 4) echo 'selected' ?> value="4">4</option>
+                                    <option <?php if ($status->getRating() == 5) echo 'selected' ?> value="5">5</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><button class="saveButton">Mentés</button></td>
+                        </tr>
+                    </table>
+                </form>
                 <?php } if (isset($USER) && $USER->isAdmin()) { ?>
                 <table class="adminTable">
                     <tr>
@@ -135,7 +137,7 @@ try {
                 <div>
                     <?php if (isset($USER) && $USER->canComment()) { ?>
                         <div class="newComment">
-                            <form method="POST" action="Helpers/Events/commentEvent.php?method=new">
+                            <form method="POST" action="Helpers/Events/commentEvent.php?method=new&id=<?php echo $show->getId(); ?>">
                                 <textarea name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
                                 <input type="submit" title="Implementáció a 2. mérföldkőben" value="➤">
                             </form>
@@ -154,9 +156,9 @@ try {
                                     <span class="timestamp"><?php echo $comment->getTime(); ?></span>
                                 </div>
                                 <p><?php echo $comment->getContent(); ?></p>
-                                <?php if (isset($USER) && $USER->isAdmin()) { ?>
+                                <?php if (isset($USER) && ($USER->isAdmin() || $USER->getId() == $comment->getAuthor()->getId() )) { ?>
                                     <div class="adminFunctions">
-                                        <button onclick="window.location.href='Helpers/Events/commentEvent.php?method=remove&id=<?php echo $comment->getId(); ?>'">Törlés</button>
+                                        <button onclick="window.location.href='Helpers/Events/commentEvent.php?method=remove&id=<?php echo $show->getId(); ?>&comment=<?php echo $comment->getId(); ?>'">Törlés</button>
                                     </div>
                                 <?php } ?>
                             </div>

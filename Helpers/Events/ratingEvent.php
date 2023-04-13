@@ -7,6 +7,9 @@ use BL\Factories\DataSourceFactory;
 if (!isset($_GET['method'])) {
     die('`method` must be included in url');
 }
+if (!isset($_GET['id'])) {
+    die('`id` must be included in url');
+}
 
 require_once '../autoloader.php';
 
@@ -29,42 +32,32 @@ $ratingDao = $dataSource->createRatingDAO();
 $showDao = $dataSource->createShowDAO();
 $userDao = $dataSource->createUserDAO();
 
-if ($_GET['method'] == 'remove') {
-    if (!isset($_GET['id'])) {
-        die('`id` must be included in url');
+try {
+    switch ($_GET['method']) {
+        case 'remove':
+            $ratingDao->remove($ratingDao->getByShowAndUser(
+                $showDao->getById($_GET['id']),
+                $userDao->getById($_SESSION['UserId'])
+            ));
+            break;
+        case 'add':
+            $ratingDao->save(Rating::createNewRating(
+                $showDao->getById($_GET['id']),
+                $userDao->getById($_SESSION['UserId'])
+            ));
+            break;
+        case 'update':
+            $ratingDao->save($ratingDao->getByShowAndUser(
+                $showDao->getById($_GET['id']),
+                $userDao->getById($_SESSION['UserId'])
+            )->setRating($_POST['rating'])->setEpisodesWatched($_POST['watchedEpisodes']));
+            break;
+        default:
+            throw new Exception('Unknown method');
     }
-
-    try {
-        $ratingDao->remove($ratingDao->getByShowAndUser(
-            $showDao->getById($_GET['id']),
-            $userDao->getById($_SESSION['UserId'])
-        ));
-    } catch (Exception $exception) {
-        die($exception->getMessage());
-    }
-
-    header('Location: ../../show.php?id=' . $_GET['id']);
+} catch (Exception $exception) {
+    die($exception->getMessage());
 }
 
-if ($_GET['method'] == 'add') {
-    if (!isset($_GET['id'])) {
-        die('`id` must be included in url');
-    }
-
-    try {
-        $ratingDao->save(Rating::createNewRating(
-            $showDao->getById($_GET['id']),
-            $userDao->getById($_SESSION['UserId'])
-        ));
-    } catch (Exception $exception) {
-        die($exception->getMessage());
-    }
-
-    header('Location: ../../show.php?id=' . $_GET['id']);
-}
-
-if ($_GET['method'] == 'update') {
-    die('Not yet implemented');
-}
-
-die('Unknown method');
+header('Location: ../../show.php?id=' . $_GET['id']);
+exit();
