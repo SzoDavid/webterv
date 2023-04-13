@@ -114,6 +114,7 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
 
         return null;
     }
+
     /**
      * @inheritDoc
      */
@@ -133,6 +134,38 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
         }
 
         return ($count != 0) ? (float) $sum / $count : 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUnwatchedByUser(IUser $user): array
+    {
+        // TODO: validate if has id
+        $id = $user->getId();
+
+        $sql = "SELECT Watching.* FROM Watching, Show WHERE Watching.ShowId=Show.Id AND Watching.UserId = '$id' AND Watching.Episodes<Show.NumEpisodes";
+        $query = $this->dataSource->getDB()->query($sql);
+
+        if (!$query) {
+            throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
+        }
+
+        $result = array();
+
+        while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+            try {
+                $show = $this->showDAO->getById($row['ShowId']);
+            } catch (Exception $exception) {
+                throw new Exception('Failed to get show', 0, $exception);
+            }
+
+            if ($show) {
+                $result[] = new Rating($show, $user, $row['Episodes'], ($row['Rating'] == '') ? null : intval($row['Rating']));
+            }
+        }
+
+        return $result;
     }
 
     /**

@@ -1,10 +1,37 @@
 <?php
 
+use BL\DTO\_Interfaces\IRating;
+use BL\DTO\_Interfaces\IShow;
+
 session_start();
 
 $CURRENT_PAGE = 'index';
 
 include 'Helpers/header.php';
+
+if (!isset($dataSource)) {
+    //TODO: error page
+    die('Oops2');
+}
+
+$showDao = $dataSource->createShowDAO();
+$ratingDao = $dataSource->createRatingDAO();
+$userDao = $dataSource->createRatingDAO();
+
+try {
+    if (isset($USER)) {
+        $toWatchRatings = $ratingDao->getUnwatchedByUser($USER);
+        $friendsShows = $showDao->getFriendsShowsByUser($USER);
+    }
+    $shows = $showDao->getAll();
+    $count = count($shows);
+    if ($count != 0) {
+        $recommendedShows = array_rand($shows, min($count, 3));
+        shuffle($recommendedShows);
+    }
+} catch (Exception $e) {
+    die($e->getMessage());
+}
 
 ?>
     <header>
@@ -12,29 +39,35 @@ include 'Helpers/header.php';
         <h1>BingeVoyage</h1>
     </header>
     <main>
+        <?php if (isset($USER)) { ?>
         <div class="oneOneContainer">
             <div class="left">
-                <h2>Pár epizód még vár rád!</h2>
-                <table class="listTable">
-                    <colgroup>
-                        <col span="1" style="width: 100px">
-                        <col span="2">
-                    </colgroup>
-                    <tr class="header">
-                        <th colspan="2">Cím</th>
-                        <th>Megnézendő részek</th>
-                    </tr>
-                    <tr onclick="window.location.href = 'tmp/sites/shows/mob_psycho_100.html'">
-                        <td><img alt="cover" height="100" src="Resources/src/img/mp100.jpg" width="100"></td>
-                        <td class="title">Mop Psycho 100</td>
-                        <td>18</td>
-                    </tr>
-                    <tr onclick="window.location.href = 'tmp/sites/shows/cyberpunk_edgerunners.html'">
-                        <td><img alt="cover" height="100" src="Resources/src/img/cper.jpg" width="100"></td>
-                        <td class="title">Cyberpunk: Edgerunners</td>
-                        <td>6</td>
-                    </tr>
+                <?php if (count($toWatchRatings) == 0) { ?>
+                    <h2>Nincs megnézendő epizód a listádon!</h2>
+                <?php } else { ?>
+                    <h2>Pár epizód még vár rád!</h2>
+                    <table class="listTable">
+                        <colgroup>
+                            <col span="1" style="width: 100px">
+                            <col span="3">
+                        </colgroup>
+                        <tr class="header">
+                            <th colspan="2">Cím</th>
+                            <th>Következő rész</th>
+                            <th>Hátravan</th>
+                        </tr>
+                        <?php
+                            /* @var $toWatchRating IRating */
+                            foreach ($toWatchRatings as $toWatchRating) { ?>
+                            <tr onclick="window.location.href = 'show.php?id=<?php echo $toWatchRating->getShow()->getId(); ?>'">
+                                <td><img alt="cover" height="100" src="<?php echo $toWatchRating->getShow()->getCoverPath(); ?>" width="100"></td>
+                                <td class="title"><?php echo $toWatchRating->getShow()->getTitle(); ?></td>
+                                <td><?php echo $toWatchRating->getEpisodesWatched() + 1; ?></td>
+                                <td><?php echo $toWatchRating->getShow()->getNumEpisodes() - $toWatchRating->getEpisodesWatched(); ?></td>
+                            </tr>
+                        <?php } ?>
                 </table>
+                <?php } ?>
             </div>
             <div class="right">
                 <h2>Barátaid épp ezt nézik</h2>
@@ -47,70 +80,45 @@ include 'Helpers/header.php';
                         <th colspan="2">Cím</th>
                         <th>Értékelés</th>
                     </tr>
-                    <tr onclick="window.location.href = 'tmp/sites/shows/hellsing-ultimate.html'">
-                        <td><img alt="cover" height="100" src="Resources/src/img/hsu.png" width="100"></td>
-                        <td class="title">Hellsing Ultimate</td>
-                        <td>4/5</td>
-                    </tr>
+                    <?php
+                        /* @var $friendsShow IShow */
+                        foreach ($friendsShows as $friendsShow) { ?>
+                        <tr onclick="window.location.href = 'show.php?id=<?php echo $friendsShow->getId(); ?>'">
+                            <td><img alt="cover" height="100" src="<?php echo $friendsShow->getCoverPath(); ?>" width="100"></td>
+                            <td class="title"><?php echo $friendsShow->getTitle(); ?></td>
+                            <td><?php echo $ratingDao->getAverageRatingByShow($friendsShow); ?>/5</td>
+                        </tr>
+                    <?php } ?>
                 </table>
             </div>
         </div>
-        <div>
-            <h2>Ajánló</h2>
-            <div class="equalContainer">
-                <div class="recommendationsElement">
-                    <h3>A Király</h3>
-                    <img src="Resources/src/img/a_kiraly.jpg" alt="cover">
-                    <table class="recommendationPropertiesTable">
-                        <tr>
-                            <th>Epizódok:</th>
-                            <th>Értékelés:</th>
-                            <th>Nézők:</th>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>3,8/5</td>
-                            <td>3</td>
-                        </tr>
-                    </table>
-                    <button onclick="window.location.href='tmp/sites/shows/a_kiraly.html'">Megnézem</button>
-                </div>
-                <div class="recommendationsElement">
-                    <h3>Mob Psycho 100</h3>
-                    <img src="Resources/src/img/mp100.jpg" alt="cover">
-                    <table class="recommendationPropertiesTable">
-                        <tr>
-                            <th>Epizódok:</th>
-                            <th>Értékelés:</th>
-                            <th>Nézők:</th>
-                        </tr>
-                        <tr>
-                            <td>30</td>
-                            <td>4,7/5</td>
-                            <td>2</td>
-                        </tr>
-                    </table>
-                    <button onclick="window.location.href='tmp/sites/shows/mob_psycho_100.html'">Megnézem</button>
-                </div>
-                <div class="recommendationsElement">
-                    <h3>Hellsing Ultimate</h3>
-                    <img src="Resources/src/img/hsu.png" alt="cover">
-                    <table class="recommendationPropertiesTable">
-                        <tr>
-                            <th>Epizódok:</th>
-                            <th>Értékelés:</th>
-                            <th>Nézők:</th>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>4/5</td>
-                            <td>1</td>
-                        </tr>
-                    </table>
-                    <button onclick="window.location.href='tmp/sites/shows/hellsing-ultimate.html'">Megnézem</button>
+        <?php } if (isset($recommendedShows)) { ?>
+            <div>
+                <h2>Ajánló</h2>
+                <div class="equalContainer">
+                <?php
+                    foreach ($recommendedShows as $rsi) { ?>
+                        <div class="recommendationsElement">
+                            <h3><?php echo $shows[$rsi]->getTitle(); ?></h3>
+                            <img src="<?php echo $shows[$rsi]->getCoverPath(); ?>" alt="cover">
+                        <table class="recommendationPropertiesTable">
+                            <tr>
+                                <th>Epizódok:</th>
+                                <th>Értékelés:</th>
+                                <th>Nézők:</th>
+                            </tr>
+                            <tr>
+                                <td><?php echo $shows[$rsi]->getNumEpisodes(); ?></td>
+                                <td><?php echo $ratingDao->getAverageRatingByShow($shows[$rsi]); ?>/5</td>
+                                <td><?php echo count($ratingDao->getByShow($shows[$rsi])); ?></td>
+                            </tr>
+                        </table>
+                        <button onclick="window.location.href='tmp/sites/shows/a_kiraly.html'">Megnézem</button>
+                    </div>
+                <?php } ?>
                 </div>
             </div>
-        </div>
+        <?php } ?>
     </main>
 <?php
 

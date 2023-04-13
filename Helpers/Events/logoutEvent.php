@@ -7,4 +7,4 @@ if (isset($_SESSION['UserId'])) {
     session_destroy();
 }
 
-header('Location: index.php');
+header('Location: ../../index.php');

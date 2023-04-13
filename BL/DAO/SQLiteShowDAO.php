@@ -103,6 +103,31 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
     /**
      * @inheritDoc
      */
+    public function getFriendsShowsByUser(IUser $user): array
+    {
+        $id = $user->getId();
+
+        $query = $this->dataSource->getDB()->query("SELECT * FROM Show WHERE Show.Id IN ("
+            . "SELECT Watching.ShowId FROM Watching, Following WHERE Following.FollowedId=Watching.UserId AND Following.FollowerId='$id' AND Watching.ShowId NOT IN ("
+            . "SELECT ShowId FROM Watching WHERE UserId=$id))");
+
+        if (!$query) {
+            throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
+        }
+
+        $result = array();
+
+        while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+            $result[] = new Show($row['Id'], $row['Title'], $row['NumEpisodes'], $row['Description'],
+                $row['CoverPath'], $row['TrailerPath'], $row['OstPath']);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function save(IShow $show): int
     {
         $showId = $show->getId();
