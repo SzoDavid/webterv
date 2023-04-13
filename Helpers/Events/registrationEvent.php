@@ -10,8 +10,8 @@ try {
     $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
     $dataSource = (new DataSourceFactory($config))->createDataSource();
 } catch (Exception $ex) {
-    //TODO: return with error feedback
-    die($ex->getMessage());
+    header("Location: ../../error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 if ($_POST['password'] !== $_POST['passwordAgain']) {

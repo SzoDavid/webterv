@@ -12,8 +12,8 @@ $CURRENT_PAGE = 'admin';
 include 'Helpers/header.php';
 
 if (!isset($USER) && !isset($dataSource)) {
-    //TODO: error page
-    die('Oops');
+    header("Location: error.php");
+    exit();
 }
 
 if (!$USER->isAdmin()) {
@@ -33,8 +33,9 @@ if (isset($_GET['id'])) {
         $episodes = $show->getNumEpisodes();
         $description = $show->getDescription();
         $id = $_GET['id'];
-    } catch (Exception $e) {
-        die($e->getMessage());
+    } catch (Exception $ex) {
+        header("Location: error.php?msg=" . $ex->getMessage());
+        exit();
     }
 }
 

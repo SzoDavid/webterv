@@ -10,8 +10,8 @@ $CURRENT_PAGE = 'index';
 include 'Helpers/header.php';
 
 if (!isset($dataSource)) {
-    //TODO: error page
-    die('Oops2');
+    header("Location: error.php");
+    exit();
 }
 
 $showDao = $dataSource->createShowDAO();
@@ -29,8 +29,9 @@ try {
         $recommendedShows = array_rand($shows, min($count, 3));
         shuffle($recommendedShows);
     }
-} catch (Exception $e) {
-    die($e->getMessage());
+} catch (Exception $ex) {
+    header("Location: error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 ?>
@@ -86,7 +87,7 @@ try {
                         <tr onclick="window.location.href = 'show.php?id=<?php echo $friendsShow->getId(); ?>'">
                             <td><img alt="cover" height="100" src="<?php echo $friendsShow->getCoverPath(); ?>" width="100"></td>
                             <td class="title"><?php echo $friendsShow->getTitle(); ?></td>
-                            <td><?php echo $ratingDao->getAverageRatingByShow($friendsShow); ?>/5</td>
+                            <td><?php try { echo $ratingDao->getAverageRatingByShow($friendsShow); } catch (Exception $e) { echo '-'; } ?>/5</td>
                         </tr>
                     <?php } ?>
                 </table>
@@ -109,11 +110,11 @@ try {
                             </tr>
                             <tr>
                                 <td><?php echo $shows[$rsi]->getNumEpisodes(); ?></td>
-                                <td><?php echo $ratingDao->getAverageRatingByShow($shows[$rsi]); ?>/5</td>
-                                <td><?php echo count($ratingDao->getByShow($shows[$rsi])); ?></td>
+                                <td><?php try { echo $ratingDao->getAverageRatingByShow($shows[$rsi]); } catch (Exception $e) { echo '-'; } ?>/5</td>
+                                <td><?php try { echo count($ratingDao->getByShow($shows[$rsi])); } catch (Exception $e) { echo '-'; } ?></td>
                             </tr>
                         </table>
-                        <button onclick="window.location.href='tmp/sites/shows/a_kiraly.html'">Megnézem</button>
+                        <button onclick="window.location.href='show.php?id=<?php echo $shows[$rsi]->getId(); ?>'">Megnézem</button>
                     </div>
                 <?php } ?>
                 </div>

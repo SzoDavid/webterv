@@ -6,16 +6,16 @@ use BL\DTO\_Interfaces\IUser;
 session_start();
 
 if (!isset($_GET['id'])) {
-    //TODO: error page
-    die('Oops1');
+    header("Location: error.php?msg=404");
+    exit();
 }
 
 $CURRENT_PAGE = 'show';
 require 'Helpers/header.php';
 
 if (!isset($dataSource) || !isset($userDao)) {
-    //TODO: error page
-    die('Oops2');
+    header("Location: error.php");
+    exit();
 }
 
 $showDao = $dataSource->createShowDAO();
@@ -30,8 +30,9 @@ try {
         $status = $ratingDao->getByShowAndUser($show, $USER);
     }
     $comments = $commentDao->getByShow($show);
-} catch (Exception $e) {
-    die('Oops');
+} catch (Exception $ex) {
+    header("Location: error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 ?>

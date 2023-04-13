@@ -11,8 +11,8 @@ try {
 
     $user = $dataSource->createUserDAO()->getByEmail($_POST['email']);
 } catch (Exception $ex) {
-    //TODO: return with error feedback
-    die($ex->getMessage());
+    header("Location: ../../error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 if ($user == null || !password_verify($_POST['password'], $user->getPasswordHash())) {

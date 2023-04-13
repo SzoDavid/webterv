@@ -24,8 +24,8 @@ try {
     $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
     $dataSource = (new DataSourceFactory($config))->createDataSource();
 } catch (Exception $ex) {
-    //TODO: return with error feedback
-    die($ex->getMessage());
+    header("Location: ../../error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 $commentDao = $dataSource->createCommentDAO();
@@ -58,7 +58,8 @@ try {
             throw new Exception('Unknown method');
     }
 } catch (Exception $exception) {
-    die($exception->getMessage());
+    header("Location: ../../error.php?msg=" . $exception->getMessage());
+    exit();
 }
 
 header('Location: ../../show.php?id=' . $_GET['id']);

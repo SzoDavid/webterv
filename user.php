@@ -6,8 +6,8 @@ use BL\DTO\_Interfaces\IUser;
 session_start();
 
 if (!isset($_GET['id'])) {
-    //TODO: error page
-    die('Oops1');
+    header("Location: error.php?msg=404");
+    exit();
 }
 
 
@@ -15,8 +15,8 @@ $CURRENT_PAGE = 'user';
 require 'Helpers/header.php';
 
 if (!isset($userDao) || !isset($dataSource)) {
-    //TODO: error page
-    die('Oops2');
+    header("Location: error.php");
+    exit();
 }
 
 $showDao = $dataSource->createShowDAO();
@@ -26,8 +26,9 @@ try {
     $user = $userDao->getById($_GET['id']) ?? throw new Exception('404');
     $ratings = $ratingDao->getByUser($user);
     $friends = $userDao->getFriendsByUser($user);
-} catch (Exception $e) {
-    die('Oops');
+} catch (Exception $ex) {
+    header("Location: error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 $daysSinceReg = round((time() - strtotime($user->getTimestampOfRegistration())) / (60 * 60 * 24));

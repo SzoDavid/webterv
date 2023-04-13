@@ -34,8 +34,8 @@ try {
         exit();
     }
 } catch (Exception $ex) {
-    //TODO: return with error feedback
-    die($ex->getMessage());
+    header("Location: ../../error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 $showDao = $dataSource->createShowDAO();
@@ -83,7 +83,8 @@ try {
             throw new Exception('Unknown method');
     }
 } catch (Exception $exception) {
-    die($exception->getMessage());
+    header("Location: ../../error.php?msg=" . $exception->getMessage());
+    exit();
 }
 
 header("Location: ../../show.php?id=$id");

@@ -9,8 +9,8 @@ $CURRENT_PAGE = 'shows';
 require 'Helpers/header.php';
 
 if (!isset($dataSource)) {
-    //TODO: error page
-    die('Oops2');
+    header("Location: error.php");
+    exit();
 }
 
 $showDao = $dataSource->createShowDAO();
@@ -23,9 +23,9 @@ try {
     } else {
         $shows = $showDao->getAll();
     }
-
-} catch (Exception $e) {
-    die('Oops');
+} catch (Exception $ex) {
+    header("Location: error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 ?>
@@ -56,8 +56,8 @@ try {
                 <td><img src="<?php echo $show->getCoverPath(); ?>" alt="cover" width="100" height="100"></td>
                 <td class="title"><?php echo $show->getTitle(); ?></td>
                 <td><?php echo $show->getNumEpisodes(); ?></td>
-                <td><?php echo $ratingDao->getAverageRatingByShow($show); ?>/5</td>
-                <td><?php echo count($ratingDao->getByShow($show)); ?></td>
+                <td><?php try { echo $ratingDao->getAverageRatingByShow($show); } catch (Exception $e) { echo '-'; } ?>/5</td>
+                <td><?php try { echo count($ratingDao->getByShow($show)); } catch (Exception $e) { echo '-'; } ?></td>
             </tr>
         <?php } ?>
     </table>
