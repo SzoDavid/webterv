@@ -35,6 +35,19 @@ try {
 }
 
 ?>
+<script>
+    function removeShow() {
+        if (confirm('Biztosan törölni akarja a sorozatot?')) {
+            window.location.href='Helpers/Events/showEvent.php?method=remove&id=<?php echo $show->getId(); ?>';
+        }
+    }
+
+    function removeComment(id) {
+        if (confirm('Biztosan törölni akarja a hozzászólást?')) {
+            window.location.href='Helpers/Events/commentEvent.php?method=remove&id=<?php echo $show->getId(); ?>&comment=' + id;
+        }
+    }
+</script>
 <main>
     <div class="oneThreeContainer">
         <div class="left">
@@ -105,7 +118,10 @@ try {
                         <th>Moderáció</th>
                     </tr>
                     <tr>
-                        <td><button onclick="window.location.href='Helpers/Events/editShowEvent.php?id=<?php echo $show->getId(); ?>'" class="saveButton">Szerkesztés</button></td>
+                        <td><button onclick="window.location.href='admin.php?id=<?php echo $show->getId(); ?>'" class="saveButton">Szerkesztés</button></td>
+                    </tr>
+                    <tr>
+                        <td><button onclick="removeShow()" class="saveButton">Eltávolítás</button></td>
                     </tr>
                 </table>
             <?php } ?>
@@ -139,7 +155,7 @@ try {
                         <div class="newComment">
                             <form method="POST" action="Helpers/Events/commentEvent.php?method=new&id=<?php echo $show->getId(); ?>">
                                 <textarea name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
-                                <input type="submit" title="Implementáció a 2. mérföldkőben" value="➤">
+                                <input type="submit" value="➤">
                             </form>
                         </div>
                     <?php } else if (count($comments) == 0) { ?>
@@ -158,7 +174,7 @@ try {
                                 <p><?php echo $comment->getContent(); ?></p>
                                 <?php if (isset($USER) && ($USER->isAdmin() || $USER->getId() == $comment->getAuthor()->getId() )) { ?>
                                     <div class="adminFunctions">
-                                        <button onclick="window.location.href='Helpers/Events/commentEvent.php?method=remove&id=<?php echo $show->getId(); ?>&comment=<?php echo $comment->getId(); ?>'">Törlés</button>
+                                        <button onclick="removeComment(<?php echo $comment->getId(); ?>)">Törlés</button>
                                     </div>
                                 <?php } ?>
                             </div>

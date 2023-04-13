@@ -210,8 +210,16 @@ textarea {
     background-color: #DFFFDF;
 }
 
+.infoTable tr:nth-child(odd):not(:first-child) {
+    background-color: #EFFFEF;
+}
+
 .adminTable tr:nth-child(even) {
     background-color: #A99
+}
+
+.adminTable tr:nth-child(odd):not(:first-child) {
+    background-color: #DCC
 }
 
 .adminTable select, .adminTable button {
