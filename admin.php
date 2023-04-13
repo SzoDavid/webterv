@@ -59,6 +59,9 @@ if (isset($_GET['id'])) {
                     <label for="description">Leírás</label>
                     <textarea id="description" name="description" cols="100" rows="10"><?php if ($edit) echo $description; ?></textarea>
                 </div>
+                <?php if (isset($_SESSION['msg'])) { ?>
+                    <p class="hint"><?php echo $_SESSION['msg']?></p>
+                <?php unset($_SESSION['msg']); } ?>
                 <?php if ($edit) { ?>
                     <p class="hint">Az üresen hagyott fájl mezők nem lesznek megváltoztatva.</p>
                 <?php } ?>

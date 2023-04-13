@@ -83,7 +83,22 @@ try {
             throw new Exception('Unknown method');
     }
 } catch (Exception $exception) {
-    header("Location: ../../error.php?msg=" . $exception->getMessage());
+    switch ($exception->getCode()) {
+        case 1:
+            $_SESSION['msg'] = 'A cím nem lehet üres';
+            header((isset($_GET['method']) && $_GET['method'] == 'update') ? "Location: ../../admin.php?id=$id" : 'Location: ../../admin.php');
+            break;
+        case 2:
+            $_SESSION['msg'] = 'Az epizódok száma nem lehet negatív';
+            header((isset($_GET['method']) && $_GET['method'] == 'update') ? "Location: ../../admin.php?id=$id" : 'Location: ../../admin.php');
+            break;
+        case 3:
+            $_SESSION['msg'] = 'A borító kötelező';
+            header('Location: ../../admin.php');
+            break;
+        default:
+            header("Location: ../../error.php?msg=" . $exception->getMessage());
+    }
     exit();
 }
 

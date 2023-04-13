@@ -39,7 +39,8 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
      */
     public function getBySearchText(string $searchText): array
     {
-        // TODO: validate search text
+        if (empty(trim($searchText))) $searchText = '%';
+
         $query = $this->dataSource->getDB()->query("SELECT * FROM Show WHERE Title LIKE '%$searchText%'");
 
         if (!$query) {
