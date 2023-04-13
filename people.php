@@ -38,7 +38,7 @@ try {
     <div class="searchBox">
         <form method="GET">
             <input type="text" name="searchText" value=<?php echo $_GET['searchText'] ?? "" ?>>
-            <input type="submit" title="Implementáció a 2. mérföldkőben" value="Keresés">
+            <input type="submit" value="Keresés">
         </form>
     </div>
     <table class="listTable">
@@ -55,7 +55,7 @@ try {
         /* @var $users IUser */
         foreach ($users as $user) {
             ?>
-            <tr onclick="window.location.href = 'profile.php?id=<?php echo $user->getId(); ?>'">
+            <tr onclick="window.location.href = 'user.php?id=<?php echo $user->getId(); ?>'">
                 <td><img src="<?php echo $user->getProfilePicturePath() != null ? $user->getProfilePicturePath() : 'Resources/src/img/logo.svg'; ?>" alt="pfp" width="100" height="100"></td>
                 <td class="title"><?php echo $user->getUsername(); ?></td>
                 <td><?php echo count($shows = $showDao->getByUser($user)); ?></td>
