@@ -191,7 +191,15 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
             $sql = "UPDATE User SET Username = '$username', Email = '$email', Password = '$password', ProfilePicturePath = '$pfpPath', IsAdmin = '$admin', CanComment = '$canComment' WHERE Id = '$userId'";
         }
         if (!$this->dataSource->getDB()->exec($sql)) {
-            throw new Exception('Could not update database ' . $this->dataSource->getDB()->lastErrorMsg());
+            $msg = $this->dataSource->getDB()->lastErrorMsg();
+            $code = 0;
+
+            if (str_contains($msg, 'UNIQUE')) {
+                if (str_contains($msg, 'User.Email')) $code = 1;
+                else $code = 2;
+            }
+
+            throw new Exception('Could not update database: ' . $msg, $code);
         }
 
         return $userId ?? $this->dataSource->getDB()->lastInsertRowID();
