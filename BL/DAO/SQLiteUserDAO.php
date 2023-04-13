@@ -209,6 +209,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
     public function remove(IUser $user): void
     {
         $userId = $user->getId();
+
         $sql = "DELETE FROM User WHERE Id = '$userId'; " .
             "DELETE FROM Following WHERE FollowerId = '$userId' OR FollowedId = '$userId'; " .
             "DELETE FROM Comment WHERE UserId = '$userId'; " .
@@ -216,6 +217,10 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         if (!$this->dataSource->getDB()->exec($sql)) {
             throw new Exception('Could not update database: ' . $this->dataSource->getDB()->lastErrorMsg());
+        }
+
+        if ($user->getProfilePicturePath()) {
+            unlink('../../' . $user->getProfilePicturePath());
         }
     }
     //endregion

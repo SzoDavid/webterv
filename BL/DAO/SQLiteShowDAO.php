@@ -162,6 +162,10 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
         if (!$this->dataSource->getDB()->exec($sql)) {
             throw new Exception('Could not update database: ' . $this->dataSource->getDB()->lastErrorMsg());
         }
+
+        if ($show->getOstPath()) unlink('../../' . $show->getOstPath());
+        if ($show->getTrailerPath()) unlink('../../' . $show->getTrailerPath());
+        if ($show->getCoverPath()) unlink('../../' . $show->getCoverPath());
     }
     //endregion
 }
