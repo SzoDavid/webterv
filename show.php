@@ -157,7 +157,7 @@ try {
                     <?php if (isset($USER) && $USER->canComment()) { ?>
                         <div class="newComment">
                             <form method="POST" action="Helpers/Events/commentEvent.php?method=new&id=<?php echo $show->getId(); ?>">
-                                <textarea name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
+                                <textarea required name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
                                 <input type="submit" value="➤">
                             </form>
                         </div>

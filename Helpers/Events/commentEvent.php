@@ -58,8 +58,10 @@ try {
             throw new Exception('Unknown method');
     }
 } catch (Exception $exception) {
-    header("Location: ../../error.php?msg=" . $exception->getMessage());
-    exit();
+    if ($exception->getCode() != 1) {
+        header("Location: ../../error.php?msg=" . $exception->getMessage());
+        exit();
+    }
 }
 
 header('Location: ../../show.php?id=' . $_GET['id']);

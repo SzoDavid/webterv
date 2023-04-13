@@ -5,6 +5,7 @@ namespace BL\DTO;
 use BL\DTO\_Interfaces\IComment;
 use BL\DTO\_Interfaces\IShow;
 use BL\DTO\_Interfaces\IUser;
+use Exception;
 
 class Comment implements IComment
 {
@@ -24,11 +25,16 @@ class Comment implements IComment
         $this->author = $author;
         $this->content = $content;
         $this->time = $time;
-        // TODO: validate
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function createNewComment(IShow $show, IUser $author, string $content): IComment
     {
+        if (!$show->getId()) throw new Exception('Show does not exist in data source');
+        if (!$author->getId()) throw new Exception('User does not exist in data source');
+        if (empty(trim($content))) throw new Exception('Comment cannot be empty', 1);
         return new self(null, $show, $author, $content, null);
     }
     //endregion
@@ -61,23 +67,12 @@ class Comment implements IComment
     //endregion
 
     //region Setters
-    public function setShow(IShow $show): IComment
-    {
-        // TODO: validate
-        $this->show = $show;
-        return $this;
-    }
-
-    public function setAuthor(IUser $author): IComment
-    {
-        // TODO: validate
-        $this->author = $author;
-        return $this;
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function setContent(string $content): IComment
     {
-        // TODO: validate
+        if (empty(trim($content))) throw new Exception('Comment cannot be empty', 1);
         $this->content = $content;
         return $this;
     }
