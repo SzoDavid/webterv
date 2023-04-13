@@ -43,7 +43,9 @@ foreach ($ratings as $rating) {
 <main>
     <div class="oneThreeContainer">
         <div class="left">
-            <td><img src="<?php echo $user->getProfilePicturePath() != null ? $user->getProfilePicturePath() : 'Resources/src/img/logo.svg'; ?>" alt="pfp"></td>
+            <?php if ($user->getProfilePicturePath()) { ?>
+                <img class="profilePic" src="<?php echo $user->getProfilePicturePath() ?>" alt="pfp">
+            <?php } ?>
             <?php if ($_GET['id'] == $_SESSION['UserId']) { ?>
                 <button onclick="window.location.href='settings.php'">Beállítások</button>
                 <button onclick="window.location.href='logout.php'">Kijelentkezés</button>
@@ -66,34 +68,18 @@ foreach ($ratings as $rating) {
                 </tr>
                 <?php if ($_GET['id'] == $_SESSION['UserId']) { ?>
                 <tr>
-                    <?php if (!$user->isPublic()) { ?>
-                        <td>E-mail (privát):</td>
-                        <td><?php echo $user->getEmail() ?></td>
-                    <?php }else{ ?>
-                        <td>E-mail:</td>
-                        <td><?php echo $user->getEmail() ?></td>
-                    <?php } ?>
+                    <td>E-mail (privát):</td>
+                    <td><?php echo $user->getEmail() ?></td>
                 </tr>
-            <?php }else{?>
-                <tr>
-                    <?php if (!$user->isPublic()) { ?>
-                        <td>E-mail:</td>
-                        <td><?php echo $user->getEmail() ?></td>
-                    <?php }else{ ?>
-                        <td>E-mail:</td>
-                        <td><em>privát</em></td>
-                    <?php } ?>
-                </tr>
-                <?php }?>
+                <?php } ?>
                 <tr>
                     <td>Barátok:</td>
                     <td>
                         <?php
-                        /* @var $friend IUser */
-                        foreach ($friends as $friend) {
-                            ?>
-                            <a href="user.php?id=<?php echo $friend->getId(); ?>"><?php echo $friend->getUsername(); ?></a>
-                            <br>
+                            /* @var $friend IUser */
+                            foreach ($friends as $friend) {
+                        ?>
+                            <a href="user.php?id=<?php echo $friend->getId(); ?>"><?php echo $friend->getUsername(); ?></a><br>
                         <?php } ?>
                     </td>
                 </tr>
@@ -104,9 +90,7 @@ foreach ($ratings as $rating) {
                         <th>Moderáció</th>
                     </tr>
                     <tr>
-                        <td>
-                            <button class="saveButton">Bannolás</button>
-                        </td>
+                        <td><button class="saveButton">Bannolás</button></td>
                     </tr>
                 </table>
             <?php } ?>
@@ -126,21 +110,15 @@ foreach ($ratings as $rating) {
                     <th>Átlag</th>
                 </tr>
                 <?php
-                /* @var $rating IRating */
-                foreach ($ratings as $rating) {
-                    ?>
+                    /* @var $rating IRating */
+                    foreach ($ratings as $rating) {
+                ?>
                     <tr onclick="window.location.href = 'show.php?id=<?php echo $rating->getShow()->getId(); ?>'">
-                        <td><img src="<?php echo $rating->getShow()->getCoverPath(); ?>" alt="cover" width="100"
-                                 height="100"></td>
+                        <td><img src="<?php echo $rating->getShow()->getCoverPath(); ?>" alt="cover" width="100" height="100"></td>
                         <td class="title"><?php echo $rating->getShow()->getTitle(); ?></td>
                         <td><?php echo $rating->getEpisodesWatched() . '/' . $rating->getShow()->getNumEpisodes(); ?></td>
                         <td><?php echo $rating->getRating() ?? '-' ?>/5</td>
-                        <td><?php try {
-                                echo $ratingDao->getAverageRatingByShow($rating->getShow());
-                            } catch (Exception $_) {
-                                echo '-';
-                            } ?>/5
-                        </td>
+                        <td><?php try { echo $ratingDao->getAverageRatingByShow($rating->getShow()); } catch (Exception $_) { echo '-'; } ?>/5</td>
                     </tr>
                 <?php } ?>
             </table>
@@ -149,5 +127,5 @@ foreach ($ratings as $rating) {
 </main>
 
 <?php
-include 'Helpers/footer.php';
+    include 'Helpers/footer.php';
 ?>
