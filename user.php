@@ -97,6 +97,7 @@ foreach ($ratings as $rating) {
         </div>
         <div class="right">
             <h1><?php echo $user->getUsername(); ?></h1>
+            <?php if (($_GET['id'] == $_SESSION['UserId']) || ($_GET['id'] != $_SESSION['UserId'] && $user->isPublic())) { ?>
             <h2>Sorozatok</h2>
             <table class="listTable">
                 <colgroup>
@@ -120,6 +121,8 @@ foreach ($ratings as $rating) {
                         <td><?php echo $rating->getRating() ?? '-' ?>/5</td>
                         <td><?php try { echo $ratingDao->getAverageRatingByShow($rating->getShow()); } catch (Exception $_) { echo '-'; } ?>/5</td>
                     </tr>
+                <?php }} else { ?>
+                    <h2>A profil privát!</h2>
                 <?php } ?>
             </table>
         </div>
