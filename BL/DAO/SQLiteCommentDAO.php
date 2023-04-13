@@ -28,6 +28,33 @@ class SQLiteCommentDAO implements _Interfaces\ICommentDAO
     /**
      * @inheritDoc
      */
+    public function getById(int $id): ?IComment
+    {
+        $sql = "SELECT * FROM Comment WHERE Id = '$id'";
+        $query = $this->dataSource->getDB()->query($sql);
+
+        if (!$query) {
+            throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
+        }
+
+        if ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+            try {
+                $user = $this->userDAO->getById($row['UserId']);
+            } catch (Exception $exception) {
+                throw new Exception('Failed to get user', 0, $exception);
+            }
+
+            if ($user) {
+                return new Comment($row['Id'], null, $user, $row['Content'], $row['DateTime']);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getByShow(IShow $show): array
     {
         // TODO: validate if has id
@@ -50,7 +77,7 @@ class SQLiteCommentDAO implements _Interfaces\ICommentDAO
             }
 
             if ($user) {
-                $result[] = new Comment($row['Id'], null, $user, $row['content'], $row['time']);
+                $result[] = new Comment($row['Id'], null, $user, $row['Content'], $row['DateTime']);
             }
         }
 

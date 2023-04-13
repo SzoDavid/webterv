@@ -9,6 +9,13 @@ use Exception;
 interface ICommentDAO
 {
     /**
+     * Returns the comment with the given id or null
+     * @param int $id
+     * @return ?IComment
+     * @throws Exception
+     */
+    public function getById(int $id): ?IComment;
+    /**
      * Returns all the comments that belong to the given show
      * @param IShow $show
      * @return array

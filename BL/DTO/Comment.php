@@ -13,11 +13,11 @@ class Comment implements IComment
     private ?IShow $show;
     private IUser $author;
     private string $content;
-    private string $time;
+    private ?string $time;
     //endregion
 
     //region Constructors
-    public function __construct(?int $id, ?IShow $show, IUser $author, string $content, string $time)
+    public function __construct(?int $id, ?IShow $show, IUser $author, string $content, ?string $time)
     {
         $this->id = $id;
         $this->show = $show;

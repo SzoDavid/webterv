@@ -14,6 +14,10 @@ try {
     die($ex->getMessage());
 }
 
+if ($_POST['password'] !== $_POST['passwordAgain']) {
+    die('fucking retard');
+}
+
 $userDAO = $dataSource->createUserDAO();
 $user = User::createNewUser(
     $_POST['username'],
