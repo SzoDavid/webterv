@@ -53,8 +53,23 @@ try {
             ));
             break;
         case 'update':
+            if (!isset($_GET['id'])) {
+                die('`id` must be included in url');
+            }
+            $id = $_GET['id'];
 
+            throw new Exception('Not yet implemented');
             break;
+        case 'remove':
+            if (!isset($_GET['id'])) {
+                die('`id` must be included in url');
+            }
+            $id = $_GET['id'];
+
+            $showDao->remove($showDao->getById($id));
+
+            header("Location: ../../index.php");
+            exit();
         default:
             throw new Exception('Unknown method');
     }
