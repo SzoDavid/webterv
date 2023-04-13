@@ -19,7 +19,10 @@ include 'Helpers/header.php';
             <form method="POST" action="Helpers/Events/loginEvent.php">
                 <input type="email" name="email" placeholder="E-mail" required><br>
                 <input type="password" name="password" placeholder="Jelszó" required><br>
-                <input type="submit" title="Implementáció a 2. mérföldkőben" value="Bejelentkezés">
+                <?php if (isset($_SESSION['msg'])) { ?>
+                    <p class="hint"><?php echo $_SESSION['msg']?></p>
+                <?php unset($_SESSION['msg']); } ?>
+                <input type="submit" value="Bejelentkezés">
             </form>
             <p>Még nincs fiókod? <a href="registration.php">Regisztrálj!</a></p>
         </div>

@@ -73,7 +73,7 @@ interface IUserDAO
      * If id is null creates a new record with the given uname, email and password, otherwise updates all values. Returns with the id of the record.
      * @param IUser $user
      * @return int
-     * @throws Exception
+     * @throws Exception Code 1 if email is used and 2 if username is used
      */
     public function save(IUser $user): int;
     /**

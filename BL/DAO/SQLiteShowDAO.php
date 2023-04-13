@@ -39,10 +39,10 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
      */
     public function getBySearchText(string $searchText): array
     {
-        // TODO: validate search text
+        if (empty(trim($searchText))) $searchText = '%';
+
         $query = $this->dataSource->getDB()->query("SELECT * FROM Show WHERE Title LIKE '%$searchText%'");
 
-        // TODO: remove code duplication
         if (!$query) {
             throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
         }
@@ -81,7 +81,6 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
      */
     public function getByUser(IUser $user): array
     {
-        // TODO: validate if has id
         $id = $user->getId();
 
         $query = $this->dataSource->getDB()->query("SELECT * FROM Show WHERE Show.Id IN (SELECT ShowId FROM Watching WHERE UserId = '$id')");
@@ -163,6 +162,10 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
         if (!$this->dataSource->getDB()->exec($sql)) {
             throw new Exception('Could not update database: ' . $this->dataSource->getDB()->lastErrorMsg());
         }
+
+        if ($show->getOstPath()) unlink('../../' . $show->getOstPath());
+        if ($show->getTrailerPath()) unlink('../../' . $show->getTrailerPath());
+        if ($show->getCoverPath()) unlink('../../' . $show->getCoverPath());
     }
     //endregion
 }

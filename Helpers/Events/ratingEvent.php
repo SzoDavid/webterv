@@ -24,8 +24,8 @@ try {
     $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
     $dataSource = (new DataSourceFactory($config))->createDataSource();
 } catch (Exception $ex) {
-    //TODO: return with error feedback
-    die($ex->getMessage());
+    header("Location: ../../error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 $ratingDao = $dataSource->createRatingDAO();
@@ -47,6 +47,11 @@ try {
             ));
             break;
         case 'update':
+            if (!isset($_POST['rating']) || !isset($_POST['watchedEpisodes'])) {
+                header('Location: ../../show.php?id=' . $_GET['id']);
+                exit();
+            }
+
             $ratingDao->save($ratingDao->getByShowAndUser(
                 $showDao->getById($_GET['id']),
                 $userDao->getById($_SESSION['UserId'])
@@ -56,7 +61,10 @@ try {
             throw new Exception('Unknown method');
     }
 } catch (Exception $exception) {
-    die($exception->getMessage());
+    if ($exception->getCode() != 1) {
+        header("Location: ../../error.php?msg=" . $exception->getMessage());
+        exit();
+    }
 }
 
 header('Location: ../../show.php?id=' . $_GET['id']);

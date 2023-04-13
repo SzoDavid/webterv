@@ -33,7 +33,6 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
      */
     public function getByShow(IShow $show): array
     {
-        // TODO: validate if has id
         $id = $show->getId();
 
         $sql = "SELECT * FROM Watching WHERE ShowId = '$id'";
@@ -65,7 +64,6 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
      */
     public function getByUser(IUser $user): array
     {
-        // TODO: validate if has id
         $id = $user->getId();
 
         $sql = "SELECT * FROM Watching WHERE UserId = '$id'";
@@ -97,7 +95,6 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
      */
     public function getByShowAndUser(IShow $show, IUser $user): ?IRating
     {
-        // TODO: validate if has id
         $showId = $show->getId();
         $userId = $user->getId();
 
@@ -141,7 +138,6 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
      */
     public function getUnwatchedByUser(IUser $user): array
     {
-        // TODO: validate if has id
         $id = $user->getId();
 
         $sql = "SELECT Watching.* FROM Watching, Show WHERE Watching.ShowId=Show.Id AND Watching.UserId = '$id' AND Watching.Episodes<Show.NumEpisodes";

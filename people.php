@@ -13,8 +13,8 @@ $CURRENT_PAGE = 'people';
 require 'Helpers/header.php';
 
 if (!isset($dataSource)) {
-    //TODO: error page
-    die('Oops2');
+    header("Location: error.php");
+    exit();
 }
 
 $userDao = $dataSource->createUserDAO();
@@ -27,8 +27,9 @@ try {
         $users = $userDao->getAll();
     }
 
-} catch (Exception $e) {
-    die('Oops');
+} catch (Exception $ex) {
+    header("Location: error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 
@@ -38,7 +39,7 @@ try {
     <div class="searchBox">
         <form method="GET">
             <input type="text" name="searchText" value=<?php echo $_GET['searchText'] ?? "" ?>>
-            <input type="submit" title="Implementáció a 2. mérföldkőben" value="Keresés">
+            <input type="submit" value="Keresés">
         </form>
     </div>
     <table class="listTable">
@@ -56,10 +57,10 @@ try {
         foreach ($users as $user) {
             ?>
             <tr onclick="window.location.href = 'user.php?id=<?php echo $user->getId(); ?>'">
-                <td><img src="<?php echo $user->getProfilePicturePath(); ?>" alt="pfp" width="100" height="100"></td>
+                <td><img class="scalable" src="<?php echo $user->getProfilePicturePath(); ?>" alt="pfp" width="100" height="100"></td>
                 <td class="title"><?php echo $user->getUsername(); ?></td>
-                <td><?php echo count($shows = $showDao->getByUser($user)); ?></td>
-                <td><?php echo  calculateTime($user) == 0 ? "Ma" : calculateTime($user) . " napja" ?></td>
+                <td><?php try { echo count($showDao->getByUser($user)); } catch (Exception $e) { echo '-'; } ?></td>
+                <td><?php echo calculateTime($user) == 0 ? "Ma" : calculateTime($user) . " napja" ?></td>
             </tr>
         <?php } ?>
     </table>
