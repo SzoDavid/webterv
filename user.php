@@ -127,7 +127,5 @@ foreach ($ratings as $rating) {
 </main>
 
 <?php
-
-include 'Helpers/footer.php';
-
+    include 'Helpers/footer.php';
 ?>
