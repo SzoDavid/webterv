@@ -51,7 +51,7 @@ if ($CURRENT_PAGE != 'error') {
                 <li style="float:right"><a <?php if ($CURRENT_PAGE == 'admin') { ?>class="active"<?php } ?> class="adminOnly" href="admin.php">Felületkezelés</a></li>
             <?php } ?>
         <?php } else if ($CURRENT_PAGE != 'error') { ?>
-            <li style="float:right"><a <?php if ($CURRENT_PAGE == 'login' || $CURRENT_PAGE == 'registration') { ?>class="active"<?php } ?> href="login.php"><?php echo ($CURRENT_PAGE == 'login') ? 'Bejelentkezés' : 'Regisztráció' ?></a></li>
+            <li style="float:right"><a <?php if ($CURRENT_PAGE == 'login' || $CURRENT_PAGE == 'registration') { ?>class="active"<?php } ?> href="login.php"><?php echo ($CURRENT_PAGE == 'registration') ? 'Regisztráció' : 'Bejelentkezés' ?></a></li>
         <?php } ?>
     </ul>
 </nav>
