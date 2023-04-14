@@ -78,7 +78,7 @@ class SQLiteDataSource implements IDataSource
                             IsAdmin            INTEGER default 0 not null,
                             CanComment         INTEGER default 1 not null,
                             Registration       TEXT default CURRENT_TIMESTAMP not null,
-                            Public             INTEGER default 1                 not null
+                            Public             INTEGER default 2                 not null
                         )',
                      'CREATE TABLE IF NOT EXISTS Watching
                         (

@@ -39,7 +39,7 @@ class User implements IUser
                                          string $email): IUser
     {
         return new self(null, $username, $passwordHash, $email, null, null,
-            false, false, true);
+            false, false, 2);
     }
     //endregion
 
