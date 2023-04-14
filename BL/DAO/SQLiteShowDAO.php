@@ -140,6 +140,14 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
         if ($showId == null) {
             $sql = "INSERT INTO Show (Title, NumEpisodes, Description, CoverPath, TrailerPath, OstPath) VALUES ('$title', '$numEpisodes', '$description', '$coverPath', '$trailerPath', '$ostPath')";
         } else {
+            try {
+                $oldShow = $this->getById($showId);
+                if ($oldShow->getOstPath() && $show->getOstPath() != $oldShow->getOstPath()) unlink('../../' . $oldShow->getOstPath());
+                if ($oldShow->getTrailerPath() && $show->getTrailerPath() != $oldShow->getTrailerPath()) unlink('../../' . $oldShow->getTrailerPath());
+                if ($oldShow->getCoverPath() && $show->getCoverPath() != $oldShow->getCoverPath()) unlink('../../' . $oldShow->getCoverPath());
+            } catch (Exception $ex) {
+                throw  new Exception('Failed to get old data from database', 0, $ex);
+            }
             $sql = "UPDATE Show SET Title = '$title', NumEpisodes = '$numEpisodes', Description = '$description', CoverPath = '$coverPath', TrailerPath = '$trailerPath', OstPath = '$ostPath' WHERE Id = '$showId'";
         }
         if (!$this->dataSource->getDB()->exec($sql)) {

@@ -186,6 +186,12 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         if ($userId == null) {
             $sql = "INSERT INTO User (Username, Email, Password) VALUES ('$username', '$email', '$password')";
         } else {
+            try {
+                $oldUser = $this->getById($userId);
+                if ($oldUser->getProfilePicturePath() && $oldUser->getProfilePicturePath() != $user->getProfilePicturePath()) unlink('../../' . $user->getProfilePicturePath());
+            } catch (Exception $ex) {
+                throw  new Exception('Failed to get old data from database', 0, $ex);
+            }
             $sql = "UPDATE User SET Username = '$username', Email = '$email', Password = '$password', ProfilePicturePath = '$pfpPath', IsAdmin = '$admin', CanComment = '$canComment' WHERE Id = '$userId'";
         }
         if (!$this->dataSource->getDB()->exec($sql)) {
