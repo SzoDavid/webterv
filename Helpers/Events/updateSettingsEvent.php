@@ -39,21 +39,24 @@ try {
             if (trim($_POST['public'] != '')) $user->setPublicStatus($_POST['public']);
             if (isUploaded('pfp')) $user->setProfilePicturePath($fileManager->upload($_FILES['pfp'], EFileCategories::Pfp));
 
+            if ($_POST['oldPass'] != '' && password_verify($_POST['oldPass'], $user->getPasswordHash()) && $_POST['password'] == $_POST['passwordAgain']) {
 
+                $user->setPasswordHash(password_hash($_POST['password'], PASSWORD_DEFAULT));
+            }
 
             $userDAO->save($user);
             break;
         case 'remove':
 
             $userDAO->remove($userDAO->getById($_SESSION['UserId']));
-            header("Location: ../../people.php");
+            header("Location: ../../index.php");
             session_unset();
             session_destroy();
             exit();
         default:
-            {
-                throw new Exception('Unknown method');
-            }
+        {
+            throw new Exception('Unknown method');
+        }
 
     }
 } catch (Exception $exception) {
