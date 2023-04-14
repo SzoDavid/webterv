@@ -2,6 +2,7 @@
 
 namespace BL\DTO;
 
+use BL\_enums\EListVisibility;
 use BL\DTO\_Interfaces\IUser;
 
 class User implements IUser
@@ -15,12 +16,12 @@ class User implements IUser
     private ?string $timestampOfRegistration;
     private bool $admin;
     private bool $canComment;
-    private int $public;
+    private EListVisibility $listVisibility;
     //endregion
 
     //region Constructors
     public function __construct(?int    $id, string $username, string $passwordHash, string $email,
-                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $canComment, int $public)
+                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $canComment, EListVisibility $listVisibility)
     {
         $this->id = $id;
         $this->username = $username;
@@ -30,7 +31,7 @@ class User implements IUser
         $this->timestampOfRegistration = $timestampOfRegistration;
         $this->admin = $admin;
         $this->canComment = $canComment;
-        $this->public = $public;
+        $this->listVisibility = $listVisibility;
 
         // TODO: validate values
     }
@@ -39,7 +40,7 @@ class User implements IUser
                                          string $email): IUser
     {
         return new self(null, $username, $passwordHash, $email, null, null,
-            false, false, 2);
+            false, false, EListVisibility::Public);
     }
     //endregion
 
@@ -83,9 +84,9 @@ class User implements IUser
     {
         return $this->canComment;
     }
-    public function getPublicStatus(): int
+    public function getListVisibility(): EListVisibility
     {
-        return $this->public;
+        return $this->listVisibility;
     }
     //endregion
 
@@ -130,9 +131,9 @@ class User implements IUser
         return $this;
     }
 
-    public function setPublicStatus(int $public): IUser
+    public function setListVisibility(EListVisibility $listVisibility): IUser
     {
-        $this->public = $public;
+        $this->listVisibility = $listVisibility;
         return $this;
     }
     //endregion

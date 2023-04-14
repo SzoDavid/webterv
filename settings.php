@@ -1,5 +1,7 @@
 <?php
 
+use BL\_enums\EListVisibility;
+
 session_start();
 
 $CURRENT_PAGE = 'settings';
@@ -26,7 +28,7 @@ try {
 
     $username = $user->getUsername();
     $email = $user->getEmail();
-    $publicStatus = $user->getPublicStatus();
+    $listVisibility = $user->getListVisibility();
 
     $id = $_SESSION['UserId'];
 } catch (Exception $e) {
@@ -52,12 +54,10 @@ try {
                     <label for="email">E-mail cím</label>
                     <input <?php echo "value=\"$email\""; ?> type="email" id="email" name="email">
                     <label for="pfp">Publikus lista</label>
-                    <select id="public" name="public">
-                        <option value="0" <?php if ($publicStatus == 0) echo "selected=selected"; ?>>Privát</option>
-                        <option value="1" <?php if ($publicStatus == 1) echo "selected=selected"; ?>>Csak
-                            barátoknak
-                        </option>
-                        <option value="2" <?php if ($publicStatus == 2) echo "selected=selected"; ?>>Publikus
+                    <select id="visibility" name="visibility">
+                        <option value="0" <?php if ($listVisibility == EListVisibility::Private) echo "selected=selected"; ?>>Privát</option>
+                        <option value="1" <?php if ($listVisibility == EListVisibility::FriendsOnly) echo "selected=selected"; ?>>Csak barátoknak</option>
+                        <option value="2" <?php if ($listVisibility == EListVisibility::Public) echo "selected=selected"; ?>>Publikus
                         </option>
                         <label for="pfp">Profilkép</label>
                         <input type="file" id="pfp" name="pfp" accept="image/png, image/jpeg">
@@ -83,11 +83,9 @@ try {
                     </div>
                 </div>
             </form>
-            <form method="POST" action="Helpers/Events/updateSettingsEvent.php?method=remove" enctype="multipart/form-data">
                 <div class="adminTable">
-                    <button onclick="remove()" class="saveButton">Eltávolítás</button>
+                    <button onclick="remove()" class="saveButton">Profil törlése</button>
                 </div>
-            </form>
         </div>
     </div>
 </main>

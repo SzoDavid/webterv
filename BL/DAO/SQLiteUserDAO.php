@@ -2,6 +2,7 @@
 
 namespace BL\DAO;
 
+use BL\_enums\EListVisibility;
 use BL\DataSource\SQLiteDataSource;
 use BL\DTO\_Interfaces\IShow;
 use BL\DTO\_Interfaces\IUser;
@@ -51,7 +52,12 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             $result[] = new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
-                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1, $row['Public']);
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1,
+                match ($row['Visibility']) {
+                    0 => EListVisibility::Private,
+                    1 => EListVisibility::FriendsOnly,
+                    2 => EListVisibility::Public
+                });
         }
 
         return $result;
@@ -69,8 +75,18 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         }
 
         if ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+            match ($row['Visibility']) {
+                0 => EListVisibility::Private,
+                1 => EListVisibility::FriendsOnly,
+                2 => EListVisibility::Public
+            };
             return new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
-                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] == 1, $row['CanComment'] == 1, $row['Public']);
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] == 1, $row['CanComment'] == 1,
+                match ($row['Visibility']) {
+                    0 => EListVisibility::Private,
+                    1 => EListVisibility::FriendsOnly,
+                    2 => EListVisibility::Public
+                });
         }
 
         return null;
@@ -89,7 +105,12 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         if ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             return new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
-                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] == 1, $row['CanComment'] == 1, $row['Public']);
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] == 1, $row['CanComment'] == 1,
+                match ($row['Visibility']) {
+                    0 => EListVisibility::Private,
+                    1 => EListVisibility::FriendsOnly,
+                    2 => EListVisibility::Public
+                });
         }
 
         return null;
@@ -113,7 +134,12 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             $result[] = new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
-                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1, $row['Public']);
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1,
+                match ($row['Visibility']) {
+                    0 => EListVisibility::Private,
+                    1 => EListVisibility::FriendsOnly,
+                    2 => EListVisibility::Public
+                });
         }
 
         return $result;
@@ -138,7 +164,12 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             $result[] = new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
-                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1, $row['Public']);
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1,
+                match ($row['Visibility']) {
+                    0 => EListVisibility::Private,
+                    1 => EListVisibility::FriendsOnly,
+                    2 => EListVisibility::Public
+                });
         }
 
         return $result;
@@ -184,12 +215,17 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         $pfpPath = $user->getProfilePicturePath();
         $admin = $user->isAdmin() ? 1 : 0;
         $canComment = $user->canComment() ? 1 : 0;
-        $public = $user->getPublicStatus();
+        $listVisibility = $user->getListVisibility();
 
         if ($userId == null) {
             $sql = "INSERT INTO User (Username, Email, Password) VALUES ('$username', '$email', '$password')";
         } else {
-            $sql = "UPDATE User SET Username = '$username', Email = '$email', Password = '$password', ProfilePicturePath = '$pfpPath', IsAdmin = '$admin', CanComment = '$canComment', Public = '$public' WHERE Id = '$userId'";
+            $visibility = match ($listVisibility) {
+                EListVisibility::Private => 0,
+                EListVisibility::FriendsOnly => 1,
+                EListVisibility::Public => 2
+            };
+            $sql = "UPDATE User SET Username = '$username', Email = '$email', Password = '$password', ProfilePicturePath = '$pfpPath', IsAdmin = '$admin', CanComment = '$canComment', Visibility = '$visibility' WHERE Id = '$userId'";
         }
         if (!$this->dataSource->getDB()->exec($sql)) {
             throw new Exception('Could not update database ' . $this->dataSource->getDB()->lastErrorMsg());

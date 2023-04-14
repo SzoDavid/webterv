@@ -1,6 +1,7 @@
 <?php
 
 use BL\_enums\EFileCategories;
+use BL\_enums\EListVisibility;
 use BL\ConfigLoader\ConfigLoader;
 use BL\Factories\DataSourceFactory;
 use BL\FileManager\FileManager;
@@ -36,7 +37,12 @@ try {
         case 'update':
             if (trim($_POST['username'] != '')) $user->setUsername($_POST['username']);
             if (trim($_POST['email'] != '')) $user->setEmail($_POST['email']);
-            if (trim($_POST['public'] != '')) $user->setPublicStatus($_POST['public']);
+            if ($_POST['visibility'] != $user->getListVisibility()) $user->setListVisibility(
+                match ($_POST['visibility']) {
+                "0" => EListVisibility::Private,
+                "1" => EListVisibility::FriendsOnly,
+                "2" => EListVisibility::Public
+            });
             if (isUploaded('pfp')) $user->setProfilePicturePath($fileManager->upload($_FILES['pfp'], EFileCategories::Pfp));
 
             if ($_POST['oldPass'] != '' && password_verify($_POST['oldPass'], $user->getPasswordHash()) && $_POST['password'] == $_POST['passwordAgain']) {

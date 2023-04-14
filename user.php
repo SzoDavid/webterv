@@ -2,7 +2,7 @@
 
 use BL\DTO\_Interfaces\IRating;
 use BL\DTO\_Interfaces\IUser;
-use BL\_enums\EPublicStatuses;
+use BL\_enums\EListVisibility;
 
 session_start();
 
@@ -30,8 +30,6 @@ try {
 } catch (Exception $e) {
     die('Oops');
 }
-
-$status = EPublicStatuses::from($user->getPublicStatus());
 
 $daysSinceReg = round((time() - strtotime($user->getTimestampOfRegistration())) / (60 * 60 * 24));
 
@@ -108,8 +106,8 @@ $isFriend = false;
         </div>
         <div class="right">
             <h1><?php echo $user->getUsername(); ?></h1>
-            <?php if (($_GET['id'] == $_SESSION['UserId']) || (($status === EPublicStatuses::FriendsOnly) && $isFriend)
-            || $status === EPublicStatuses::Public) { ?>
+            <?php if (($_GET['id'] == $_SESSION['UserId']) || (($user->getListVisibility() === EListVisibility::FriendsOnly) && $isFriend)
+            || $user->getListVisibility() === EListVisibility::Public) { ?>
             <h2>Sorozatok</h2>
             <table class="listTable">
                 <colgroup>
