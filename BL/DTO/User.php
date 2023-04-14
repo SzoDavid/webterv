@@ -15,12 +15,12 @@ class User implements IUser
     private ?string $timestampOfRegistration;
     private bool $admin;
     private bool $canComment;
-    private bool $public;
+    private int $public;
     //endregion
 
     //region Constructors
     public function __construct(?int    $id, string $username, string $passwordHash, string $email,
-                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $canComment, bool $public)
+                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $canComment, int $public)
     {
         $this->id = $id;
         $this->username = $username;
@@ -83,7 +83,7 @@ class User implements IUser
     {
         return $this->canComment;
     }
-    public function isPublic(): bool
+    public function getPublicStatus(): int
     {
         return $this->public;
     }
@@ -130,7 +130,7 @@ class User implements IUser
         return $this;
     }
 
-    public function setPublic(bool $public): IUser
+    public function setPublicStatus(int $public): IUser
     {
         $this->public = $public;
         return $this;

@@ -14,7 +14,7 @@ interface IUser
     public function getTimestampOfRegistration(): string;
     public function isAdmin(): bool;
     public function canComment(): bool;
-    public function isPublic(): bool;
+    public function getPublicStatus(): int;
 
     public function setUsername(string $username): IUser;
     public function setPasswordHash(string $passwordHash): IUser;
@@ -22,5 +22,5 @@ interface IUser
     public function setProfilePicturePath(?string $profilePicturePath): IUser;
     public function setAdmin(bool $isAdmin): IUser;
     public function setCanComment(bool $isMuted): IUser;
-    public function setPublic(bool $isMuted): IUser;
+    public function setPublicStatus(int $isMuted): IUser;
 }

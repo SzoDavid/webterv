@@ -51,7 +51,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             $result[] = new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
-                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1, $row['Public'] === 1);
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1, $row['Public']);
         }
 
         return $result;
@@ -70,7 +70,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         if ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             return new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
-                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] == 1, $row['CanComment'] == 1, $row['Public'] === 1);
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] == 1, $row['CanComment'] == 1, $row['Public']);
         }
 
         return null;
@@ -89,7 +89,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         if ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             return new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
-                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] == 1, $row['CanComment'] == 1, $row['Public'] === 1);
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] == 1, $row['CanComment'] == 1, $row['Public']);
         }
 
         return null;
@@ -113,7 +113,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             $result[] = new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
-                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1, $row['Public'] === 1);
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1, $row['Public']);
         }
 
         return $result;
@@ -138,7 +138,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
             $result[] = new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
-                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1, $row['Public'] === 1);
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] === 1, $row['CanComment'] === 1, $row['Public']);
         }
 
         return $result;
@@ -184,7 +184,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         $pfpPath = $user->getProfilePicturePath();
         $admin = $user->isAdmin() ? 1 : 0;
         $canComment = $user->canComment() ? 1 : 0;
-        $public = $user->isPublic() ? 1 : 0;
+        $public = $user->getPublicStatus();
 
         if ($userId == null) {
             $sql = "INSERT INTO User (Username, Email, Password) VALUES ('$username', '$email', '$password')";
