@@ -53,12 +53,13 @@ try {
                     <input <?php echo "value=\"$username\""; ?> type="text" id="username" name="username">
                     <label for="email">E-mail cím</label>
                     <input <?php echo "value=\"$email\""; ?> type="email" id="email" name="email">
-                    <label for="pfp">Publikus lista</label>
+                    <label for="visibility">Publikus lista</label>
                     <select id="visibility" name="visibility">
                         <option value="0" <?php if ($listVisibility == EListVisibility::Private) echo "selected=selected"; ?>>Privát</option>
                         <option value="1" <?php if ($listVisibility == EListVisibility::FriendsOnly) echo "selected=selected"; ?>>Csak barátoknak</option>
                         <option value="2" <?php if ($listVisibility == EListVisibility::Public) echo "selected=selected"; ?>>Publikus
                         </option>
+                    </select>
                         <label for="pfp">Profilkép</label>
                         <input type="file" id="pfp" name="pfp" accept="image/png, image/jpeg">
                 </div>
