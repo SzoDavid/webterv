@@ -15,22 +15,23 @@ function isUploaded(string $field): bool
     return file_exists($_FILES[$field]['tmp_name']) && is_uploaded_file($_FILES[$field]['tmp_name']);
 }
 
+if (!isset($_SESSION['UserId'])) {
+    //TODO: error page
+    die('Oops1');
+}
+
+
 try {
     $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
     $dataSource = (new DataSourceFactory($config))->createDataSource();
+    $userDAO = $dataSource->createUserDAO();
+    $user = $userDAO->getById($_SESSION['UserId']);
+    $fileManager = new FileManager($config);
 } catch (Exception $ex) {
     //TODO: return with error feedback
     die($ex->getMessage());
 }
 
-$userDAO = $dataSource->createUserDAO();
-try {
-    $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
-    $user = $userDAO->getById($_SESSION['UserId']);
-    $fileManager = new FileManager($config);
-
-} catch (Exception $e) {
-}
 
 try {
     switch ($_GET['method']) {
@@ -55,9 +56,9 @@ try {
         case 'remove':
 
             $userDAO->remove($userDAO->getById($_SESSION['UserId']));
-            header("Location: ../../index.php");
             session_unset();
             session_destroy();
+            header("Location: ../../index.php");
             exit();
         default:
         {

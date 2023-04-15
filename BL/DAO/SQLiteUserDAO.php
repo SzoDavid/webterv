@@ -56,7 +56,8 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
                 match ($row['Visibility']) {
                     0 => EListVisibility::Private,
                     1 => EListVisibility::FriendsOnly,
-                    2 => EListVisibility::Public
+                    2 => EListVisibility::Public,
+                    default => throw new Exception('Invalid visibility value: ' . $row['Visibility'])
                 });
         }
 
@@ -78,14 +79,16 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
             match ($row['Visibility']) {
                 0 => EListVisibility::Private,
                 1 => EListVisibility::FriendsOnly,
-                2 => EListVisibility::Public
+                2 => EListVisibility::Public,
+                default => throw new Exception('Invalid visibility value: ' . $row['Visibility'])
             };
             return new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
                 $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] == 1, $row['CanComment'] == 1,
                 match ($row['Visibility']) {
                     0 => EListVisibility::Private,
                     1 => EListVisibility::FriendsOnly,
-                    2 => EListVisibility::Public
+                    2 => EListVisibility::Public,
+                    default => throw new Exception('Invalid visibility value: ' . $row['Visibility'])
                 });
         }
 
@@ -109,7 +112,8 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
                 match ($row['Visibility']) {
                     0 => EListVisibility::Private,
                     1 => EListVisibility::FriendsOnly,
-                    2 => EListVisibility::Public
+                    2 => EListVisibility::Public,
+                    default => throw new Exception('Invalid visibility value: ' . $row['Visibility'])
                 });
         }
 
@@ -138,7 +142,8 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
                 match ($row['Visibility']) {
                     0 => EListVisibility::Private,
                     1 => EListVisibility::FriendsOnly,
-                    2 => EListVisibility::Public
+                    2 => EListVisibility::Public,
+                    default => throw new Exception('Invalid visibility value: ' . $row['Visibility'])
                 });
         }
 
@@ -168,7 +173,8 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
                 match ($row['Visibility']) {
                     0 => EListVisibility::Private,
                     1 => EListVisibility::FriendsOnly,
-                    2 => EListVisibility::Public
+                    2 => EListVisibility::Public,
+                    default => throw new Exception('Invalid visibility value: ' . $row['Visibility'])
                 });
         }
 

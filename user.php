@@ -11,11 +11,6 @@ if (!isset($_GET['id'])) {
     die('Oops1');
 }
 
-if (!isset($_SESSION['UserId'])) {
-    header("Location: login.php");
-}
-
-
 $CURRENT_PAGE = 'user';
 require 'Helpers/header.php';
 
@@ -31,6 +26,7 @@ try {
     $user = $userDao->getById($_GET['id']) ?? throw new Exception('404');
     $ratings = $ratingDao->getByUser($user);
     $friends = $userDao->getFriendsByUser($user);
+    $yourFriends = $userDao->getFriendsByUser($userDao->getById($_SESSION['UserId']));
 } catch (Exception $e) {
     die('Oops');
 }
@@ -44,6 +40,14 @@ foreach ($ratings as $rating) {
 }
 
 $isFriend = false;
+$isYourFriend = false;
+
+/* @var $yourFriend IUser */
+foreach ($yourFriends as $yourFriend) {
+    if ($yourFriend->getId() == $_GET['id']) {
+        $isYourFriend = true;
+    }
+}
 
 ?>
 
@@ -53,7 +57,7 @@ $isFriend = false;
             <?php if ($user->getProfilePicturePath()) { ?>
                 <img class="profilePic" src="<?php echo $user->getProfilePicturePath() ?>" alt="pfp">
             <?php } ?>
-            <?php if ($_GET['id'] == $_SESSION['UserId']) { ?>
+            <?php if (isset($_SESSION['UserId']) && $_GET['id'] == $_SESSION['UserId']) { ?>
                 <button onclick="window.location.href='settings.php'">Beállítások</button>
                 <button onclick="window.location.href='logout.php'">Kijelentkezés</button>
             <?php } ?>
@@ -73,7 +77,7 @@ $isFriend = false;
                     <td>Megnézett epizódok:</td>
                     <td><?php echo $episodesWatched ?></td>
                 </tr>
-                <?php if ($_GET['id'] == $_SESSION['UserId']) { ?>
+                <?php if (isset($_SESSION['UserId']) && $_GET['id'] == $_SESSION['UserId']) { ?>
                     <tr>
                         <td>E-mail (privát):</td>
                         <td><?php echo $user->getEmail() ?></td>
@@ -95,28 +99,18 @@ $isFriend = false;
                     </td>
                 </tr>
             </table>
-            <?php if ($_GET['id'] != $_SESSION['UserId'] && isset($USER) && $isFriend) { ?>
+            <?php if (isset($_SESSION['UserId']) && $_GET['id'] != $_SESSION['UserId'] && isset($USER)) { ?>
+            <form method="POST" action="Helpers/Events/FriendEvent.php?method=<?php echo $isYourFriend ? "remove" : "add"?>&id=<?php echo $_GET['id'] ?>" enctype="multipart/form-data">
                 <table class="infoTable">
                     <tr>
-                        <form method="POST" action="Helpers/Events/FriendEvent.php?method=remove&id=<?php echo $_GET['id'] ?>" enctype="multipart/form-data">
-                            <td>
-                                <button onclick="window.location.href='settings.php'" class="saveButton">Barát eltávolítása</button>
-                            </td>
-                        </form>
+                        <td>
+                            <button onclick="window.location.href='settings.php'" class="saveButton"><?php echo $isYourFriend ?"Barát eltávolítása" : "Barát hozzáadása"?></button>
+                        </td>
                     </tr>
                 </table>
-            <?php } else { ?>
-                <table class="infoTable">
-                    <tr>
-                        <form method="POST" action="Helpers/Events/FriendEvent.php?method=add&id=<?php echo $_GET['id'] ?>" enctype="multipart/form-data">
-                            <td>
-                                <button onclick="window.location.href='settings.php'" class="saveButton">Barát hozzáadása</button>
-                            </td>
-                        </form>
-                    </tr>
-                </table>
+            </form>
             <?php } ?>
-            <?php if ($_GET['id'] != $_SESSION['UserId'] && isset($USER) && $USER->isAdmin()) { ?>
+            <?php if (isset($_SESSION['UserId']) && $_GET['id'] != $_SESSION['UserId'] && isset($USER) && $USER->isAdmin()) { ?>
                 <table class="adminTable">
                     <tr>
                         <th>Moderáció</th>
@@ -131,7 +125,7 @@ $isFriend = false;
         </div>
         <div class="right">
             <h1><?php echo $user->getUsername(); ?></h1>
-            <?php if (($_GET['id'] == $_SESSION['UserId']) || (($user->getListVisibility() === EListVisibility::FriendsOnly) && $isFriend)
+            <?php if (isset($_SESSION['UserId']) && ($_GET['id'] == $_SESSION['UserId']) || (($user->getListVisibility() === EListVisibility::FriendsOnly) && $isFriend)
             || $user->getListVisibility() === EListVisibility::Public) { ?>
             <h2>Sorozatok</h2>
             <table class="listTable">

@@ -1,27 +1,31 @@
 <?php
 
+use BL\ConfigLoader\ConfigLoader;
+use BL\Factories\DataSourceFactory;
+
+require_once '../autoloader.php';
+
 session_start();
 
-if (!isset($dataSource)) {
-    //TODO: error page
-    die('Oops2');
-}
-
-$userDAO = $dataSource->createUserDAO();
 try {
+    $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
+    $dataSource = (new DataSourceFactory($config))->createDataSource();
+    $userDAO = $dataSource->createUserDAO();
     $currentUser = $userDAO->getById($_SESSION['UserId']);
-    $user = $userDAO->getById($_POST['id']);
-
-} catch (Exception $e) {
+    $user = $userDAO->getById($_GET['id']);
+} catch (Exception $ex) {
+    //TODO: return with error feedback
+    die($ex->getMessage());
 }
 
 try {
     switch ($_GET['method']) {
         case 'add':
-            $userDAO->addFriend($userDAO->getById($_SESSION['UserId']),  $userDAO->getById($_POST['id']));
+            $userDAO->addFriend($userDAO->getById($_SESSION['UserId']),  $userDAO->getById($_GET['id']));
             break;
         case 'remove':
-            $userDAO->removeFriend($userDAO->getById($_SESSION['UserId']),  $userDAO->getById($_POST['id']));
+            $userDAO->removeFriend($userDAO->getById($_SESSION['UserId']),  $userDAO->getById($_GET['id']));
+            header('Location: ../../index.php');
             exit();
         default:
         {
