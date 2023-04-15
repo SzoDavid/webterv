@@ -1,7 +1,6 @@
 <?php
 
 use BL\ConfigLoader\ConfigLoader;
-use BL\DTO\Comment;
 use BL\Factories\DataSourceFactory;
 
 if (!isset($_GET['method'])) {
@@ -30,32 +29,32 @@ try {
     exit();
 }
 
-$commentDao = $dataSource->createCommentDAO();
+$ratingDao = $dataSource->createRatingDAO();
 $showDao = $dataSource->createShowDAO();
 $userDao = $dataSource->createUserDAO();
 
 try {
+    if (!($user = $userDao->getById($_GET['id']))) {
+        header('Location: ../../index.php');
+        exit();
+    }
+    if (!($adminUser = $userDao->getById($_SESSION['UserId'])) || !$adminUser->isAdmin()) {
+        header('Location: ../../user.php?id=' . $_GET['id']);
+        exit();
+    }
+
     switch ($_GET['method']) {
-        case 'new':
-            $commentDao->save(Comment::createNewComment(
-                $showDao->getById($_GET['id']),
-                $userDao->getById($_SESSION['UserId']),
-                $_POST['comment']
-            ));
+        case 'mutedSet':
+            $userDao->save($user->setCanComment(false));
             break;
-        case 'remove':
-            if (!isset($_GET['comment'])) {
-                header("Location: ../../error.php?msg=`comment` must be included in url");
-                exit();
-            }
-            $user = $userDao->getById($_SESSION['UserId']);
-            $comment = $commentDao->getById($_GET['comment']);
-
-            if (!$user || (!$user->isAdmin() && $user->getId() != $comment->getAuthor()->getId())) {
-                throw new Exception('User has no permission to remove this comment');
-            }
-
-            $commentDao->remove($comment);
+        case 'mutedRemove':
+            $userDao->save($user->setCanComment(true));
+            break;
+        case 'adminSet':
+            $userDao->save($user->setAdmin(true)->setCanComment(true));
+            break;
+        case 'adminRemove':
+            $userDao->save($user->setAdmin(false));
             break;
         default:
             throw new Exception('Unknown method');
@@ -67,5 +66,5 @@ try {
     }
 }
 
-header('Location: ../../show.php?id=' . $_GET['id']);
+header('Location: ../../user.php?id=' . $_GET['id']);
 exit();

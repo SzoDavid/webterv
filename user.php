@@ -85,14 +85,23 @@ foreach ($ratings as $rating) {
                     </td>
                 </tr>
             </table>
-            <?php if ($_GET['id'] != $_SESSION['UserId'] && isset($USER) && $USER->isAdmin()) { ?>
+            <?php if (isset($_SESSION['UserId']) && $_GET['id'] != $_SESSION['UserId'] && isset($USER) && $USER->isAdmin()) { ?>
                 <table class="adminTable">
                     <tr>
                         <th>Moderáció</th>
                     </tr>
                     <tr>
-                        <td><button class="saveButton">Bannolás</button></td>
+                        <td><button onclick="window.location.href='Helpers/Events/manageUserEvent.php?method=admin<?php echo (($user->isAdmin()) ? 'Remove' : 'Set') . '&id=' . $user->getId(); ?>'" class="saveButton">Admin<?php if ($user->isAdmin()) echo ' visszavonása'; ?></button></td>
                     </tr>
+                    <?php if (!$user->isAdmin()) {?>
+                        <tr>
+                            <td><button onclick="window.location.href='Helpers/Events/manageUserEvent.php?method=muted<?php echo (($user->canComment()) ? 'Set' : 'Remove') . '&id=' . $user->getId(); ?>'" class="saveButton">Némítás<?php if (!$user->canComment()) echo ' visszavonása'; ?></button></td>
+                        </tr>
+                        <tr>
+                            <!--TODO-->
+                            <td><button>Profil törlése</button></td>
+                        </tr>
+                    <?php } ?>
                 </table>
             <?php } ?>
         </div>
