@@ -40,7 +40,13 @@ foreach ($ratings as $rating) {
 }
 
 ?>
-
+<script>
+    function removeUser() {
+        if (confirm('Biztosan törölni akarja a felhasználót?')) {
+            window.location.href='Helpers/Events/manageUserEvent.php?method=userRemove&id=<?php echo $user->getId(); ?>';
+        }
+    }
+</script>
 <main>
     <div class="oneThreeContainer">
         <div class="left">
@@ -99,7 +105,7 @@ foreach ($ratings as $rating) {
                         </tr>
                         <tr>
                             <!--TODO-->
-                            <td><button>Profil törlése</button></td>
+                            <td><button onclick="removeUser()">Profil törlése</button></td>
                         </tr>
                     <?php } ?>
                 </table>
