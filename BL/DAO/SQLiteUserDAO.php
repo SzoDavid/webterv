@@ -214,6 +214,15 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
      */
     public function remove(IUser $user): void
     {
+        if ($user->isAdmin()) {
+            $query = $this->dataSource->getDB()->query("SELECT COUNT(*) AS Count FROM User WHERE IsAdmin=1");
+            if ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+                if ($row['Count'] == 1) {
+                    throw new Exception('There must be at least one admin', 10);
+                }
+            }
+        }
+
         $userId = $user->getId();
 
         $sql = "DELETE FROM User WHERE Id = '$userId'; " .

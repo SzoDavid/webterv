@@ -80,7 +80,7 @@ interface IUserDAO
      * Removes user and all connected references (Following, Comment, Watching)
      * @param IUser $user
      * @return void
-     * @throws Exception
+     * @throws Exception - code 10 if attempting to remove last admin
      */
     public function remove(IUser $user): void;
 }

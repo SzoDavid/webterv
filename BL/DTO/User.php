@@ -34,10 +34,10 @@ class User implements IUser
     }
 
     public static function createNewUser(string $username, string $passwordHash,
-                                         string $email): IUser
+                                         string $email, bool $admin=false): IUser
     {
         return new self(null, $username, $passwordHash, $email, null, null,
-            false, false);
+            $admin, false);
     }
     //endregion
 
