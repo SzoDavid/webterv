@@ -5,13 +5,13 @@ use BL\DTO\Rating;
 use BL\Factories\DataSourceFactory;
 
 if (!isset($_GET['method'])) {
-    die('`method` must be included in url');
+    header("Location: ../../error.php?msg=`method` must be included in url");
+    exit();
 }
 if (!isset($_GET['id'])) {
-    die('`id` must be included in url');
+    header("Location: ../../error.php?msg=`id` must be included in url");
+    exit();
 }
-
-require_once '../autoloader.php';
 
 session_start();
 
@@ -19,6 +19,8 @@ if (!isset($_SESSION['UserId'])) {
     header('Location: ../../login.php');
     exit();
 }
+
+require_once '../autoloader.php';
 
 try {
     $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');

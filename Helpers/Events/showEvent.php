@@ -11,10 +11,9 @@ function isUploaded(string $field): bool {
 }
 
 if (!isset($_GET['method'])) {
-    die('`method` must be included in url');
+    header("Location: ../../error.php?msg=`method` must be included in url");
+    exit();
 }
-
-require_once '../autoloader.php';
 
 session_start();
 
@@ -22,6 +21,8 @@ if (!isset($_SESSION['UserId'])) {
     header('Location: ../../login.php');
     exit();
 }
+
+require_once '../autoloader.php';
 
 try {
     $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
@@ -54,7 +55,8 @@ try {
             break;
         case 'update':
             if (!isset($_GET['id'])) {
-                die('`id` must be included in url');
+                header("Location: ../../error.php?msg=`id` must be included in url");
+                exit();
             }
             $id = $_GET['id'];
 
@@ -71,7 +73,8 @@ try {
             break;
         case 'remove':
             if (!isset($_GET['id'])) {
-                die('`id` must be included in url');
+                header("Location: ../../error.php?msg=`id` must be included in url");
+                exit();
             }
             $id = $_GET['id'];
 
