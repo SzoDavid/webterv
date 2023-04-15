@@ -11,6 +11,10 @@ if (!isset($_GET['id'])) {
     die('Oops1');
 }
 
+if (!isset($_SESSION['UserId'])) {
+    header("Location: login.php");
+}
+
 
 $CURRENT_PAGE = 'user';
 require 'Helpers/header.php';
@@ -91,6 +95,27 @@ $isFriend = false;
                     </td>
                 </tr>
             </table>
+            <?php if ($_GET['id'] != $_SESSION['UserId'] && isset($USER) && $isFriend) { ?>
+                <table class="infoTable">
+                    <tr>
+                        <form method="POST" action="Helpers/Events/FriendEvent.php?method=remove&id=<?php echo $_GET['id'] ?>" enctype="multipart/form-data">
+                            <td>
+                                <button onclick="window.location.href='settings.php'" class="saveButton">Barát eltávolítása</button>
+                            </td>
+                        </form>
+                    </tr>
+                </table>
+            <?php } else { ?>
+                <table class="infoTable">
+                    <tr>
+                        <form method="POST" action="Helpers/Events/FriendEvent.php?method=add&id=<?php echo $_GET['id'] ?>" enctype="multipart/form-data">
+                            <td>
+                                <button onclick="window.location.href='settings.php'" class="saveButton">Barát hozzáadása</button>
+                            </td>
+                        </form>
+                    </tr>
+                </table>
+            <?php } ?>
             <?php if ($_GET['id'] != $_SESSION['UserId'] && isset($USER) && $USER->isAdmin()) { ?>
                 <table class="adminTable">
                     <tr>
