@@ -3,6 +3,8 @@
 namespace BL\ConfigLoader;
 
 use BL\ConfigLoader\_Interfaces\IDataSourceConfigs;
+use BL\DTO\_Interfaces\IUser;
+use BL\DTO\User;
 use Exception;
 
 class ConfigLoader implements _Interfaces\IConfigLoader
@@ -13,6 +15,8 @@ class ConfigLoader implements _Interfaces\IConfigLoader
     private string $trailerDir;
     private string $ostDir;
     private string $pfpDir;
+    private bool $isAdminGenerationEnabled;
+    private ?IUser $defaultAdminUser;
     //endregion
 
     //region Constructor
@@ -28,11 +32,21 @@ class ConfigLoader implements _Interfaces\IConfigLoader
                 'sqlite' => new SQLiteConfigs($raw_config['data_source']),
                 default => throw new Exception('Unknown data source type: ' . $raw_config['data_source']['type']),
             };
-            $this->coverDir = $raw_config['cover_dir'];
-            $this->trailerDir = $raw_config['trailer_dir'];
-            $this->ostDir = $raw_config['ost_dir'];
-            $this->pfpDir = $raw_config['pfp_dir'];
+            $this->coverDir = $raw_config['resource_directories']['cover_dir'];
+            $this->trailerDir = $raw_config['resource_directories']['trailer_dir'];
+            $this->ostDir = $raw_config['resource_directories']['ost_dir'];
+            $this->pfpDir = $raw_config['resource_directories']['pfp_dir'];
 
+            $this->isAdminGenerationEnabled = $raw_config['default_admin_user']['generate_admin_user'];
+
+            if ($this->isAdminGenerationEnabled) {
+                $this->defaultAdminUser = User::createNewUser(
+                    $raw_config['default_admin_user']['username'],
+                    $raw_config['default_admin_user']['email'],
+                    password_hash($raw_config['default_admin_user']['password'], PASSWORD_DEFAULT),
+                    true
+                );
+            }
         } catch (Exception $ex) {
             throw new Exception('Could not parse configs', 0, $ex);
         }
@@ -63,6 +77,16 @@ class ConfigLoader implements _Interfaces\IConfigLoader
     public function getPfpDir(): string
     {
         return $this->pfpDir;
+    }
+
+    public function isAdminGenerationEnabled(): bool
+    {
+        return $this->isAdminGenerationEnabled;
+    }
+
+    public function getDefaultAdminUser(): ?IUser
+    {
+        return $this->defaultAdminUser;
     }
     //endregion
 }

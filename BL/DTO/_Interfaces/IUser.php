@@ -4,7 +4,7 @@ namespace BL\DTO\_Interfaces;
 
 interface IUser
 {
-    public static function createNewUser(string $username, string $passwordHash, string $email): IUser;
+    public static function createNewUser(string $username, string $passwordHash, string $email, bool $admin=false): IUser;
 
     public function getId(): ?int;
     public function getUsername(): string;

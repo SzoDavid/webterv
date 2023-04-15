@@ -2,43 +2,32 @@
 
 By **Mammut farka pamut** aka Tandi Áron & Szobonya Dávid
 
-## Követelmények
+## SQLite3 Konfiguráció
 
-* PHP 8.2  
-* SQLite
-* [XAMPP](https://www.apachefriends.org/) (windowson)
+### Telepítés
 
-## Konfiguráció
+#### linux/pacman
 
-### Linux
+```bash
+sudo pacman -S php-sqlite
+```
 
-Linuxon PhpStorm-mal, vagy IntelliJ IDEA-val (PHP pluginnal) egyszerűen apache konfiguráció nelkül is 
-tesztelhető a weboldal.
+#### linux/apt
 
-#### Installációk:
+```bash
+sudo apt install php-sqlite3
+```
 
-* pacman
-  ```bash
-  sudo pacman -S php php-cgi php-sqlite
-  ```
-* apt
-  ```bash
-  sudo apt install php php-cgi php-sqlite3
-  ```
+#### windows  
 
-#### Beállítások
+[sqlite.org](https://sqlite.org/download.html)
 
-Settings > Languages & Frameworks > PHP
+### Beállítások
 
-PHP language level: `8.2`
-
-CLI Interpreter > ...  
-PHP executable: `/usr/bin/php-cgi`
-
-Itt írjuk át a konfigurációs file lokációját is, `sudo vim`/`sudo nano`-val nyissuk meg és végezzük 
-el a következő módosításokat (a `post_max_size` és az `upload_max_filesize` alapból 8M, ami kevésnek
-bizonyulhat, `file_uploads`-nak alapból on-nak kéne lennie, `extension=sqlite` pedig alapból kommentben
-van, töröljük előle a `;`-t)
+A xampp mappájában a php-n belül lesz a php.ini konfigurációs file. Végezzük el rajta a 
+következő módosításokat (a `post_max_size` és az `upload_max_filesize` alapból 8M, ami 
+kevésnek bizonyulhat, `file_uploads`-nak alapból on-nak kéne lennie, `extension=sqlite` 
+pedig alapból kommentben van, töröljük előle a `;`-t)!
 
 ```
 post_max_size = 60M  
@@ -47,21 +36,19 @@ upload_max_filesize = 60M
 extension=sqlite
 ```
 
-Ezután az IDE-ben az `index.php` fájlban jobb felül a böngésző ikonjára kattintva elérhető 
-a weboldal.
-
-### Windows
-
-#### Installációk:
-
-Töltsük le az [sqlite](https://sqlite.org/download.html)-ot.
+Windowson emellet a `libsqlite3.dll`-t tartalmazó php mappát adjuk hozzá a PATH környezeti változóhoz. 
 
 ## Tesztelés
 
-Állítólag (bár mi még nem tapasztaltuk) az SQLite adatbázis érzékeny lehet a tömörítésre, ebben 
+Állítólag (bár mi még nem tapasztaltuk) az SQLite adatbázis érzékeny lehet a tömörítésre/mozgatásra, ebben 
 az esetben csak töröljük a Resources/database.sqlite fáljt és az újragenerálja magát.
 
-Admin belépési adatok:
+### Admin belépési adatok
 
-admin@binge.voyage  
-Adm1nPass
+Az előre beállított konfigurációs fájl alapján, ha még nincs felhasználó, automatikusan 
+generálódik egy admin a következő belépési adatokkal: 
+
+**E-mail:** admin@binge.voyage  
+**Jelszó:** Adm1nPass
+
+*(A konfigurációs fáljt nem ér piszkálni!)*

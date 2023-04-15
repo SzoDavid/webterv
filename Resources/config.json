@@ -3,8 +3,16 @@
     "type": "sqlite",
     "path": "Resources/database.sqlite"
   },
-  "cover_dir" : "Resources/Data/Covers/",
-  "trailer_dir" : "Resources/Data/Trailers/",
-  "ost_dir" : "Resources/Data/Osts/",
-  "pfp_dir" : "Resources/Data/Pfps/"
+  "resource_directories" : {
+    "cover_dir" : "Resources/Data/Covers/",
+    "trailer_dir" : "Resources/Data/Trailers/",
+    "ost_dir" : "Resources/Data/Osts/",
+    "pfp_dir" : "Resources/Data/Pfps/"
+  },
+  "default_admin_user": {
+    "generate_admin_user": true,
+    "username": "admin",
+    "email": "admin@binge.voyage",
+    "password": "Adm1nPass"
+  }
 }

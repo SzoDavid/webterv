@@ -12,6 +12,7 @@ use BL\DAO\SQLiteRatingDAO;
 use BL\DAO\SQLiteShowDAO;
 use BL\DAO\SQLiteUserDAO;
 use BL\DataSource\_Interfaces\IDataSource;
+use BL\DTO\_Interfaces\IUser;
 use Exception;
 use SQLite3;
 
@@ -30,8 +31,12 @@ class SQLiteDataSource implements IDataSource
         try {
             $this->db = new SQLite3($configs->getDataSourceConfigs()->getPath());
             $this->createTables();
+
+            if ($configs->isAdminGenerationEnabled() && $configs->getDefaultAdminUser()) {
+                $this->generateDefaultAdmin($configs->getDefaultAdminUser());
+            }
         } catch (Exception $exception) {
-            throw new Exception('Could not open database', 1, $exception);
+            throw new Exception('Could not open database', 0, $exception);
         }
     }
 
@@ -131,9 +136,24 @@ class SQLiteDataSource implements IDataSource
                 throw new Exception($this->db->lastErrorMsg());
             }
         }
-        // NOTE: just for testing purposes!
-        $password = password_hash('Adm1nPass', PASSWORD_DEFAULT);
-        $this->db->exec("INSERT INTO User (Username, Email, Password, IsAdmin) VALUES ('admin', 'admin@binge.voyage', '$password', 1)");
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function generateDefaultAdmin(IUser $user): void
+    {
+        try {
+            $query = $this->db->query("SELECT COUNT(*) AS Count FROM User");
+
+            if ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+                if ($row['Count'] == 0) {
+                    $this->createUserDAO()->save($user);
+                }
+            }
+        } catch (Exception $ex) {
+            throw new Exception('Failed to generate default admin', 0, $ex);
+        }
     }
     //endregion
 }
