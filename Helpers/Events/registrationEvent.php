@@ -52,7 +52,7 @@ try {
         case 2:
             $_SESSION['msg'] = 'A felhasználónév foglalt';
             break;
-        case 3:
+        case 23:
             $_SESSION['msg'] = 'Invalid e-mail cím';
             break;
         default:

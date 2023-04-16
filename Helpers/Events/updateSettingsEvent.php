@@ -102,7 +102,7 @@ try {
 } catch (Exception $exception) {
     switch ($exception->getCode()) {
         case 1:
-            $_SESSION['msg'] = 'Ez az email már foglalt';
+            $_SESSION['msg'] = 'Ez az e-mail cím már foglalt';
             header('Location: ../../settings.php');
             exit();
         case 2:
@@ -110,7 +110,7 @@ try {
             header('Location: ../../settings.php');
             exit();
         case 23:
-            $_SESSION['msg'] = 'Hibás email';
+            $_SESSION['msg'] = 'Invalid e-mail cím';
             header('Location: ../../settings.php');
             exit();
     }
