@@ -15,12 +15,6 @@ function isUploaded(string $field): bool
     return file_exists($_FILES[$field]['tmp_name']) && is_uploaded_file($_FILES[$field]['tmp_name']);
 }
 
-if (!isset($_SESSION['UserId'])) {
-    //TODO: error page
-    die('Oops1');
-}
-
-
 try {
     $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
     $dataSource = (new DataSourceFactory($config))->createDataSource();
@@ -46,7 +40,25 @@ try {
             });
             if (isUploaded('pfp')) $user->setProfilePicturePath($fileManager->upload($_FILES['pfp'], EFileCategories::Pfp));
 
-            if ($_POST['oldPass'] != '' && password_verify($_POST['oldPass'], $user->getPasswordHash()) && $_POST['password'] == $_POST['passwordAgain']) {
+
+            if ($_POST['oldPass'] != '') {
+                if (!password_verify($_POST['oldPass'], $user->getPasswordHash())) {
+                    $_SESSION['msg'] = 'Hibás régi jelszó';
+                    header('Location: ../../settings.php');
+                    exit();
+                }
+
+                if ($_POST['password'] !== $_POST['passwordAgain']) {
+                    $_SESSION['msg'] = 'A jelszavak nem egyeznek meg';
+                    header('Location: ../../settings.php');
+                    exit();
+                }
+
+                if (!preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/", $_POST['password'])) {
+                    $_SESSION['msg'] = 'Gyenge jelszó';
+                    header('Location: ../../settings.php');
+                    exit();
+                }
 
                 $user->setPasswordHash(password_hash($_POST['password'], PASSWORD_DEFAULT));
             }

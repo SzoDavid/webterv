@@ -12,8 +12,8 @@ $CURRENT_PAGE = 'admin';
 include 'Helpers/header.php';
 
 if (!isset($USER) && !isset($dataSource)) {
-    //TODO: error page
-    die('Oops');
+    header("Location: error.php");
+    exit();
 }
 
 if (!$USER->isAdmin()) {
@@ -33,8 +33,9 @@ if (isset($_GET['id'])) {
         $episodes = $show->getNumEpisodes();
         $description = $show->getDescription();
         $id = $_GET['id'];
-    } catch (Exception $e) {
-        die($e->getMessage());
+    } catch (Exception $ex) {
+        header("Location: error.php?msg=" . $ex->getMessage());
+        exit();
     }
 }
 
@@ -58,6 +59,9 @@ if (isset($_GET['id'])) {
                     <label for="description">Leírás</label>
                     <textarea id="description" name="description" cols="100" rows="10"><?php if ($edit) echo $description; ?></textarea>
                 </div>
+                <?php if (isset($_SESSION['msg'])) { ?>
+                    <p class="hint"><?php echo $_SESSION['msg']?></p>
+                <?php unset($_SESSION['msg']); } ?>
                 <?php if ($edit) { ?>
                     <p class="hint">Az üresen hagyott fájl mezők nem lesznek megváltoztatva.</p>
                 <?php } ?>

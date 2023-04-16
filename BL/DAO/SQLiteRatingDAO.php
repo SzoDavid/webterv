@@ -33,7 +33,6 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
      */
     public function getByShow(IShow $show): array
     {
-        // TODO: validate if has id
         $id = $show->getId();
 
         $sql = "SELECT * FROM Watching WHERE ShowId = '$id'";
@@ -65,7 +64,6 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
      */
     public function getByUser(IUser $user): array
     {
-        // TODO: validate if has id
         $id = $user->getId();
 
         $sql = "SELECT * FROM Watching WHERE UserId = '$id'";
@@ -97,7 +95,6 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
      */
     public function getByShowAndUser(IShow $show, IUser $user): ?IRating
     {
-        // TODO: validate if has id
         $showId = $show->getId();
         $userId = $user->getId();
 
@@ -114,6 +111,7 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
 
         return null;
     }
+
     /**
      * @inheritDoc
      */
@@ -133,6 +131,37 @@ class SQLiteRatingDAO implements _Interfaces\IRatingDAO
         }
 
         return ($count != 0) ? (float) round($sum / $count, 2) : 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUnwatchedByUser(IUser $user): array
+    {
+        $id = $user->getId();
+
+        $sql = "SELECT Watching.* FROM Watching, Show WHERE Watching.ShowId=Show.Id AND Watching.UserId = '$id' AND Watching.Episodes<Show.NumEpisodes";
+        $query = $this->dataSource->getDB()->query($sql);
+
+        if (!$query) {
+            throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
+        }
+
+        $result = array();
+
+        while ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+            try {
+                $show = $this->showDAO->getById($row['ShowId']);
+            } catch (Exception $exception) {
+                throw new Exception('Failed to get show', 0, $exception);
+            }
+
+            if ($show) {
+                $result[] = new Rating($show, $user, $row['Episodes'], ($row['Rating'] == '') ? null : intval($row['Rating']));
+            }
+        }
+
+        return $result;
     }
 
     /**

@@ -23,6 +23,6 @@ interface IUser
     public function setEmail(string $email): IUser;
     public function setProfilePicturePath(?string $profilePicturePath): IUser;
     public function setAdmin(bool $isAdmin): IUser;
-    public function setCanComment(bool $isMuted): IUser;
+    public function setCanComment(bool $canComment): IUser;
     public function setListVisibility(EListVisibility $listVisibility): IUser;
 }

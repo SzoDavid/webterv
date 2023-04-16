@@ -46,8 +46,6 @@ class FileManager implements _Interfaces\IFileManager
             throw new Exception('Invalid image file: ' . basename($file["name"]));
         }
 
-        //TODO: validate file type
-
         move_uploaded_file($file["tmp_name"], __DIR__ . '/../../' . $target_file);
 
         return $target_file;

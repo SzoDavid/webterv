@@ -11,10 +11,9 @@ function isUploaded(string $field): bool {
 }
 
 if (!isset($_GET['method'])) {
-    die('`method` must be included in url');
+    header("Location: ../../error.php?msg=`method` must be included in url");
+    exit();
 }
-
-require_once '../autoloader.php';
 
 session_start();
 
@@ -22,6 +21,8 @@ if (!isset($_SESSION['UserId'])) {
     header('Location: ../../login.php');
     exit();
 }
+
+require_once '../autoloader.php';
 
 try {
     $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
@@ -34,8 +35,8 @@ try {
         exit();
     }
 } catch (Exception $ex) {
-    //TODO: return with error feedback
-    die($ex->getMessage());
+    header("Location: ../../error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 $showDao = $dataSource->createShowDAO();
@@ -54,7 +55,8 @@ try {
             break;
         case 'update':
             if (!isset($_GET['id'])) {
-                die('`id` must be included in url');
+                header("Location: ../../error.php?msg=`id` must be included in url");
+                exit();
             }
             $id = $_GET['id'];
 
@@ -62,7 +64,7 @@ try {
                 ->setTitle($_POST['title'])
                 ->setNumEpisodes($_POST['episodes']);
 
-            if (trim($_POST['description'] != '')) $show->setDescription($_POST['description']);
+            if (!empty(trim($_POST['description']))) $show->setDescription($_POST['description']);
             if (isUploaded('cover')) $show->setCoverPath($fileManager->upload($_FILES['cover'], EFileCategories::Cover));
             if (isUploaded('trailer')) $show->setTrailerPath($fileManager->upload($_FILES['trailer'], EFileCategories::Trailer));
             if (isUploaded('ost')) $show->setOstPath($fileManager->upload($_FILES['ost'], EFileCategories::Ost));
@@ -71,7 +73,8 @@ try {
             break;
         case 'remove':
             if (!isset($_GET['id'])) {
-                die('`id` must be included in url');
+                header("Location: ../../error.php?msg=`id` must be included in url");
+                exit();
             }
             $id = $_GET['id'];
 
@@ -83,7 +86,23 @@ try {
             throw new Exception('Unknown method');
     }
 } catch (Exception $exception) {
-    die($exception->getMessage());
+    switch ($exception->getCode()) {
+        case 1:
+            $_SESSION['msg'] = 'A cím nem lehet üres';
+            header((isset($_GET['method']) && $_GET['method'] == 'update') ? "Location: ../../admin.php?id=$id" : 'Location: ../../admin.php');
+            break;
+        case 2:
+            $_SESSION['msg'] = 'Az epizódok száma nem lehet negatív';
+            header((isset($_GET['method']) && $_GET['method'] == 'update') ? "Location: ../../admin.php?id=$id" : 'Location: ../../admin.php');
+            break;
+        case 3:
+            $_SESSION['msg'] = 'A borító kötelező';
+            header('Location: ../../admin.php');
+            break;
+        default:
+            header("Location: ../../error.php?msg=" . $exception->getMessage());
+    }
+    exit();
 }
 
 header("Location: ../../show.php?id=$id");

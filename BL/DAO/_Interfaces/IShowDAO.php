@@ -35,6 +35,13 @@ interface IShowDAO
      * @throws Exception
      */
     public function getByUser(IUser $user): array;
+    /**
+     * Returns with all the shows that are not watched by the given user but is watched by their friends
+     * @param IUser $user
+     * @return array
+     * @throws Exception
+     */
+    public function getFriendsShowsByUser(IUser $user): array;
 
     /**
      * If id is null creates a new record, otherwise updates values. Returns with id.

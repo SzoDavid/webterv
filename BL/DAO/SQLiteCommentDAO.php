@@ -57,7 +57,6 @@ class SQLiteCommentDAO implements _Interfaces\ICommentDAO
      */
     public function getByShow(IShow $show): array
     {
-        // TODO: validate if has id
         $id = $show->getId();
 
         $sql = "SELECT * FROM Comment WHERE ShowId = '$id'";

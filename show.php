@@ -6,16 +6,16 @@ use BL\DTO\_Interfaces\IUser;
 session_start();
 
 if (!isset($_GET['id'])) {
-    //TODO: error page
-    die('Oops1');
+    header("Location: error.php?msg=404");
+    exit();
 }
 
 $CURRENT_PAGE = 'show';
 require 'Helpers/header.php';
 
 if (!isset($dataSource) || !isset($userDao)) {
-    //TODO: error page
-    die('Oops2');
+    header("Location: error.php");
+    exit();
 }
 
 $showDao = $dataSource->createShowDAO();
@@ -30,8 +30,9 @@ try {
         $status = $ratingDao->getByShowAndUser($show, $USER);
     }
     $comments = $commentDao->getByShow($show);
-} catch (Exception $e) {
-    die('Oops');
+} catch (Exception $ex) {
+    header("Location: error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 ?>
@@ -73,6 +74,7 @@ try {
                     <td><?php echo $numWatching; ?></td>
                 </tr>
                 <tr>
+                    <?php if (isset($USER) && $status) { ?>
                     <td>Szintén nézi:</td>
                     <td>
                         <?php
@@ -82,6 +84,7 @@ try {
                             <a href="user.php?id=<?php echo $friend->getId(); ?>"><?php echo $friend->getUsername(); ?></a><br>
                         <?php } ?>
                     </td>
+                    <?php } ?>
                 </tr>
             </table>
             <?php if (isset($USER) && $status) { ?>
@@ -92,7 +95,7 @@ try {
                         </tr>
                         <tr>
                             <td>Megnézett epizódok:</td>
-                            <td><input name="watchedEpisodes" id="watchedEpisodes" type="number" value="<?php echo $status ? $status->getEpisodesWatched() : 0 ?>" min="0" max="10" required></td>
+                            <td><input name="watchedEpisodes" id="watchedEpisodes" type="number" value="<?php echo $status ? $status->getEpisodesWatched() : 0 ?>" min="0" max="<?php echo $show->getNumEpisodes()?>" required></td>
                         </tr>
                         <tr>
                             <td>Értékelés:</td>
@@ -154,7 +157,7 @@ try {
                     <?php if (isset($USER) && $USER->canComment()) { ?>
                         <div class="newComment">
                             <form method="POST" action="Helpers/Events/commentEvent.php?method=new&id=<?php echo $show->getId(); ?>">
-                                <textarea name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
+                                <textarea required name="comment" rows="4" placeholder="Új hozzászólás..."></textarea>
                                 <input type="submit" value="➤">
                             </form>
                         </div>

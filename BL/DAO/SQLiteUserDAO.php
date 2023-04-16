@@ -40,10 +40,10 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
      */
     public function getBySearchText(string $searchText): array
     {
-        // TODO: validate search text
+        if (empty(trim($searchText))) $searchText = '%';
+
         $query = $this->dataSource->getDB()->query("SELECT * FROM User WHERE Username LIKE '%$searchText%'");
 
-        // TODO: remove code duplication
         if (!$query) {
             throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
         }
@@ -125,7 +125,6 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
      */
     public function getFriendsByUser(IUser $user): array
     {
-        // TODO: validate if id is not null
         $id = $user->getId();
 
         $query = $this->dataSource->getDB()->query("SELECT * FROM User WHERE User.Id IN (SELECT FollowedId FROM Following WHERE FollowerId = '$id')");
@@ -155,7 +154,6 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
      */
     public function getFriendsByUserAndShow(IUser $user, IShow $show): array
     {
-        // TODO: validate if ids are not null
         $userId = $user->getId();
         $showId = $show->getId();
 
@@ -226,6 +224,12 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         if ($userId == null) {
             $sql = "INSERT INTO User (Username, Email, Password) VALUES ('$username', '$email', '$password')";
         } else {
+            try {
+                $oldUser = $this->getById($userId);
+                if ($oldUser->getProfilePicturePath() && $oldUser->getProfilePicturePath() != $user->getProfilePicturePath()) unlink('../../' . $user->getProfilePicturePath());
+            } catch (Exception $ex) {
+                throw  new Exception('Failed to get old data from database', 0, $ex);
+            }
             $visibility = match ($listVisibility) {
                 EListVisibility::Private => 0,
                 EListVisibility::FriendsOnly => 1,
@@ -234,7 +238,15 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
             $sql = "UPDATE User SET Username = '$username', Email = '$email', Password = '$password', ProfilePicturePath = '$pfpPath', IsAdmin = '$admin', CanComment = '$canComment', Visibility = '$visibility' WHERE Id = '$userId'";
         }
         if (!$this->dataSource->getDB()->exec($sql)) {
-            throw new Exception('Could not update database ' . $this->dataSource->getDB()->lastErrorMsg());
+            $msg = $this->dataSource->getDB()->lastErrorMsg();
+            $code = 0;
+
+            if (str_contains($msg, 'UNIQUE')) {
+                if (str_contains($msg, 'User.Email')) $code = 1;
+                else $code = 2;
+            }
+
+            throw new Exception('Could not update database: ' . $msg, $code);
         }
 
         return $userId ?? $this->dataSource->getDB()->lastInsertRowID();
@@ -246,6 +258,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
     public function remove(IUser $user): void
     {
         $userId = $user->getId();
+
         $sql = "DELETE FROM User WHERE Id = '$userId'; " .
             "DELETE FROM Following WHERE FollowerId = '$userId' OR FollowedId = '$userId'; " .
             "DELETE FROM Comment WHERE UserId = '$userId'; " .
@@ -253,6 +266,10 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
 
         if (!$this->dataSource->getDB()->exec($sql)) {
             throw new Exception('Could not update database: ' . $this->dataSource->getDB()->lastErrorMsg());
+        }
+
+        if ($user->getProfilePicturePath()) {
+            unlink('../../' . $user->getProfilePicturePath());
         }
     }
     //endregion

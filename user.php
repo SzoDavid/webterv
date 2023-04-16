@@ -7,16 +7,16 @@ use BL\_enums\EListVisibility;
 session_start();
 
 if (!isset($_GET['id'])) {
-    //TODO: error page
-    die('Oops1');
+    header("Location: error.php?msg=404");
+    exit();
 }
 
 $CURRENT_PAGE = 'user';
 require 'Helpers/header.php';
 
 if (!isset($userDao) || !isset($dataSource)) {
-    //TODO: error page
-    die('Oops2');
+    header("Location: error.php");
+    exit();
 }
 
 $showDao = $dataSource->createShowDAO();
@@ -26,9 +26,12 @@ try {
     $user = $userDao->getById($_GET['id']) ?? throw new Exception('404');
     $ratings = $ratingDao->getByUser($user);
     $friends = $userDao->getFriendsByUser($user);
-    $yourFriends = $userDao->getFriendsByUser($userDao->getById($_SESSION['UserId']));
-} catch (Exception $e) {
-    die('Oops');
+    if (isset($_SESSION['UserId'])) {
+        $yourFriends = $userDao->getFriendsByUser($userDao->getById($_SESSION['UserId']));
+    }
+} catch (Exception $ex) {
+    header("Location: error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 $daysSinceReg = round((time() - strtotime($user->getTimestampOfRegistration())) / (60 * 60 * 24));
@@ -42,10 +45,12 @@ foreach ($ratings as $rating) {
 $isFriend = false;
 $isYourFriend = false;
 
-/* @var $yourFriend IUser */
-foreach ($yourFriends as $yourFriend) {
-    if ($yourFriend->getId() == $_GET['id']) {
-        $isYourFriend = true;
+if (isset($yourFriends)) {
+    /* @var $yourFriend IUser */
+    foreach ($yourFriends as $yourFriend) {
+        if ($yourFriend->getId() == $_GET['id']) {
+            $isYourFriend = true;
+        }
     }
 }
 
@@ -59,7 +64,7 @@ foreach ($yourFriends as $yourFriend) {
             <?php } ?>
             <?php if (isset($_SESSION['UserId']) && $_GET['id'] == $_SESSION['UserId']) { ?>
                 <button onclick="window.location.href='settings.php'">Beállítások</button>
-                <button onclick="window.location.href='logout.php'">Kijelentkezés</button>
+                <button onclick="window.location.href='Helpers/Events/logoutEvent.php'">Kijelentkezés</button>
             <?php } ?>
             <table class="infoTable">
                 <tr>
@@ -89,7 +94,7 @@ foreach ($yourFriends as $yourFriend) {
                         <?php
                         /* @var $friend IUser */
                         foreach ($friends as $friend) {
-                            if ($friend->getId() == $_SESSION['UserId']) {
+                            if (isset($_SESSION['UserId']) && $friend->getId() == $_SESSION['UserId']) {
                                 $isFriend = true;
                             }
                             ?>
@@ -116,10 +121,16 @@ foreach ($yourFriends as $yourFriend) {
                         <th>Moderáció</th>
                     </tr>
                     <tr>
-                        <td>
-                            <button class="saveButton">Bannolás</button>
-                        </td>
+                        <td><button onclick="window.location.href='Helpers/Events/manageUserEvent.php?method=admin<?php echo (($user->isAdmin()) ? 'Remove' : 'Set') . '&id=' . $user->getId(); ?>'" class="saveButton">Admin<?php if ($user->isAdmin()) echo ' visszavonása'; ?></button></td>
                     </tr>
+                    <?php if (!$user->isAdmin()) {?>
+                        <tr>
+                            <td><button onclick="window.location.href='Helpers/Events/manageUserEvent.php?method=muted<?php echo (($user->canComment()) ? 'Set' : 'Remove') . '&id=' . $user->getId(); ?>'" class="saveButton">Némítás<?php if (!$user->canComment()) echo ' visszavonása'; ?></button></td>
+                        </tr>
+                        <tr>
+                            <td><button>Profil törlése</button></td>
+                        </tr>
+                    <?php } ?>
                 </table>
             <?php } ?>
         </div>

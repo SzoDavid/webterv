@@ -62,6 +62,7 @@ try {
                         <label for="pfp">Profilkép</label>
                         <input type="file" id="pfp" name="pfp" accept="image/png, image/jpeg">
                 </div>
+                <p class="hint">Profilkép nem fog megváltozni, ha a mező üres marad.</p>
                 <fieldset>
                     <legend>Új jelszó</legend>
                     <div class="formGrid">
@@ -72,8 +73,11 @@ try {
                         <label for="pfp">Új jelszó mégegyszer</label>
                         <input type="password" id="passwordAgain" name="passwordAgain">
                     </div>
+                    <p class="hint"><br>A jelszó legyen legalább 8 karakter hosszú és<br>tartalmazzon kis és nagy angol betűt valamint számot</p>
                 </fieldset>
-                <p class="hint">Az üresen hagyott mezők nem lesznek megváltoztatva.</p>
+                <?php if (isset($_SESSION['msg'])) { ?>
+                    <p class="hint"><?php echo $_SESSION['msg']?></p>
+                <?php unset($_SESSION['msg']); } else?> <p></p>
                 <div class="oneOneContainer">
                     <div class="left">
                         <input type="submit" value="Mentés">

@@ -125,9 +125,9 @@ class User implements IUser
         return $this;
     }
 
-    public function setCanComment(bool $isMuted): IUser
+    public function setCanComment(bool $canComment): IUser
     {
-        $this->canComment = $isMuted;
+        $this->canComment = $canComment;
         return $this;
     }
 

@@ -5,13 +5,13 @@ use BL\DTO\Rating;
 use BL\Factories\DataSourceFactory;
 
 if (!isset($_GET['method'])) {
-    die('`method` must be included in url');
+    header("Location: ../../error.php?msg=`method` must be included in url");
+    exit();
 }
 if (!isset($_GET['id'])) {
-    die('`id` must be included in url');
+    header("Location: ../../error.php?msg=`id` must be included in url");
+    exit();
 }
-
-require_once '../autoloader.php';
 
 session_start();
 
@@ -20,12 +20,14 @@ if (!isset($_SESSION['UserId'])) {
     exit();
 }
 
+require_once '../autoloader.php';
+
 try {
     $config = new ConfigLoader(__DIR__ . '/../../Resources/config.json');
     $dataSource = (new DataSourceFactory($config))->createDataSource();
 } catch (Exception $ex) {
-    //TODO: return with error feedback
-    die($ex->getMessage());
+    header("Location: ../../error.php?msg=" . $ex->getMessage());
+    exit();
 }
 
 $ratingDao = $dataSource->createRatingDAO();
@@ -47,6 +49,11 @@ try {
             ));
             break;
         case 'update':
+            if (!isset($_POST['rating']) || !isset($_POST['watchedEpisodes'])) {
+                header('Location: ../../show.php?id=' . $_GET['id']);
+                exit();
+            }
+
             $ratingDao->save($ratingDao->getByShowAndUser(
                 $showDao->getById($_GET['id']),
                 $userDao->getById($_SESSION['UserId'])
@@ -56,7 +63,10 @@ try {
             throw new Exception('Unknown method');
     }
 } catch (Exception $exception) {
-    die($exception->getMessage());
+    if ($exception->getCode() != 1) {
+        header("Location: ../../error.php?msg=" . $exception->getMessage());
+        exit();
+    }
 }
 
 header('Location: ../../show.php?id=' . $_GET['id']);
