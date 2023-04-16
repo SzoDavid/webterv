@@ -57,7 +57,7 @@ try {
             $ratingDao->save($ratingDao->getByShowAndUser(
                 $showDao->getById($_GET['id']),
                 $userDao->getById($_SESSION['UserId'])
-            )->setRating($_POST['rating'])->setEpisodesWatched($_POST['watchedEpisodes']));
+            )->setRating(intval($_POST['rating']))->setEpisodesWatched(intval($_POST['watchedEpisodes'])));
             break;
         default:
             throw new Exception('Unknown method');
