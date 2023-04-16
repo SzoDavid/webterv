@@ -34,7 +34,8 @@ try {
 
     }
 } catch (Exception $exception) {
-    die($exception->getMessage());
+    header('Location: ../../error.php?msg=' . $exception->getMessage());
+    exit();
 }
 
 header('Location: ../../index.php');

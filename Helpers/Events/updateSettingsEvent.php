@@ -31,20 +31,23 @@ try {
     switch ($_GET['method']) {
         case 'update':
 
-            if (trim($_POST['username'] != '') && $userDAO->getByUsername($_POST['username']) == null || $userDAO->getByUsername($_POST['username']) == $userDAO->getById($_SESSION['UserId'])) {
-                $user->setUsername($_POST['username']);
-            } else if(trim($_POST['username'] != '') && $userDAO->getByUsername($_POST['username']) != null){
-                $_SESSION['msg'] = 'Ez a felhasználónév már foglalt';
-                header('Location: ../../settings.php');
-                exit();
-            }
-            if (trim($_POST['email'] != '') && $userDAO->getByEmail($_POST['email']) == null || $userDAO->getByEmail($_POST['email']) == $userDAO->getById($_SESSION['UserId'])) {
-                $user->setEmail($_POST['email']);
-            } else if(trim($_POST['email'] != '') && $userDAO->getByEmail($_POST['email']) != null){
-                $_SESSION['msg'] = 'Ez az email már foglalt';
-                header('Location: ../../settings.php');
-                exit();
-            }
+//            if (trim($_POST['username'] != '') && $userDAO->getByUsername($_POST['username']) == null || $userDAO->getByUsername($_POST['username']) == $userDAO->getById($_SESSION['UserId'])) {
+//                $user->setUsername($_POST['username']);
+//            } else if(trim($_POST['username'] != '') && $userDAO->getByUsername($_POST['username']) != null){
+//                $_SESSION['msg'] = 'Ez a felhasználónév már foglalt';
+//                header('Location: ../../settings.php');
+//                exit();
+//            }
+            if (trim($_POST['username'] != '')) $user->setUsername($_POST['username']);
+            if (trim($_POST['email'] != '')) $user->setEmail($_POST['email']);
+//
+//            if (trim($_POST['email'] != '') && $userDAO->getByEmail($_POST['email']) == null || $userDAO->getByEmail($_POST['email']) == $userDAO->getById($_SESSION['UserId'])) {
+//                $user->setEmail($_POST['email']);
+//            } else if(trim($_POST['email'] != '') && $userDAO->getByEmail($_POST['email']) != null){
+//                $_SESSION['msg'] = 'Ez az email már foglalt';
+//                header('Location: ../../settings.php');
+//                exit();
+//            }
             if ($_POST['visibility'] != $user->getListVisibility()) $user->setListVisibility(
                 match ($_POST['visibility']) {
                 "0" => EListVisibility::Private,
@@ -53,8 +56,14 @@ try {
             });
             if (isUploaded('pfp')) $user->setProfilePicturePath($fileManager->upload($_FILES['pfp'], EFileCategories::Pfp));
 
+            if(!($_POST['password'] == '' && $_POST['passwordAgain'] == '' && $_POST['oldPass'] == '') && $_POST['password'] == '' xor $_POST['passwordAgain'] == '' xor $_POST['oldPass'] == '') {
+                $_SESSION['msg'] = 'Mindhárom mezőt ki kell tölteni';
+                header('Location: ../../settings.php');
+                exit();
+            }
 
             if ($_POST['oldPass'] != '') {
+
                 if (!password_verify($_POST['oldPass'], $user->getPasswordHash())) {
                     $_SESSION['msg'] = 'Hibás régi jelszó';
                     header('Location: ../../settings.php');
@@ -76,7 +85,19 @@ try {
                 $user->setPasswordHash(password_hash($_POST['password'], PASSWORD_DEFAULT));
             }
 
-            $userDAO->save($user);
+            try {
+                $userDAO->save($user);
+            } catch (Exception $e) {
+                if ($e->getCode() == 1) {
+                    $_SESSION['msg'] = 'Ez az email már foglalt';
+                    header('Location: ../../settings.php');
+                    exit();
+                } else if($e->getCode() == 2) {
+                    $_SESSION['msg'] = 'Ez a felhasználónév már foglalt';
+                    header('Location: ../../settings.php');
+                    exit();
+                }
+            }
             break;
         case 'remove':
 
@@ -92,7 +113,8 @@ try {
 
     }
 } catch (Exception $exception) {
-    die($exception->getMessage());
+    header('Location: ../../error.php?msg=' . $exception->getMessage());
+    exit();
 }
 
 header('Location: ../../index.php');

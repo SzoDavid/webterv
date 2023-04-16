@@ -32,7 +32,8 @@ try {
 
     $id = $_SESSION['UserId'];
 } catch (Exception $e) {
-    die($e->getMessage());
+    header('Location: ../../error.php?msg=' . $e->getMessage());
+    exit();
 }
 
 ?>
@@ -75,9 +76,11 @@ try {
                     </div>
                     <p class="hint"><br>A jelszó legyen legalább 8 karakter hosszú és<br>tartalmazzon kis és nagy angol betűt valamint számot</p>
                 </fieldset>
+                <p class="hint">
                 <?php if (isset($_SESSION['msg'])) { ?>
-                    <p class="hint"><?php echo $_SESSION['msg']?></p>
-                <?php unset($_SESSION['msg']); } else?> <p></p>
+                    <?php echo $_SESSION['msg']?>
+                <?php unset($_SESSION['msg']); }?>
+                </p>
                 <div class="oneOneContainer">
                     <div class="left">
                         <input type="submit" value="Mentés">
