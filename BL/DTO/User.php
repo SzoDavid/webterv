@@ -4,6 +4,7 @@ namespace BL\DTO;
 
 use BL\_enums\EListVisibility;
 use BL\DTO\_Interfaces\IUser;
+use Exception;
 
 class User implements IUser
 {
@@ -32,13 +33,18 @@ class User implements IUser
         $this->admin = $admin;
         $this->canComment = $canComment;
         $this->listVisibility = $listVisibility;
-
-        // TODO: validate values
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function createNewUser(string $username, string $passwordHash,
                                          string $email): IUser
     {
+        if (empty(trim($username))) throw new Exception('Username is empty', 21);
+        if (empty(trim($passwordHash))) throw new Exception('Password hash is empty', 22);
+        if (empty(trim($email)) || !preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/", $email)) throw new Exception('Invalid e-mail address', 23);
+
         return new self(null, $username, $passwordHash, $email, null, null,
             false, false, EListVisibility::Public);
     }
@@ -91,30 +97,39 @@ class User implements IUser
     //endregion
 
     //region Setters
+    /**
+     * @inheritDoc
+     */
     public function setUsername(string $username): IUser
     {
-        // TODO: validation
+        if (empty(trim($username))) throw new Exception('Username is empty', 21);
         $this->username = $username;
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function setPasswordHash(string $passwordHash): IUser
     {
-        // TODO: validation
+        if (empty(trim($passwordHash))) throw new Exception('Password hash is empty', 22);
         $this->passwordHash = $passwordHash;
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function setEmail(string $email): IUser
     {
-        // TODO: validation
+        if (empty(trim($email)) || !preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/", $email)) throw new Exception('Invalid e-mail address', 23);
         $this->email = $email;
         return $this;
     }
 
     public function setProfilePicturePath(?string $profilePicturePath): IUser
     {
-        // TODO: if string is empty set value to null
+        if (empty(trim($profilePicturePath))) $profilePicturePath = null;
         $this->profilePicturePath = $profilePicturePath;
         return $this;
     }
