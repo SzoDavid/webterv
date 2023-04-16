@@ -95,7 +95,7 @@ try {
                         </tr>
                         <tr>
                             <td>Megnézett epizódok:</td>
-                            <td><input name="watchedEpisodes" id="watchedEpisodes" type="number" value="<?php echo $status ? $status->getEpisodesWatched() : 0 ?>" min="0" max="10" required></td>
+                            <td><input name="watchedEpisodes" id="watchedEpisodes" type="number" value="<?php echo $status ? $status->getEpisodesWatched() : 0 ?>" min="0" max="<?php echo $show->getNumEpisodes()?>" required></td>
                         </tr>
                         <tr>
                             <td>Értékelés:</td>

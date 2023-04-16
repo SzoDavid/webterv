@@ -45,11 +45,19 @@ try {
         $_POST['email']
     ));
 } catch (Exception $ex) {
-    if ($ex->getCode() == 1) $_SESSION['msg'] = 'Az e-mailhez már tartozik fiók';
-    else if ($ex->getCode() == 2) $_SESSION['msg'] = 'A felhasználónév foglalt';
-    else {
-        header('Location: ../../error.php?msg=' . $ex->getMessage());
-        exit();
+    switch ($ex->getCode()) {
+        case 1:
+            $_SESSION['msg'] = 'Az e-mailhez már tartozik fiók';
+            break;
+        case 2:
+            $_SESSION['msg'] = 'A felhasználónév foglalt';
+            break;
+        case 23:
+            $_SESSION['msg'] = 'Invalid e-mail cím';
+            break;
+        default:
+            header('Location: ../../error.php?msg=' . $ex->getMessage());
+            exit();
     }
 
     header('Location: ../../registration.php');

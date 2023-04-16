@@ -35,7 +35,6 @@ interface IUserDAO
      * @throws Exception
      */
     public function getByEmail(string $email): ?IUser;
-
     /**
      * Returns with all the users that are the given user's friends
      * @param IUser $user

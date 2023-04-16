@@ -2,7 +2,9 @@
 
 namespace BL\DTO;
 
+use BL\_enums\EListVisibility;
 use BL\DTO\_Interfaces\IUser;
+use Exception;
 
 class User implements IUser
 {
@@ -15,11 +17,12 @@ class User implements IUser
     private ?string $timestampOfRegistration;
     private bool $admin;
     private bool $canComment;
+    private EListVisibility $listVisibility;
     //endregion
 
     //region Constructors
     public function __construct(?int    $id, string $username, string $passwordHash, string $email,
-                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $canComment)
+                                ?string $profilePicturePath, ?string $timestampOfRegistration, bool $admin, bool $canComment, EListVisibility $listVisibility)
     {
         $this->id = $id;
         $this->username = $username;
@@ -29,15 +32,21 @@ class User implements IUser
         $this->timestampOfRegistration = $timestampOfRegistration;
         $this->admin = $admin;
         $this->canComment = $canComment;
-
-        // TODO: validate values
+        $this->listVisibility = $listVisibility;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function createNewUser(string $username, string $passwordHash,
                                          string $email, bool $admin=false): IUser
     {
+        if (empty(trim($username))) throw new Exception('Username is empty', 21);
+        if (empty(trim($passwordHash))) throw new Exception('Password hash is empty', 22);
+        if (empty(trim($email)) || !preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/", $email)) throw new Exception('Invalid e-mail address', 23);
+
         return new self(null, $username, $passwordHash, $email, null, null,
-            $admin, false);
+            $admin, false, EListVisibility::Public);
     }
     //endregion
 
@@ -81,33 +90,46 @@ class User implements IUser
     {
         return $this->canComment;
     }
+    public function getListVisibility(): EListVisibility
+    {
+        return $this->listVisibility;
+    }
     //endregion
 
     //region Setters
+    /**
+     * @inheritDoc
+     */
     public function setUsername(string $username): IUser
     {
-        // TODO: validation
+        if (empty(trim($username))) throw new Exception('Username is empty', 21);
         $this->username = $username;
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function setPasswordHash(string $passwordHash): IUser
     {
-        // TODO: validation
+        if (empty(trim($passwordHash))) throw new Exception('Password hash is empty', 22);
         $this->passwordHash = $passwordHash;
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function setEmail(string $email): IUser
     {
-        // TODO: validation
+        if (empty(trim($email)) || !preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/", $email)) throw new Exception('Invalid e-mail address', 23);
         $this->email = $email;
         return $this;
     }
 
     public function setProfilePicturePath(?string $profilePicturePath): IUser
     {
-        // TODO: if string is empty set value to null
+        if (empty(trim($profilePicturePath))) $profilePicturePath = null;
         $this->profilePicturePath = $profilePicturePath;
         return $this;
     }
@@ -121,6 +143,12 @@ class User implements IUser
     public function setCanComment(bool $canComment): IUser
     {
         $this->canComment = $canComment;
+        return $this;
+    }
+
+    public function setListVisibility(EListVisibility $listVisibility): IUser
+    {
+        $this->listVisibility = $listVisibility;
         return $this;
     }
     //endregion

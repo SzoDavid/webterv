@@ -2,6 +2,7 @@
 
 use BL\DTO\_Interfaces\IRating;
 use BL\DTO\_Interfaces\IUser;
+use BL\_enums\EListVisibility;
 
 session_start();
 
@@ -9,7 +10,6 @@ if (!isset($_GET['id'])) {
     header("Location: error.php?msg=404");
     exit();
 }
-
 
 $CURRENT_PAGE = 'user';
 require 'Helpers/header.php';
@@ -26,7 +26,14 @@ try {
     $user = $userDao->getById($_GET['id']) ?? throw new Exception('404');
     $ratings = $ratingDao->getByUser($user);
     $friends = $userDao->getFriendsByUser($user);
-    $ratingsNumLim = count($ratings) != 0;
+    if (isset($_SESSION['UserId'])) {
+        $yourFriends = $userDao->getFriendsByUser($userDao->getById($_SESSION['UserId']));
+        $isPrivate = !(($_GET['id'] == $_SESSION['UserId']) || (($user->getListVisibility() === EListVisibility::FriendsOnly) && $isFriend)
+            || $user->getListVisibility() === EListVisibility::Public);
+    }
+    $ratingsNumLim = count($ratings) != 0 && !isPrivate;
+    
+    
 } catch (Exception $ex) {
     header("Location: error.php?msg=" . $ex->getMessage());
     exit();
@@ -40,6 +47,21 @@ foreach ($ratings as $rating) {
     $episodesWatched += $rating->getEpisodesWatched();
 }
 
+$isFriend = false;
+$isYourFriend = false;
+
+if (isset($yourFriends)) {
+    /* @var $yourFriend IUser */
+    foreach ($yourFriends as $yourFriend) {
+        if ($yourFriend->getId() == $_GET['id']) {
+            $isYourFriend = true;
+        }
+    }
+}
+
+
+if ()
+
 ?>
 <script>
     function removeUser() {
@@ -52,9 +74,9 @@ foreach ($ratings as $rating) {
     <div class="oneThreeContainer">
         <div class="left">
             <?php if ($user->getProfilePicturePath()) { ?>
-                <img class="profilePic" src="<?php $user->getProfilePicturePath() ?>" alt="pfp">
+                <img class="profilePic" src="<?php echo $user->getProfilePicturePath() ?>" alt="pfp">
             <?php } ?>
-            <?php if ($_GET['id'] == $_SESSION['UserId']) { ?>
+            <?php if (isset($_SESSION['UserId']) && $_GET['id'] == $_SESSION['UserId']) { ?>
                 <button onclick="window.location.href='settings.php'">Beállítások</button>
                 <button onclick="window.location.href='Helpers/Events/logoutEvent.php'">Kijelentkezés</button>
             <?php } ?>
@@ -74,24 +96,39 @@ foreach ($ratings as $rating) {
                     <td>Megnézett epizódok:</td>
                     <td><?php echo $episodesWatched ?></td>
                 </tr>
-                <?php if ($_GET['id'] == $_SESSION['UserId']) { ?>
-                <tr>
-                    <td>E-mail (privát):</td>
-                    <td><?php echo $user->getEmail() ?></td>
-                </tr>
+                <?php if (isset($_SESSION['UserId']) && $_GET['id'] == $_SESSION['UserId']) { ?>
+                    <tr>
+                        <td>E-mail (privát):</td>
+                        <td><?php echo $user->getEmail() ?></td>
+                    </tr>
                 <?php } ?>
                 <tr>
                     <td>Barátok:</td>
                     <td>
                         <?php
-                            /* @var $friend IUser */
-                            foreach ($friends as $friend) {
-                        ?>
-                            <a href="user.php?id=<?php echo $friend->getId(); ?>"><?php echo $friend->getUsername(); ?></a><br>
+                        /* @var $friend IUser */
+                        foreach ($friends as $friend) {
+                            if (isset($_SESSION['UserId']) && $friend->getId() == $_SESSION['UserId']) {
+                                $isFriend = true;
+                            }
+                            ?>
+                            <a href="user.php?id=<?php echo $friend->getId(); ?>"><?php echo $friend->getUsername(); ?></a>
+                            <br>
                         <?php } ?>
                     </td>
                 </tr>
             </table>
+            <?php if (isset($_SESSION['UserId']) && $_GET['id'] != $_SESSION['UserId'] && isset($USER)) { ?>
+            <form method="POST" action="Helpers/Events/friendEvent.php?method=<?php echo $isYourFriend ? "remove" : "add" ?>&id=<?php echo $_GET['id'] ?> " enctype="multipart/form-data">
+                <table class="infoTable">
+                    <tr>
+                        <td>
+                            <button onclick="window.location.href='settings.php'" class="saveButton"><?php echo $isYourFriend ?"Barát eltávolítása" : "Barát hozzáadása"?></button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <?php } ?>
             <?php if (isset($_SESSION['UserId']) && $_GET['id'] != $_SESSION['UserId'] && isset($USER) && $USER->isAdmin()) { ?>
                 <table class="adminTable">
                     <tr>
@@ -131,15 +168,22 @@ foreach ($ratings as $rating) {
                     /* @var $rating IRating */
                     foreach ($ratings as $rating) { ?>
                     <tr onclick="window.location.href = 'show.php?id=<?php echo $rating->getShow()->getId(); ?>'">
-                        <td><img src="<?php echo $rating->getShow()->getCoverPath(); ?>" alt="cover" width="100" height="100"></td>
+                        <td><img src="<?php echo $rating->getShow()->getCoverPath(); ?>" alt="cover" width="100"
+                                 height="100"></td>
                         <td class="title"><?php echo $rating->getShow()->getTitle(); ?></td>
                         <td><?php echo $rating->getEpisodesWatched() . '/' . $rating->getShow()->getNumEpisodes(); ?></td>
                         <td><?php echo $rating->getRating() ?? '-' ?>/5</td>
-                        <td><?php try { echo $ratingDao->getAverageRatingByShow($rating->getShow()); } catch (Exception $_) { echo '-'; } ?>/5</td>
+                        <td><?php try {
+                                echo $ratingDao->getAverageRatingByShow($rating->getShow());
+                            } catch (Exception $_) {
+                                echo '-';
+                            } ?>/5
+                        </td>
                     </tr>
+                <?php }
                 <?php }} else { ?>
                     <tr>
-                        <td colspan="4" class="hint">Üres</td>
+                        <td colspan="4" class="hint"><?php echo $isPrivate ? 'Privát' : 'Üres'?></td>
                     </tr>
                 <?php } ?>
             </table>
@@ -148,5 +192,5 @@ foreach ($ratings as $rating) {
 </main>
 
 <?php
-    include 'Helpers/footer.php';
+include 'Helpers/footer.php';
 ?>
