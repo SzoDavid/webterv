@@ -22,16 +22,29 @@ try {
     $user = $userDAO->getById($_SESSION['UserId']);
     $fileManager = new FileManager($config);
 } catch (Exception $ex) {
-    //TODO: return with error feedback
-    die($ex->getMessage());
+    header('Location: ../../error.php?msg=' . $ex->getMessage());
+    exit();
 }
 
 
 try {
     switch ($_GET['method']) {
         case 'update':
-            if (trim($_POST['username'] != '')) $user->setUsername($_POST['username']);
-            if (trim($_POST['email'] != '')) $user->setEmail($_POST['email']);
+
+            if (trim($_POST['username'] != '') && $userDAO->getByUsername($_POST['username']) == null || $userDAO->getByUsername($_POST['username']) == $userDAO->getById($_SESSION['UserId'])) {
+                $user->setUsername($_POST['username']);
+            } else if(trim($_POST['username'] != '') && $userDAO->getByUsername($_POST['username']) != null){
+                $_SESSION['msg'] = 'Ez a felhasználónév már foglalt';
+                header('Location: ../../settings.php');
+                exit();
+            }
+            if (trim($_POST['email'] != '') && $userDAO->getByEmail($_POST['email']) == null || $userDAO->getByEmail($_POST['email']) == $userDAO->getById($_SESSION['UserId'])) {
+                $user->setEmail($_POST['email']);
+            } else if(trim($_POST['email'] != '') && $userDAO->getByEmail($_POST['email']) != null){
+                $_SESSION['msg'] = 'Ez az email már foglalt';
+                header('Location: ../../settings.php');
+                exit();
+            }
             if ($_POST['visibility'] != $user->getListVisibility()) $user->setListVisibility(
                 match ($_POST['visibility']) {
                 "0" => EListVisibility::Private,

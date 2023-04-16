@@ -37,6 +37,14 @@ interface IUserDAO
     public function getByEmail(string $email): ?IUser;
 
     /**
+     * Returns with user with given username
+     * @param string $username
+     * @return ?IUser
+     */
+    public function getByUsername(string $username): ?IUser;
+
+
+    /**
      * Returns with all the users that are the given user's friends
      * @param IUser $user
      * @return array

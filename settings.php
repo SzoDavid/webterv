@@ -9,8 +9,8 @@ $CURRENT_PAGE = 'settings';
 require 'Helpers/header.php';
 
 if (!isset($dataSource)) {
-    //TODO: error page
-    die('Oops2');
+    header("Location: error.php");
+    exit();
 }
 
 if (!isset($USER)) {

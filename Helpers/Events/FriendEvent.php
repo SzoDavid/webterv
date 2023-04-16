@@ -14,8 +14,8 @@ try {
     $currentUser = $userDAO->getById($_SESSION['UserId']);
     $user = $userDAO->getById($_GET['id']);
 } catch (Exception $ex) {
-    //TODO: return with error feedback
-    die($ex->getMessage());
+    header('Location: ../../error.php?msg=' . $ex->getMessage());
+    exit();
 }
 
 try {

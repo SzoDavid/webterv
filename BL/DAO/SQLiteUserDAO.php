@@ -120,6 +120,28 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         return null;
     }
 
+    public function getByUsername(string $username): ?IUser
+    {
+        $query = $this->dataSource->getDB()->query("SELECT * FROM User WHERE Username = '$username'");
+
+        if (!$query) {
+            throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
+        }
+
+        if ($row = $query->fetchArray(SQLITE3_ASSOC)) {
+            return new User($row['Id'], $row['Username'], $row['Password'], $row['Email'],
+                $row['ProfilePicturePath'], $row['Registration'], $row['IsAdmin'] == 1, $row['CanComment'] == 1,
+                match ($row['Visibility']) {
+                    0 => EListVisibility::Private,
+                    1 => EListVisibility::FriendsOnly,
+                    2 => EListVisibility::Public,
+                    default => throw new Exception('Invalid visibility value: ' . $row['Visibility'])
+                });
+        }
+
+        return null;
+    }
+
     /**
      * @inheritDoc
      */
