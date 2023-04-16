@@ -253,7 +253,7 @@ textarea {
     animation: fadeIn 750ms ease-in-out;
 }
 
-.listTable tr:not(.header):hover td {
+.listTable tr:not(.header):hover td:not(.hint) {
     background-color: #DFFFDF;
     cursor: pointer;
 }

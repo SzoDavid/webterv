@@ -22,10 +22,11 @@ try {
     if (isset($USER)) {
         $toWatchRatings = $ratingDao->getUnwatchedByUser($USER);
         $friendsShows = $showDao->getFriendsShowsByUser($USER);
+        $friendsShowsNumLim = count($friendsShows) != 0;
     }
     $shows = $showDao->getAll();
     $count = count($shows);
-    if ($count != 0) {
+    if ($count > 1) {
         $recommendedShows = array_rand($shows, min($count, 3));
         shuffle($recommendedShows);
     }
@@ -73,21 +74,28 @@ try {
             <div class="right">
                 <h2>Barátaid épp ezt nézik</h2>
                 <table class="listTable">
-                    <colgroup>
-                        <col span="1" style="width: 100px">
-                        <col span="2">
-                    </colgroup>
+                    <?php if ($friendsShowsNumLim) { ?>
+                        <colgroup>
+                            <col span="1" style="width: 100px">
+                            <col span="2">
+                        </colgroup>
+                    <?php } ?>
                     <tr class="header">
-                        <th colspan="2">Cím</th>
+                        <th <?php if ($friendsShowsNumLim) echo 'colspan="2"'?>>Cím</th>
                         <th>Értékelés</th>
                     </tr>
                     <?php
-                        /* @var $friendsShow IShow */
-                        foreach ($friendsShows as $friendsShow) { ?>
-                        <tr onclick="window.location.href = 'show.php?id=<?php echo $friendsShow->getId(); ?>'">
-                            <td><img alt="cover" height="100" src="<?php echo $friendsShow->getCoverPath(); ?>" width="100"></td>
-                            <td class="title"><?php echo $friendsShow->getTitle(); ?></td>
-                            <td><?php try { echo $ratingDao->getAverageRatingByShow($friendsShow); } catch (Exception $e) { echo '-'; } ?>/5</td>
+                        if ($friendsShowsNumLim) {
+                            /* @var $friendsShow IShow */
+                            foreach ($friendsShows as $friendsShow) { ?>
+                            <tr onclick="window.location.href = 'show.php?id=<?php echo $friendsShow->getId(); ?>'">
+                                <td><img alt="cover" height="100" src="<?php echo $friendsShow->getCoverPath(); ?>" width="100"></td>
+                                <td class="title"><?php echo $friendsShow->getTitle(); ?></td>
+                                <td><?php try { echo $ratingDao->getAverageRatingByShow($friendsShow); } catch (Exception $e) { echo '-'; } ?>/5</td>
+                            </tr>
+                    <?php }} else { ?>
+                        <tr>
+                            <td colspan="2" class="hint">Üres</td>
                         </tr>
                     <?php } ?>
                 </table>

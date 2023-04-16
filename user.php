@@ -26,6 +26,7 @@ try {
     $user = $userDao->getById($_GET['id']) ?? throw new Exception('404');
     $ratings = $ratingDao->getByUser($user);
     $friends = $userDao->getFriendsByUser($user);
+    $ratingsNumLim = count($ratings) != 0;
 } catch (Exception $ex) {
     header("Location: error.php?msg=" . $ex->getMessage());
     exit();
@@ -104,7 +105,6 @@ foreach ($ratings as $rating) {
                             <td><button onclick="window.location.href='Helpers/Events/manageUserEvent.php?method=muted<?php echo (($user->canComment()) ? 'Set' : 'Remove') . '&id=' . $user->getId(); ?>'" class="saveButton">Némítás<?php if (!$user->canComment()) echo ' visszavonása'; ?></button></td>
                         </tr>
                         <tr>
-                            <!--TODO-->
                             <td><button onclick="removeUser()">Profil törlése</button></td>
                         </tr>
                     <?php } ?>
@@ -115,26 +115,31 @@ foreach ($ratings as $rating) {
             <h1><?php echo $user->getUsername(); ?></h1>
             <h2>Sorozatok</h2>
             <table class="listTable">
-                <colgroup>
-                    <col span="1" style="width: 100px">
-                    <col span="4">
-                </colgroup>
+                <?php if ($ratingsNumLim) { ?>
+                    <colgroup>
+                        <col span="1" style="width: 100px">
+                        <col span="4">
+                    </colgroup>
+                <?php } ?>
                 <tr class="header">
-                    <th colspan="2">Cím</th>
+                    <th <?php if ($ratingsNumLim) echo 'colspan="2"'?>>Cím</th>
                     <th>Epizódok</th>
                     <th>Értékelés</th>
                     <th>Átlag</th>
                 </tr>
-                <?php
+                <?php if ($ratingsNumLim) {
                     /* @var $rating IRating */
-                    foreach ($ratings as $rating) {
-                ?>
+                    foreach ($ratings as $rating) { ?>
                     <tr onclick="window.location.href = 'show.php?id=<?php echo $rating->getShow()->getId(); ?>'">
                         <td><img src="<?php echo $rating->getShow()->getCoverPath(); ?>" alt="cover" width="100" height="100"></td>
                         <td class="title"><?php echo $rating->getShow()->getTitle(); ?></td>
                         <td><?php echo $rating->getEpisodesWatched() . '/' . $rating->getShow()->getNumEpisodes(); ?></td>
                         <td><?php echo $rating->getRating() ?? '-' ?>/5</td>
                         <td><?php try { echo $ratingDao->getAverageRatingByShow($rating->getShow()); } catch (Exception $_) { echo '-'; } ?>/5</td>
+                    </tr>
+                <?php }} else { ?>
+                    <tr>
+                        <td colspan="4" class="hint">Üres</td>
                     </tr>
                 <?php } ?>
             </table>
