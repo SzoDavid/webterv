@@ -25,8 +25,7 @@ try {
             break;
         case 'remove':
             $userDAO->removeFriend($userDAO->getById($_SESSION['UserId']),  $userDAO->getById($_GET['id']));
-            header('Location: ../../index.php');
-            exit();
+            break;
         default:
         {
             throw new Exception('Unknown method');
@@ -38,5 +37,5 @@ try {
     exit();
 }
 
-header('Location: ../../index.php');
+header('Location: ../../user.php?id=' . $_GET['id']);
 exit();

@@ -50,14 +50,14 @@ try {
 //            }
             if ($_POST['visibility'] != $user->getListVisibility()) $user->setListVisibility(
                 match ($_POST['visibility']) {
-                "0" => EListVisibility::Private,
-                "1" => EListVisibility::FriendsOnly,
-                "2" => EListVisibility::Public
-            });
+                    "0" => EListVisibility::Private,
+                    "1" => EListVisibility::FriendsOnly,
+                    "2" => EListVisibility::Public
+                });
             if (isUploaded('pfp')) $user->setProfilePicturePath($fileManager->upload($_FILES['pfp'], EFileCategories::Pfp));
 
-            if(!($_POST['password'] == '' && $_POST['passwordAgain'] == '' && $_POST['oldPass'] == '') && $_POST['password'] == '' xor $_POST['passwordAgain'] == '' xor $_POST['oldPass'] == '') {
-                $_SESSION['msg'] = 'Mindhárom mezőt ki kell tölteni';
+            if (!($_POST['password'] == '' && $_POST['passwordAgain'] == '' && $_POST['oldPass'] == '') && ($_POST['password'] == '' || $_POST['passwordAgain'] == '' || $_POST['oldPass'] == '')) {
+                $_SESSION['msg'] = 'A jelszó megváltoztatásához mindhárom mezőt ki kell tölteni';
                 header('Location: ../../settings.php');
                 exit();
             }
@@ -84,20 +84,7 @@ try {
 
                 $user->setPasswordHash(password_hash($_POST['password'], PASSWORD_DEFAULT));
             }
-
-            try {
-                $userDAO->save($user);
-            } catch (Exception $e) {
-                if ($e->getCode() == 1) {
-                    $_SESSION['msg'] = 'Ez az email már foglalt';
-                    header('Location: ../../settings.php');
-                    exit();
-                } else if($e->getCode() == 2) {
-                    $_SESSION['msg'] = 'Ez a felhasználónév már foglalt';
-                    header('Location: ../../settings.php');
-                    exit();
-                }
-            }
+            $userDAO->save($user);
             break;
         case 'remove':
 
@@ -113,6 +100,20 @@ try {
 
     }
 } catch (Exception $exception) {
+    switch ($exception->getCode()) {
+        case 1:
+            $_SESSION['msg'] = 'Ez az email már foglalt';
+            header('Location: ../../settings.php');
+            exit();
+        case 2:
+            $_SESSION['msg'] = 'Ez a felhasználónév már foglalt';
+            header('Location: ../../settings.php');
+            exit();
+        case 23:
+            $_SESSION['msg'] = 'Hibás email';
+            header('Location: ../../settings.php');
+            exit();
+    }
     header('Location: ../../error.php?msg=' . $exception->getMessage());
     exit();
 }
