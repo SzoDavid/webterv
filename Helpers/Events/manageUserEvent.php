@@ -56,6 +56,10 @@ try {
         case 'adminRemove':
             $userDao->save($user->setAdmin(false));
             break;
+        case 'userRemove':
+            $userDao->remove($user);
+            header('Location: ../../index.php');
+            exit();
         default:
             throw new Exception('Unknown method');
     }

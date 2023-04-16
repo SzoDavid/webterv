@@ -39,14 +39,14 @@ class User implements IUser
      * @inheritDoc
      */
     public static function createNewUser(string $username, string $passwordHash,
-                                         string $email): IUser
+                                         string $email, bool $admin=false): IUser
     {
         if (empty(trim($username))) throw new Exception('Username is empty', 21);
         if (empty(trim($passwordHash))) throw new Exception('Password hash is empty', 22);
         if (empty(trim($email)) || !preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/", $email)) throw new Exception('Invalid e-mail address', 23);
 
         return new self(null, $username, $passwordHash, $email, null, null,
-            false, false, EListVisibility::Public);
+            $admin, false, EListVisibility::Public);
     }
     //endregion
 

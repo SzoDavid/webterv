@@ -28,7 +28,12 @@ try {
     $friends = $userDao->getFriendsByUser($user);
     if (isset($_SESSION['UserId'])) {
         $yourFriends = $userDao->getFriendsByUser($userDao->getById($_SESSION['UserId']));
+        $isPrivate = !(($_GET['id'] == $_SESSION['UserId']) || (($user->getListVisibility() === EListVisibility::FriendsOnly) && $isFriend)
+            || $user->getListVisibility() === EListVisibility::Public);
     }
+    $ratingsNumLim = count($ratings) != 0 && !isPrivate;
+    
+    
 } catch (Exception $ex) {
     header("Location: error.php?msg=" . $ex->getMessage());
     exit();
@@ -54,8 +59,17 @@ if (isset($yourFriends)) {
     }
 }
 
-?>
 
+if ()
+
+?>
+<script>
+    function removeUser() {
+        if (confirm('Biztosan törölni akarja a felhasználót?')) {
+            window.location.href='Helpers/Events/manageUserEvent.php?method=userRemove&id=<?php echo $user->getId(); ?>';
+        }
+    }
+</script>
 <main>
     <div class="oneThreeContainer">
         <div class="left">
@@ -128,7 +142,7 @@ if (isset($yourFriends)) {
                             <td><button onclick="window.location.href='Helpers/Events/manageUserEvent.php?method=muted<?php echo (($user->canComment()) ? 'Set' : 'Remove') . '&id=' . $user->getId(); ?>'" class="saveButton">Némítás<?php if (!$user->canComment()) echo ' visszavonása'; ?></button></td>
                         </tr>
                         <tr>
-                            <td><button>Profil törlése</button></td>
+                            <td><button onclick="removeUser()">Profil törlése</button></td>
                         </tr>
                     <?php } ?>
                 </table>
@@ -136,24 +150,23 @@ if (isset($yourFriends)) {
         </div>
         <div class="right">
             <h1><?php echo $user->getUsername(); ?></h1>
-            <?php if (isset($_SESSION['UserId']) && ($_GET['id'] == $_SESSION['UserId']) || (($user->getListVisibility() === EListVisibility::FriendsOnly) && $isFriend)
-            || $user->getListVisibility() === EListVisibility::Public) { ?>
             <h2>Sorozatok</h2>
             <table class="listTable">
-                <colgroup>
-                    <col span="1" style="width: 100px">
-                    <col span="4">
-                </colgroup>
+                <?php if ($ratingsNumLim) { ?>
+                    <colgroup>
+                        <col span="1" style="width: 100px">
+                        <col span="4">
+                    </colgroup>
+                <?php } ?>
                 <tr class="header">
-                    <th colspan="2">Cím</th>
+                    <th <?php if ($ratingsNumLim) echo 'colspan="2"'?>>Cím</th>
                     <th>Epizódok</th>
                     <th>Értékelés</th>
                     <th>Átlag</th>
                 </tr>
-                <?php
-                /* @var $rating IRating */
-                foreach ($ratings as $rating) {
-                    ?>
+                <?php if ($ratingsNumLim) {
+                    /* @var $rating IRating */
+                    foreach ($ratings as $rating) { ?>
                     <tr onclick="window.location.href = 'show.php?id=<?php echo $rating->getShow()->getId(); ?>'">
                         <td><img src="<?php echo $rating->getShow()->getCoverPath(); ?>" alt="cover" width="100"
                                  height="100"></td>
@@ -168,8 +181,10 @@ if (isset($yourFriends)) {
                         </td>
                     </tr>
                 <?php }
-                } else { ?>
-                    <h2>A profil privát!</h2>
+                <?php }} else { ?>
+                    <tr>
+                        <td colspan="4" class="hint"><?php echo $isPrivate ? 'Privát' : 'Üres'?></td>
+                    </tr>
                 <?php } ?>
             </table>
         </div>

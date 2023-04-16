@@ -11,10 +11,11 @@ interface IUser
      * @param string $username
      * @param string $passwordHash
      * @param string $email
+     * @param bool $admin
      * @return IUser
      * @throws Exception - Code 21 if username is empty, 22 if password is empty, 23 if email is invalid
      */
-    public static function createNewUser(string $username, string $passwordHash, string $email): IUser;
+    public static function createNewUser(string $username, string $passwordHash, string $email, bool $admin=false): IUser;
 
     public function getId(): ?int;
     public function getUsername(): string;

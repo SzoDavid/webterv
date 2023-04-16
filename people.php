@@ -27,7 +27,7 @@ try {
     } else {
         $users = $userDao->getAll();
     }
-
+    $usersNumLim = count($users) != 0;
 } catch (Exception $ex) {
     header("Location: error.php?msg=" . $ex->getMessage());
     exit();
@@ -41,24 +41,30 @@ try {
         </form>
     </div>
     <table class="listTable">
-        <colgroup>
-            <col span="1" style="width: 100px">
-            <col span="3">
-        </colgroup>
+        <?php if ($usersNumLim) { ?>
+            <colgroup>
+                <col span="1" style="width: 100px">
+                <col span="3">
+            </colgroup>
+        <?php } ?>
         <tr class="header">
-            <th colspan="2">Név</th>
+            <th <?php if ($usersNumLim) echo 'colspan="2"'?>>Név</th>
             <th>Sorozatok</th>
             <th>Regisztrált</th>
         </tr>
-        <?php
-        /* @var $users IUser */
-        foreach ($users as $user) {
+        <?php if ($usersNumLim) {
+            /* @var $users IUser */
+            foreach ($users as $user) {
             ?>
             <tr onclick="window.location.href = 'user.php?id=<?php echo $user->getId(); ?>'">
                 <td><img class="profilePic" src="<?php echo $user->getProfilePicturePath() != null ? $user->getProfilePicturePath() : 'Resources/src/img/logo.svg'; ?>" alt="pfp" width="100" height="100"></td>
                 <td class="title"><?php echo $user->getUsername(); ?></td>
                 <td><?php try { echo count($showDao->getByUser($user)); } catch (Exception $e) { echo '-'; } ?></td>
                 <td><?php echo calculateTime($user) == 0 ? "Ma" : calculateTime($user) . " napja" ?></td>
+            </tr>
+        <?php }} else { ?>
+            <tr>
+                <td colspan="4" class="hint">Üres</td>
             </tr>
         <?php } ?>
     </table>
