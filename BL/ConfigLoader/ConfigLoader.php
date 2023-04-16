@@ -42,8 +42,8 @@ class ConfigLoader implements _Interfaces\IConfigLoader
             if ($this->isAdminGenerationEnabled) {
                 $this->defaultAdminUser = User::createNewUser(
                     $raw_config['default_admin_user']['username'],
-                    $raw_config['default_admin_user']['email'],
                     password_hash($raw_config['default_admin_user']['password'], PASSWORD_DEFAULT),
+                    $raw_config['default_admin_user']['email'],
                     true
                 );
             }

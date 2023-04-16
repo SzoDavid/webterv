@@ -224,7 +224,7 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         $listVisibility = $user->getListVisibility();
 
         if ($userId == null) {
-            $sql = "INSERT INTO User (Username, Email, Password) VALUES ('$username', '$email', '$password')";
+            $sql = "INSERT INTO User (Username, Email, Password, IsAdmin) VALUES ('$username', '$email', '$password', '$admin')";
         } else {
             try {
                 $oldUser = $this->getById($userId);
