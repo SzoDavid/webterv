@@ -25,7 +25,7 @@ try {
     }
     $shows = $showDao->getAll();
     $count = count($shows);
-    if ($count != 0) {
+    if ($count > 1) {
         $recommendedShows = array_rand($shows, min($count, 3));
         shuffle($recommendedShows);
     }

@@ -107,8 +107,9 @@ class SQLiteShowDAO implements _Interfaces\IShowDAO
         $id = $user->getId();
 
         $query = $this->dataSource->getDB()->query("SELECT * FROM Show WHERE Show.Id IN ("
-            . "SELECT Watching.ShowId FROM Watching, Following WHERE Following.FollowedId=Watching.UserId AND Following.FollowerId='$id' AND Watching.ShowId NOT IN ("
-            . "SELECT ShowId FROM Watching WHERE UserId=$id))");
+            . "SELECT Watching.ShowId FROM Watching, Following, User WHERE Following.FollowedId=Watching.UserId AND User.Id=Following.FollowedId AND Following.FollowerId='$id' AND Watching.ShowId NOT IN ("
+            . "SELECT ShowId FROM Watching WHERE UserId='$id') AND (User.Visibility=2 OR (User.Visibility=1 AND Following.FollowedId IN "
+            . "(SELECT Following.FollowerId FROM Following WHERE Following.FollowedId='$id'))))");
 
         if (!$query) {
             throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());

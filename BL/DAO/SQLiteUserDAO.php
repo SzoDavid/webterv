@@ -179,7 +179,9 @@ class SQLiteUserDAO implements _Interfaces\IUserDAO
         $userId = $user->getId();
         $showId = $show->getId();
 
-        $query = $this->dataSource->getDB()->query("SELECT * FROM User WHERE User.Id IN (SELECT Following.FollowedId FROM Following, Watching WHERE Following.FollowerId=Watching.UserId AND Watching.ShowId='$showId' AND Following.FollowerId = '$userId')");
+        $query = $this->dataSource->getDB()->query("SELECT * FROM User WHERE User.Id IN"
+            ."(SELECT Following.FollowedId FROM Following, Watching, User WHERE Following.FollowerId=Watching.UserId AND Following.FollowedId=User.Id AND Watching.ShowId='$showId' AND Following.FollowerId = '$userId' AND (User.Visibility=2 OR (User.Visibility=1 AND Following.FollowedId IN"
+            ."(SELECT Following.FollowerId FROM Following WHERE Following.FollowedId='$userId'))))");
 
         if (!$query) {
             throw new Exception('Could not get values from database: ' . $this->dataSource->getDB()->lastErrorMsg());
