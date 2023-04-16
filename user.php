@@ -105,7 +105,7 @@ if (isset($yourFriends)) {
                 </tr>
             </table>
             <?php if (isset($_SESSION['UserId']) && $_GET['id'] != $_SESSION['UserId'] && isset($USER)) { ?>
-            <form method="POST" action="Helpers/Events/FriendEvent.php?method=<?php echo $isYourFriend ? "remove" : "add"?>&id=<?php echo $_GET['id'] ?>" enctype="multipart/form-data">
+            <form method="POST" action="Helpers/Events/friendEvent.php?method=<?php echo $isYourFriend ? "remove" : "add" ?>&id=<?php echo $_GET['id'] ?> " enctype="multipart/form-data">
                 <table class="infoTable">
                     <tr>
                         <td>
