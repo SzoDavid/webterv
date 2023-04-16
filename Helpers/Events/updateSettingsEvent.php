@@ -109,6 +109,10 @@ try {
             $_SESSION['msg'] = 'Ez a felhasználónév már foglalt';
             header('Location: ../../settings.php');
             exit();
+        case 23:
+            $_SESSION['msg'] = 'Hibás email';
+            header('Location: ../../settings.php');
+            exit();
     }
     header('Location: ../../error.php?msg=' . $exception->getMessage());
     exit();
