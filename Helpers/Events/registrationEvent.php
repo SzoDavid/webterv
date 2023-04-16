@@ -52,9 +52,6 @@ try {
         case 2:
             $_SESSION['msg'] = 'A felhasználónév foglalt';
             break;
-        case 23:
-            $_SESSION['msg'] = 'Invalid e-mail cím';
-            break;
         default:
             header('Location: ../../error.php?msg=' . $ex->getMessage());
             exit();

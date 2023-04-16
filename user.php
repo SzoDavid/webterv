@@ -26,14 +26,26 @@ try {
     $user = $userDao->getById($_GET['id']) ?? throw new Exception('404');
     $ratings = $ratingDao->getByUser($user);
     $friends = $userDao->getFriendsByUser($user);
+    $ratingsNumLim = count($ratings) != 0;
+    $isFriend = false;
+    $isYourFriend = false;
+
+    if (isset($yourFriends)) {
+        /* @var $yourFriend IUser */
+        foreach ($yourFriends as $yourFriend) {
+            if ($yourFriend->getId() == $_GET['id']) {
+                $isYourFriend = true;
+            }
+        }
+    }
+
     if (isset($_SESSION['UserId'])) {
         $yourFriends = $userDao->getFriendsByUser($userDao->getById($_SESSION['UserId']));
         $isPrivate = !(($_GET['id'] == $_SESSION['UserId']) || (($user->getListVisibility() === EListVisibility::FriendsOnly) && $isFriend)
             || $user->getListVisibility() === EListVisibility::Public);
+        $ratingsNumLim = $isPrivate;
     }
-    $ratingsNumLim = count($ratings) != 0 && !isPrivate;
-    
-    
+
 } catch (Exception $ex) {
     header("Location: error.php?msg=" . $ex->getMessage());
     exit();
@@ -47,20 +59,7 @@ foreach ($ratings as $rating) {
     $episodesWatched += $rating->getEpisodesWatched();
 }
 
-$isFriend = false;
-$isYourFriend = false;
 
-if (isset($yourFriends)) {
-    /* @var $yourFriend IUser */
-    foreach ($yourFriends as $yourFriend) {
-        if ($yourFriend->getId() == $_GET['id']) {
-            $isYourFriend = true;
-        }
-    }
-}
-
-
-if ()
 
 ?>
 <script>
@@ -180,7 +179,6 @@ if ()
                             } ?>/5
                         </td>
                     </tr>
-                <?php }
                 <?php }} else { ?>
                     <tr>
                         <td colspan="4" class="hint"><?php echo $isPrivate ? 'Privát' : 'Üres'?></td>

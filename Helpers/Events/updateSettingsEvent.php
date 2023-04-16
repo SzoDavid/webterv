@@ -73,7 +73,6 @@ try {
             $userDAO->save($user);
             break;
         case 'remove':
-
             $userDAO->remove($userDAO->getById($_SESSION['UserId']));
             session_unset();
             session_destroy();
@@ -95,8 +94,8 @@ try {
             $_SESSION['msg'] = 'Ez a felhasználónév már foglalt';
             header('Location: ../../settings.php');
             exit();
-        case 23:
-            $_SESSION['msg'] = 'Invalid e-mail cím';
+        case 10:
+            $_SESSION['msg'] = 'Muszáj legalább egy adminnak maradnia';
             header('Location: ../../settings.php');
             exit();
     }

@@ -15,7 +15,7 @@ include 'Helpers/header.php';
                 <h1>Váratlan hiba történt!</h1>
                 <p>Kérjük próbálja újra később!</p>
             <?php } ?>
-            <?php if (isset($_GET['msg']) && !$_GET['msg'] == '404') { ?>
+            <?php if (isset($_GET['msg']) && $_GET['msg'] != '404') { ?>
                 <p class="hint"><?php echo $_GET['msg']; ?></p>
             <?php } ?>
         </div>

@@ -43,7 +43,7 @@ class User implements IUser
     {
         if (empty(trim($username))) throw new Exception('Username is empty', 21);
         if (empty(trim($passwordHash))) throw new Exception('Password hash is empty', 22);
-        if (empty(trim($email)) || !preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/", $email)) throw new Exception('Invalid e-mail address', 23);
+        if (empty(trim($email))) throw new Exception('E-mail is empty', 23);
 
         return new self(null, $username, $passwordHash, $email, null, null,
             $admin, false, EListVisibility::Public);
@@ -122,7 +122,7 @@ class User implements IUser
      */
     public function setEmail(string $email): IUser
     {
-        if (empty(trim($email)) || !preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/", $email)) throw new Exception('Invalid e-mail address', 23);
+        if (empty(trim($email))) throw new Exception('E-mail is empty', 23);
         $this->email = $email;
         return $this;
     }
